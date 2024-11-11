@@ -3,7 +3,10 @@ import { client } from '$lib/crystallizeClient';
 import { json } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ url }) => {
-    const productId = url.searchParams.get('id') || '668795917a3c149f55b32271';
+    const productId = url.searchParams.get('id');
+    if (!productId) {
+        return json({ error: 'Product ID is required' }, { status: 400 });
+    }
 
     const query = `
         query GET_PRODUCT($id: ID!, $language: String!) {
@@ -11,60 +14,10 @@ export const GET: RequestHandler = async ({ url }) => {
                 get(id: $id, language: $language) {
                     id
                     name
-                    components {
-                        componentId
-                        name
-                        type
-                        content {
-                            ... on PieceContent {
-                                components {
-                                    componentId
-                                    name
-                                    type
-                                    content {
-                                        ... on ParagraphCollectionContent {
-                                            paragraphs {
-                                                title {
-                                                    text
-                                                }
-                                                body {
-                                                    json
-                                                    html
-                                                    plainText
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            ... on ComponentMultipleChoiceContent {
-                                selectedComponents {
-                                    componentId
-                                    name
-                                    content {
-                                        ... on NumericContent {
-                                            number
-                                            unit
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                     variants {
                         id
                         name
-                        sku
                         price
-                        stock
-                        images {
-                            url
-                            altText
-                            variants {
-                                url
-                                width
-                            }
-                        }
                     }
                 }
             }
@@ -84,42 +37,32 @@ export const GET: RequestHandler = async ({ url }) => {
 };
 
 export const POST: RequestHandler = async ({ request }) => {
-    const productId = '66879591b45a5bf605ade415';
-    const data = await request.json();
+    try {
+        const { productId, price } = await request.json();
 
-    // First, get the current product data
-    const getQuery = `
-        query GET_PRODUCT($id: ID!, $language: String!) {
-            product {
-                get(id: $id, language: $language) {
-                    id
-                    name
-                    variants {
-                        id
-                        name
-                        sku
-                        price
-                        stock
-                        isDefault
-                        images {
-                            url
+        // First get the current product to get the variant details
+        const getQuery = `
+            query GET_PRODUCT($id: ID!, $language: String!) {
+                product {
+                    get(id: $id, language: $language) {
+                        variants {
+                            id
+                            sku
+                            name
+                            isDefault
                         }
                     }
                 }
             }
-        }
-    `;
+        `;
 
-    try {
-        // Get current product data
         const currentProduct = await client.pimApi(getQuery, {
             id: productId,
             language: "en"
         });
 
-        const currentVariant = currentProduct.product.get.variants[0];
+        const defaultVariant = currentProduct.product.get.variants[0];
 
-        // Update mutation
         const mutation = `
             mutation UPDATE_PRODUCT($id: ID!, $language: String!, $input: UpdateProductInput!) {
                 product {
@@ -131,11 +74,7 @@ export const POST: RequestHandler = async ({ request }) => {
                             name
                             sku
                             price
-                            stock
                             isDefault
-                            images {
-                                url
-                            }
                         }
                     }
                 }
@@ -147,13 +86,11 @@ export const POST: RequestHandler = async ({ request }) => {
             language: "en",
             input: {
                 variants: [{
-                    id: currentVariant.id,
-                    name: currentVariant.name,
-                    sku: currentVariant.sku,
-                    price: data.variants[0].price, // Only update the price
-                    stock: currentVariant.stock,
-                    isDefault: true,
-                    images: currentVariant.images
+                    id: defaultVariant.id,
+                    sku: defaultVariant.sku,
+                    name: defaultVariant.name,
+                    price: parseFloat(price),
+                    isDefault: true
                 }]
             }
         });
