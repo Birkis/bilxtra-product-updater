@@ -2,8 +2,8 @@ import type { RequestHandler } from './$types';
 import { client } from '$lib/crystallizeClient';
 import { json } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async () => {
-    const productId = '668795917a3c149f55b32271';
+export const GET: RequestHandler = async ({ url }) => {
+    const productId = url.searchParams.get('id') || '668795917a3c149f55b32271';
 
     const query = `
         query GET_PRODUCT($id: ID!, $language: String!) {
