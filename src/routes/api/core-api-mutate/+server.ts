@@ -12,7 +12,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Construct the absolute path to the YAML file
 const yamlPath = join(__dirname, '../../../lib/componentMapping.yaml');
-const componentMappingYaml = readFileSync(yamlPath, 'utf8');
+
+// Replace direct fs read
+// const mapping = fs.readFileSync('./src/lib/componentMapping.yaml', 'utf8');
+
+// With dynamic import
+import componentMapping from '$lib/componentMapping.yaml';
 
 export const POST: RequestHandler = async ({ request }) => {
     try {
@@ -21,7 +26,7 @@ export const POST: RequestHandler = async ({ request }) => {
         console.log('Received data: ', { itemId, productData });
 
         // Load the component mapping from the YAML file
-        const componentMapping = yaml.load(componentMappingYaml) as ComponentMapping;
+        const componentMapping = yaml.load(componentMapping) as ComponentMapping;
 
         function buildUpdateMutation(itemId: string, productData: ProductData) {
             const mutations = [];
