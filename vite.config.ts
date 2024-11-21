@@ -1,11 +1,12 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import ViteYaml from 'vite-plugin-yaml';
+import yaml from '@rollup/plugin-yaml';
 
 export default defineConfig({
 	plugins: [
 		sveltekit(),
-		ViteYaml()
-	],
-	assetsInclude: ['**/*.yaml']
+		yaml({
+			include: 'src/**/*.yaml'
+		})
+	]
 });

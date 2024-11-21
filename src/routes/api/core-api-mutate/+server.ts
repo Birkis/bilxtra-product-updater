@@ -1,23 +1,11 @@
 import type { RequestHandler } from './$types';
-import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { client } from '$lib/crystallizeClient';
 import { json } from '@sveltejs/kit';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
 import type { ComponentMapping, ProductData } from '$lib/types/componentMapping';
 
-// Get the directory name of the current module
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// Construct the absolute path to the YAML file
-const yamlPath = join(__dirname, '../../../lib/componentMapping.yaml');
-
-// Replace direct fs read
-// const mapping = fs.readFileSync('./src/lib/componentMapping.yaml', 'utf8');
-
-// With dynamic import
-import componentMapping from '$lib/componentMapping.yaml';
+// Import the YAML file directly - no fs operations
+import rawMapping from '$lib/componentMapping.yaml';
 
 export const POST: RequestHandler = async ({ request }) => {
     try {
@@ -25,8 +13,8 @@ export const POST: RequestHandler = async ({ request }) => {
 
         console.log('Received data: ', { itemId, productData });
 
-        // Load the component mapping from the YAML file
-        const componentMapping = yaml.load(componentMapping) as ComponentMapping;
+        // Parse the imported YAML content
+        const componentMapping = rawMapping as ComponentMapping;
 
         function buildUpdateMutation(itemId: string, productData: ProductData) {
             const mutations = [];
