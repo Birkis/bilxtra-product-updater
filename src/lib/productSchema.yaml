@@ -1,0 +1,7 @@
+description: string
+weight:
+  number: number
+  unit: string
+length:
+  number: number
+  unit: string

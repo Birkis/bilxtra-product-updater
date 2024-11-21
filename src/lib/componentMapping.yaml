@@ -1,0 +1,57 @@
+description:
+  componentId: 'product-info'
+  type: 'piece'
+  structure:
+    identifier: 'product-info'
+    components:
+      - componentId: 'description'
+        paragraphCollection:
+          paragraphs:
+            - body:
+                html: '{{value}}'
+dim:
+  componentId: 'dim'
+  type: 'componentMultipleChoice'
+  components:
+    vekt:
+      componentId: 'vekt'
+      type: 'numeric'
+      structure:
+        number: '{{number}}'
+        unit: '{{unit}}'
+    lengde:
+      componentId: 'lengde'
+      type: 'numeric'
+      structure:
+        number: '{{number}}'
+        unit: '{{unit}}'
+    hoyde:
+      componentId: 'hoyde'
+      type: 'numeric'
+      structure:
+        number: '{{number}}'
+        unit: '{{unit}}'
+    bredde:
+      componentId: 'bredde'
+      type: 'numeric'
+      structure:
+        number: '{{number}}'
+        unit: '{{unit}}'
+    volum:
+      componentId: 'volum'
+      type: 'numeric'
+      structure:
+        number: '{{number}}'
+        unit: '{{unit}}'
+    diameter:
+      componentId: 'diameter'
+      type: 'numeric'
+      structure:
+        number: '{{number}}'
+        unit: '{{unit}}'
+    radius:
+      componentId: 'radius'
+      type: 'numeric'
+      structure:
+        number: '{{number}}'
+        unit: '{{unit}}'

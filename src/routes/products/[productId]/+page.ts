@@ -3,7 +3,7 @@ import { error } from '@sveltejs/kit';
 
 export const load: PageLoad = async ({ params, fetch }) => {
     try {
-        const response = await fetch(`/api/update-product?id=${params.productId}`);
+        const response = await fetch(`/api/discovery?id=${params.productId}`);
         if (!response.ok) throw new Error('Failed to fetch product');
         const product = await response.json();
         

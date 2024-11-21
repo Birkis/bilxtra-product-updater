@@ -30,6 +30,11 @@
 		"vite": "^5.0.3"
 	},
 	"dependencies": {
-		"@crystallize/js-api-client": "^3.2.0"
+		"@crystallize/js-api-client": "^3.2.0",
+		"@types/js-yaml": "^4.0.9",
+		"@types/node-fetch": "^2.6.12",
+		"js-yaml": "^4.1.0",
+		"node-fetch": "^3.3.2",
+		"openai": "^4.73.0"
 	}
 }
