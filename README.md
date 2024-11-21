@@ -1,6 +1,6 @@
 # Svelte E-commerce Starter
 
-A modern e-commerce starter built with SvelteKit, featuring Crystallize integration, product discovery, and real-time chat capabilities.
+A modern e-commerce starter built with SvelteKit, featuring Crystallize integration, product discovery, and real-time chat capabilities. BRING YOUR OWN KEYS 🔑
 
 ## Features
 
