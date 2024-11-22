@@ -7,6 +7,14 @@ import type { ComponentMapping, ProductData } from '$lib/types/componentMapping'
 // Import the YAML file directly - no fs operations
 import rawMapping from '$lib/componentMapping.yaml';
 
+interface PropertyTableSection {
+    title: string;
+    properties: Array<{
+        key: string;
+        value: string;
+    }>;
+}
+
 export const POST: RequestHandler = async ({ request }) => {
     try {
         const { itemId, productData } = await request.json();
@@ -50,14 +58,13 @@ export const POST: RequestHandler = async ({ request }) => {
                 mutations.push(buildComponentMutation('description', componentInfo, componentStructureString, itemId));
             }
 
-            // Handle dimensional data dynamically
+            // Handle dimensional data and properties table
             const dimInfo = componentMapping.dim;
             if (dimInfo && dimInfo.components) {
                 const dimComponents = [];
                 
-                // Iterate over all possible dimension components from the mapping
+                // Handle numeric components (dimensions)
                 Object.entries(dimInfo.components).forEach(([key, component]) => {
-                    // Check if we have data for this dimension
                     const dimensionData = productData[key as keyof ProductData];
                     if (dimensionData && 'number' in dimensionData && 'unit' in dimensionData) {
                         dimComponents.push({
@@ -70,6 +77,24 @@ export const POST: RequestHandler = async ({ request }) => {
                     }
                 });
 
+                // Handle properties table if present
+                if (productData.properties) {
+                    dimComponents.push({
+                        componentId: 'attributer',
+                        propertiesTable: {
+                            sections: [
+                                {
+                                    title: 'Additional Properties',
+                                    properties: Object.entries(productData.properties).map(([key, value]) => ({
+                                        key,
+                                        value: String(value)
+                                    }))
+                                }
+                            ]
+                        }
+                    });
+                }
+
                 // Only create mutation if we have components to update
                 if (dimComponents.length > 0) {
                     const componentStructureString = JSON.stringify(dimComponents, null, 2)
@@ -78,6 +103,39 @@ export const POST: RequestHandler = async ({ request }) => {
 
                     mutations.push(buildComponentMutation('dim', dimInfo, componentStructureString, itemId));
                 }
+            }
+
+            // Handle 'produktattributer' component
+            if (productData.produktattributer) {
+                const propertiesTableContent = {
+                    componentId: 'attributer',
+                    propertiesTable: {
+                        sections: [
+                            {
+                                title: 'Tekniske spesifikasjoner',
+                                properties: Object.entries(productData.produktattributer).map(([key, value]) => ({
+                                    key,
+                                    value: String(value)
+                                }))
+                            }
+                        ]
+                    }
+                };
+
+                const componentStructure = [propertiesTableContent];
+
+                const componentStructureString = JSON.stringify(componentStructure, null, 2)
+                    .replace(/"([^"]+)":/g, '$1:')
+                    .replace(/"/g, '"');
+
+                mutations.push(
+                    buildComponentMutation(
+                        'produktattributer',
+                        { componentId: 'produktattributer', type: 'componentMultipleChoice' },
+                        componentStructureString,
+                        itemId
+                    )
+                );
             }
 
             const fullMutation = `mutation {

@@ -9,6 +9,7 @@ description:
           paragraphs:
             - body:
                 html: '{{value}}'
+
 dim:
   componentId: 'dim'
   type: 'componentMultipleChoice'
@@ -55,3 +56,17 @@ dim:
       structure:
         number: '{{number}}'
         unit: '{{unit}}'
+
+produktattributer:
+  componentId: 'produktattributer'
+  type: 'componentMultipleChoice'
+  components:
+    attributer:
+      componentId: 'attributer'
+      type: 'propertiesTable'
+      structure:
+        sections:
+          - title: '{{title}}'
+            properties:
+              - key: '{{key}}'
+                value: '{{value}}'

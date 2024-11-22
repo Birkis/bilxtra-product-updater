@@ -50,6 +50,30 @@ interface DimensionsComponent extends ComponentChoice {
         volum: NumericComponent;
         diameter: NumericComponent;
         radius: NumericComponent;
+        attributer: PropertiesTableComponent;
+    };
+}
+
+// Add interface for properties table component
+interface PropertiesTableComponent extends BaseComponent {
+    type: 'propertiesTable';
+    structure: {
+        sections: Array<{
+            title: string;
+            properties: Array<{
+                key: string;
+                value: string;
+            }>;
+        }>;
+    };
+}
+
+// Define ProduktattributerComponent
+interface ProduktattributerComponent extends BaseComponent {
+    componentId: 'produktattributer';
+    type: 'componentMultipleChoice';
+    components: {
+        attributer: PropertiesTableComponent;
     };
 }
 
@@ -57,6 +81,7 @@ interface DimensionsComponent extends ComponentChoice {
 export interface ComponentMapping {
     description: DescriptionComponent;
     dim: DimensionsComponent;
+    produktattributer: ProduktattributerComponent;
 }
 
 // Helper type for product data
@@ -90,4 +115,6 @@ export interface ProductData {
         number: number;
         unit: string;
     };
+    properties?: Record<string, string>;
+    produktattributer?: Record<string, string>;
 } 

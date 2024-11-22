@@ -3,6 +3,13 @@ import { json } from '@sveltejs/kit';
 import { openai } from '$lib/openaiClient';
 import { OPENAI_ASSISTANT_ID_GPT4 } from '$env/static/private';
 
+type MessageContent = {
+    type: 'text' | 'image_file' | 'image_url';
+    text?: string;
+    image_file?: { file_id: string };
+    image_url?: { url: string };
+};
+
 export const POST: RequestHandler = async ({ request }) => {
     try {
         const { message, type } = await request.json();
@@ -10,48 +17,70 @@ export const POST: RequestHandler = async ({ request }) => {
         // Create a new thread
         const thread = await openai.beta.threads.create();
         
-        // Prepare the message content based on type
-        let messageContent;
-        if (type === 'image') {
-            // Convert base64 to buffer
-            const base64Data = message.split(',')[1];
-            const buffer = Buffer.from(base64Data, 'base64');
+        // Handle different types of content separately
+        if (type === 'multiple') {
+            let messageContent;
             
-            // Create a proper File object
-            const file = new File([buffer], 'image.png', {
-                type: 'image/png',
-                lastModified: Date.now()
-            });
-            
-            // Upload the file to OpenAI
-            const uploadedFile = await openai.files.create({
-                file,
-                purpose: 'assistants'
-            });
-            
-            messageContent = {
-                role: "user" as const,
-                content: [
-                    {
-                        type: "image_file",
-                        image_file: {
-                            file_id: uploadedFile.id
+            // If there's an image, process only the image
+            if (message.image) {
+                // Convert base64 to buffer
+                const base64Data = message.image.split(',')[1];
+                const buffer = Buffer.from(base64Data, 'base64');
+                
+                // Create a proper File object
+                const file = new File([buffer], 'image.png', {
+                    type: 'image/png',
+                    lastModified: Date.now()
+                });
+                
+                // Upload the file to OpenAI
+                const uploadedFile = await openai.files.create({
+                    file,
+                    purpose: 'assistants'
+                });
+                
+                messageContent = {
+                    role: "user" as const,
+                    content: [
+                        {
+                            type: 'image_file' as const,
+                            image_file: {
+                                file_id: uploadedFile.id
+                            }
                         }
-                    }
-                ]
-            };
+                    ]
+                };
+            } 
+            // If there's text or URL, process as text
+            else if (message.text || message.url) {
+                let textContent = '';
+                if (message.text) {
+                    textContent += message.text;
+                }
+                if (message.url) {
+                    textContent += `\nURL reference: ${message.url}`;
+                }
+
+                messageContent = {
+                    role: "user" as const,
+                    content: textContent.slice(0, 32768)
+                };
+            } else {
+                throw new Error('No valid content provided');
+            }
+
+            // Add the message to the thread
+            await openai.beta.threads.messages.create(
+                thread.id,
+                messageContent
+            );
         } else {
-            messageContent = {
-                role: "user" as const,
-                content: message
-            };
+            // Handle simple text message
+            await openai.beta.threads.messages.create(thread.id, {
+                role: "user",
+                content: String(message).slice(0, 32768)
+            });
         }
-        
-        // Add the message to the thread
-        await openai.beta.threads.messages.create(
-            thread.id,
-            messageContent
-        );
         
         // Run the assistant
         const run = await openai.beta.threads.runs.create(thread.id, {
