@@ -1,5 +1,4 @@
 import type { RequestHandler } from './$types';
-import yaml from 'js-yaml';
 import { client } from '$lib/crystallizeClient';
 import { json } from '@sveltejs/kit';
 import type { ComponentMapping, ProductData } from '$lib/types/componentMapping';
