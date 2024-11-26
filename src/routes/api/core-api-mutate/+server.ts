@@ -149,6 +149,7 @@ export const POST: RequestHandler = async ({ request }) => {
         console.log('Generated mutation:', mutation);
 
         const result = await client.nextPimApi(mutation);
+        console.log('Mutation result:', result);
         return json(result);
     } catch (error) {
         console.error('Error updating product:', error);
