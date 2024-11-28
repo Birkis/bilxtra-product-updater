@@ -4,8 +4,47 @@ import type { SKUFields } from '$lib/types/sku';
 import type { ComponentMapping } from '$lib/types/componentMapping';
 import { client } from '$lib/crystallizeClient';
 import rawMapping from '$lib/componentMapping.yaml';
+import { env } from '$env/dynamic/private';
 
-function buildSkuMutation(sku: string, data: SKUFields) {
+async function getItemIdFromSku(sku: string) {
+    const query = `
+        query GET_ITEMID($sku: String!) {
+            browse {
+                generiskProdukt(filters: { sku: { equals: $sku } }) {
+                    hits {
+                        itemId
+                    }
+                }
+            }
+        }
+    `;
+
+    const variables = {
+        sku: sku
+    };
+
+    const response = await fetch(`https://api.crystallize.com/${env.CRYSTALLIZE_TENANT_IDENTIFIER}/discovery`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            query,
+            variables,
+        }),
+    });
+
+    const jsonResponse = await response.json();
+    const itemId = jsonResponse.data?.browse?.generiskProdukt?.hits?.[0]?.itemId;
+    
+    if (!itemId) {
+        throw new Error(`No item found for SKU: ${sku}`);
+    }
+
+    return itemId;
+}
+
+function buildSkuMutation(itemId: string, data: SKUFields) {
     const componentMapping = rawMapping as ComponentMapping;
     const mutations: string[] = [];
 
@@ -34,7 +73,7 @@ function buildSkuMutation(sku: string, data: SKUFields) {
             'description',
             { componentId: 'product-info', type: 'piece' },
             JSON.stringify(componentStructure).replace(/"([^"]+)":/g, '$1:'),
-            sku
+            itemId
         ));
     }
 
@@ -60,7 +99,7 @@ function buildSkuMutation(sku: string, data: SKUFields) {
                 'dim',
                 { componentId: 'dim', type: 'componentMultipleChoice' },
                 JSON.stringify(dimComponents).replace(/"([^"]+)":/g, '$1:'),
-                sku
+                itemId
             ));
         }
     }
@@ -83,7 +122,7 @@ function buildSkuMutation(sku: string, data: SKUFields) {
                 'produktattributer',
                 { componentId: 'produktattributer', type: 'componentMultipleChoice' },
                 JSON.stringify(attributeComponent).replace(/"([^"]+)":/g, '$1:'),
-                sku
+                itemId
             ));
         }
     }
@@ -99,11 +138,11 @@ function buildComponentMutation(
     fieldName: string,
     componentInfo: { componentId: string; type: string },
     componentStructureString: string,
-    sku: string
+    itemId: string
 ): string {
     return `
         ${fieldName}: updateComponent(
-            itemId: "${sku}"
+            itemId: "${itemId}"
             language: "en"
             component: {
                 componentId: "${componentInfo.componentId}"
@@ -123,7 +162,7 @@ function buildComponentMutation(
     `;
 }
 
-export const POST: RequestHandler = async ({ request, fetch }) => {
+export const POST: RequestHandler = async ({ request }) => {
     try {
         const formData = await request.formData();
         const mappedDataStr = formData.get('mappedData') as string;
@@ -162,27 +201,27 @@ export const POST: RequestHandler = async ({ request, fetch }) => {
             }
 
             try {
-                // Build mutation for this SKU
-                console.log('Building mutation for SKU:', row.sku);
-                console.log('Row data:', row);
-                
-                const mutation = buildSkuMutation(row.sku, row);
+                // Get ItemId for the SKU
+                const itemId = await getItemIdFromSku(row.sku);
+                console.log(`Found ItemId ${itemId} for SKU ${row.sku}`);
+
+                // Build mutation using the ItemId
+                const mutation = buildSkuMutation(itemId, row);
                 console.log('Generated mutation:', mutation);
                 
                 // Execute mutation
-                console.log('Executing mutation for SKU:', row.sku);
                 const mutationResult = await client.nextPimApi(mutation);
                 console.log('Mutation result:', mutationResult);
                 
                 // Check for errors in the mutation result
                 const hasErrors = Object.values(mutationResult).some(
-                    result => result.__typename === 'BasicError'
+                    (result: any) => result.__typename === 'BasicError'
                 );
 
                 if (hasErrors) {
                     const errorMessages = Object.values(mutationResult)
-                        .filter(result => result.__typename === 'BasicError')
-                        .map(error => error.message)
+                        .filter((result: any) => result.__typename === 'BasicError')
+                        .map((error: any) => error.message)
                         .join(', ');
 
                     throw new Error(errorMessages);

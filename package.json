@@ -38,6 +38,7 @@
 		"@types/node-fetch": "^2.6.12",
 		"@yaml-js/vite": "^0.2.0",
 		"js-yaml": "^4.1.0",
+		"mime": "^4.0.4",
 		"node-fetch": "^3.3.2",
 		"openai": "^4.73.0",
 		"papaparse": "^5.4.1"
