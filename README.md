@@ -24,8 +24,8 @@ A modern e-commerce starter built with SvelteKit, featuring Crystallize integrat
 
 1. Clone the repository:
 ```bash
-git clone [your-repo-url]
-cd [your-repo-name]
+git clone https://github.com/Birkis/bilxtra-product-updater.git
+cd bilxtra-product-updater
 ```
 
 2. Install dependencies:
@@ -142,7 +142,7 @@ npm run preview
 
 ## Deployment
 
-This project can be deployed to any platform that supports SvelteKit applications. You may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+This project can be deployed to any platform that supports SvelteKit applications. You may need to install an adapter for your target environment.
 
 ## Security Considerations
 
@@ -156,10 +156,3 @@ This project can be deployed to any platform that supports SvelteKit application
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
-
-[Add your license here]
-
-## Support
-
-For questions and support, please [open an issue](your-repo-url/issues) on GitHub.
