@@ -28,13 +28,15 @@ export interface SKUFields {
         description?: boolean;
         category?: boolean;
     };
+    image?: string;
 }
 
-export const SKU_FIELD_LABELS: Record<string, string> = {
+export const SKU_FIELD_LABELS: Record<keyof SKUFields, string> = {
     sku: 'SKU (Required)',
     name: 'Product Name (Optional)',
     description: 'Description (Optional)',
-    category: 'Category (Optional)'
+    category: 'Category (Optional)',
+    image: 'Product Image URL (Optional)',
 };
 
 export const DIMENSION_FIELDS = {

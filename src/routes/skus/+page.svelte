@@ -255,6 +255,7 @@
             });
             console.log('CSV data mapped:', mappedData);
 
+            // First, upload SKUs (this will now include name updates)
             const formData = new FormData();
             formData.append('mappedData', JSON.stringify(mappedData));
 

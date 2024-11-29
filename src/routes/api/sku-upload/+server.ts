@@ -44,6 +44,25 @@ async function getItemIdFromSku(sku: string) {
     return itemId;
 }
 
+async function copyRemoteImage(url: string, fileName: string, client: any) {
+    const mutation = `
+        mutation ADD_IMAGE($url: String!, $fileName: String) {
+            copyRemoteAsset(sourceUrl: $url, targetFilename: $fileName) {
+                ... on BulkTaskCopyRemoteAsset {
+                    targetKey
+                }
+            }
+        }
+    `;
+
+    const response = await client.nextPimApi(mutation, {
+        url,
+        fileName
+    });
+
+    return response.copyRemoteAsset?.targetKey;
+}
+
 function buildSkuMutation(itemId: string, data: SKUFields) {
     const componentMapping = rawMapping as ComponentMapping;
     const mutations: string[] = [];
@@ -127,6 +146,31 @@ function buildSkuMutation(itemId: string, data: SKUFields) {
         }
     }
 
+    // Handle image if present
+    if (data.image) {
+        const imageComponent = {
+            identifier: "product-info",
+            components: [
+                {
+                    componentId: "general-product-images",
+                    images: [
+                        {
+                            key: data.imageKey, // This will be set after copyRemoteAsset
+                            altText: `Image for ${data.name || data.sku}`
+                        }
+                    ]
+                }
+            ]
+        };
+
+        mutations.push(buildComponentMutation(
+            'imageUpdate',
+            { componentId: 'product-info', type: 'piece' },
+            JSON.stringify(imageComponent).replace(/"([^"]+)":/g, '$1:'),
+            itemId
+        ));
+    }
+
     return `
         mutation {
             ${mutations.join('\n')}
@@ -205,35 +249,92 @@ export const POST: RequestHandler = async ({ request }) => {
                 const itemId = await getItemIdFromSku(row.sku);
                 console.log(`Found ItemId ${itemId} for SKU ${row.sku}`);
 
-                // Build mutation using the ItemId
-                const mutation = buildSkuMutation(itemId, row);
-                console.log('Generated mutation:', mutation);
-                
-                // Execute mutation
-                const mutationResult = await client.nextPimApi(mutation);
-                console.log('Mutation result:', mutationResult);
-                
-                // Check for errors in the mutation result
-                const hasErrors = Object.values(mutationResult).some(
-                    (result: any) => result.__typename === 'BasicError'
-                );
+                let updatePerformed = false;
 
-                if (hasErrors) {
-                    const errorMessages = Object.values(mutationResult)
-                        .filter((result: any) => result.__typename === 'BasicError')
-                        .map((error: any) => error.message)
-                        .join(', ');
+                // Handle name update separately using PIM API if name is present
+                if (row.name) {
+                    try {
+                        const nameUpdateMutation = `
+                            mutation UPDATE_NAME($id: ID!, $name: String!) {
+                                product {
+                                    update(
+                                        id: $id,
+                                        language: "en",
+                                        input: { name: $name }
+                                    ) {
+                                        name
+                                    }
+                                }
+                            }
+                        `;
 
-                    throw new Error(errorMessages);
+                        await client.pimApi(nameUpdateMutation, {
+                            id: itemId,
+                            name: row.name
+                        });
+                        updatePerformed = true;
+                    } catch (nameError) {
+                        console.error(`Error updating name for SKU ${row.sku}:`, nameError);
+                        results.errors.push(`Error updating name for SKU ${row.sku}: ${nameError.message}`);
+                    }
                 }
 
-                // Update success counters and details
-                results.updated++;
-                results.details.push({
-                    sku: row.sku,
-                    status: 'updated',
-                    message: 'Successfully updated'
-                });
+                // Handle image upload first if present
+                if (row.image) {
+                    try {
+                        const fileName = `${row.sku}-${Date.now()}`;
+                        const imageKey = await copyRemoteImage(row.image, fileName, client);
+                        if (imageKey) {
+                            row.imageKey = imageKey; // Add the image key to the row data
+                        }
+                    } catch (imageError) {
+                        console.error(`Error uploading image for SKU ${row.sku}:`, imageError);
+                        results.errors.push(`Failed to upload image for SKU ${row.sku}: ${imageError.message}`);
+                    }
+                }
+
+                // Build mutation for other fields
+                const mutation = buildSkuMutation(itemId, row);
+                const hasMutations = mutation.includes('updateComponent');  // Check if there are any component updates
+
+                // Only execute NextPIM mutation if there are actual component updates
+                if (hasMutations) {
+                    console.log('Generated mutation:', mutation);
+                    const mutationResult = await client.nextPimApi(mutation);
+                    console.log('Mutation result:', mutationResult);
+                    
+                    // Check for errors in the mutation result
+                    const hasErrors = Object.values(mutationResult).some(
+                        (result: any) => result.__typename === 'BasicError'
+                    );
+
+                    if (hasErrors) {
+                        const errorMessages = Object.values(mutationResult)
+                            .filter((result: any) => result.__typename === 'BasicError')
+                            .map((error: any) => error.message)
+                            .join(', ');
+
+                        throw new Error(errorMessages);
+                    }
+                    updatePerformed = true;
+                }
+
+                // Only increment counter if any updates were performed
+                if (updatePerformed) {
+                    results.updated++;
+                    results.details.push({
+                        sku: row.sku,
+                        status: 'updated',
+                        message: 'Successfully updated'
+                    });
+                } else {
+                    results.skipped++;
+                    results.details.push({
+                        sku: row.sku,
+                        status: 'updated',
+                        message: 'No updates required'
+                    });
+                }
                 
             } catch (error) {
                 console.error(`Error processing SKU ${row.sku}:`, error);
