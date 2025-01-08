@@ -34,4 +34,16 @@ query FIND_PRODUCTS($search_term: String) {
 - Example transformation:
   - Original path: `/categories/ukategorisert/thule-cl-10-030`
   - Cleaned path: `/ukategorisert/thule-cl-10-030`
-  - Final URL: `https://bilxtra.no/ukategorisert/thule-cl-10-030` 
+  - Final URL: `https://bilxtra.no/ukategorisert/thule-cl-10-030`
+
+## Project Configuration
+- YAML files are used for configuration in the project
+- Vite requires the `@rollup/plugin-yaml` package to handle YAML files during build
+- Configuration in `vite.config.ts`:
+  ```typescript
+  import yaml from '@rollup/plugin-yaml';
+  
+  export default defineConfig({
+    plugins: [sveltekit(), yaml()]
+  });
+  ``` 
