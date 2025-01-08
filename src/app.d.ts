@@ -11,15 +11,23 @@ declare module '$app/stores' {
     export const page: Readable<any>; // You can define a more specific type if needed
 }
 
-// See https://svelte.dev/docs/kit/types#app.d.ts
+// See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
 		// interface Platform {}
+	}
+
+	namespace NodeJS {
+		interface ProcessEnv {
+			CRYSTALLIZE_TENANT_ID: string;
+			CRYSTALLIZE_TENANT_IDENTIFIER: string;
+			CRYSTALLIZE_ACCESS_TOKEN_ID: string;
+			CRYSTALLIZE_ACCESS_TOKEN_SECRET: string;
+		}
 	}
 }
 

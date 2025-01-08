@@ -1,0 +1,77 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Crystallize Product Search API
+  description: API for searching products in the Crystallize catalog
+  contact:
+    url: https://bilxtra.no
+
+servers:
+  - url: http://localhost:5173
+    description: Local development server
+
+paths:
+  /api/product-search:
+    get:
+      operationId: searchProducts
+      summary: Search for products in the Crystallize catalog
+      description: Returns a list of products matching the search term, with cleaned URLs for Bilxtra.no
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: The search term to find products
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of products matching the search criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - name
+                    - itemId
+                    - url
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the product
+                      example: "Thule CL-10 030"
+                    itemId:
+                      type: string
+                      description: Unique identifier for the product in Crystallize
+                      example: "66d760987a3c149f55b38892"
+                    url:
+                      type: string
+                      description: Clean URL to the product page on Bilxtra.no
+                      example: "https://bilxtra.no/ukategorisert/thule-cl-10-030"
+        '400':
+          description: Bad request - missing search term
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                    example: "Search term is required"
+        '500':
+          description: Server error during search
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                    example: "Failed to perform search" 

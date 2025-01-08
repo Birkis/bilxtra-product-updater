@@ -3,6 +3,8 @@ export interface SKUFields {
     name?: string;
     description?: string;
     category?: string;
+    image?: string;
+    imageKey?: string;
     dim?: {
         vekt?: { number: number; unit: string; };
         lengde?: { number: number; unit: string; };
@@ -11,6 +13,9 @@ export interface SKUFields {
         volum?: { number: number; unit: string; };
         diameter?: { number: number; unit: string; };
         radius?: { number: number; unit: string; };
+        kon?: string;
+        gjenger?: string;
+        'bolt-type'?: string;
     };
     produktattributer?: {
         attributer?: {
@@ -28,15 +33,18 @@ export interface SKUFields {
         description?: boolean;
         category?: boolean;
     };
-    image?: string;
 }
 
-export const SKU_FIELD_LABELS: Record<keyof SKUFields, string> = {
+export const SKU_FIELD_LABELS: Partial<Record<keyof SKUFields, string>> = {
     sku: 'SKU (Required)',
     name: 'Product Name (Optional)',
     description: 'Description (Optional)',
     category: 'Category (Optional)',
     image: 'Product Image URL (Optional)',
+    imageKey: 'Image Key (System)',
+    dim: 'Dimensions',
+    produktattributer: 'Product Attributes',
+    aiGenerated: 'AI Generated Fields'
 };
 
 export const DIMENSION_FIELDS = {
@@ -46,7 +54,10 @@ export const DIMENSION_FIELDS = {
     bredde: 'Width',
     volum: 'Volume',
     diameter: 'Diameter',
-    radius: 'Radius'
+    radius: 'Radius',
+    kon: 'Kon',
+    gjenger: 'Gjenger',
+    'bolt-type': 'Bolt Type'
 } as const;
 
 export const COMMON_UNITS = {
@@ -78,4 +89,15 @@ export const PREDEFINED_ATTRIBUTE_SECTIONS = [
         title: 'Certifications',
         suggestedProperties: ['CE Mark', 'ISO', 'Environmental Certifications']
     }
-] as const; 
+] as const;
+
+export interface DimensionMapping {
+    value: string;
+    unit?: string;
+}
+
+export interface ProductData {
+    kon?: string;
+    gjenger?: string;
+    'bolt-type'?: string;
+} 

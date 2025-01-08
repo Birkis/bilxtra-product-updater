@@ -56,6 +56,15 @@ dim:
       structure:
         number: '{{number}}'
         unit: '{{unit}}'
+    kon:
+      componentId: 'kon'
+      type: 'singleLine'
+    gjenger:
+      componentId: 'gjenger'
+      type: 'singleLine'
+    bolt-type:
+      componentId: 'bolt-type'
+      type: 'singleLine'
 
 produktattributer:
   componentId: 'produktattributer'

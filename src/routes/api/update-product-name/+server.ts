@@ -2,6 +2,9 @@ import type { RequestHandler } from './$types';
 import { client } from '$lib/crystallizeClient';
 import { json } from '@sveltejs/kit';
 
+
+//LEGACY API CALLER
+
 export const POST: RequestHandler = async ({ request }) => {
     try {
         // Get product ID and name from request body

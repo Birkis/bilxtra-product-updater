@@ -2,8 +2,8 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import type { SKUFields } from '$lib/types/sku';
 import type { ComponentMapping } from '$lib/types/componentMapping';
+import { componentMapping } from '$lib/componentMapping';
 import { client } from '$lib/crystallizeClient';
-import rawMapping from '$lib/componentMapping.yaml';
 import { env } from '$env/dynamic/private';
 
 async function getItemIdFromSku(sku: string) {
@@ -63,128 +63,36 @@ async function copyRemoteImage(url: string, fileName: string, client: any) {
     return response.copyRemoteAsset?.targetKey;
 }
 
-function buildSkuMutation(itemId: string, data: SKUFields) {
-    const componentMapping = rawMapping as ComponentMapping;
-    const mutations: string[] = [];
-
-    // Handle description if present
-    if (data.description) {
-        const componentInfo = componentMapping.description;
-        const componentStructure = {
-            identifier: "product-info",
-            components: [
-                {
-                    componentId: "description",
-                    paragraphCollection: {
-                        paragraphs: [
-                            {
-                                body: {
-                                    html: data.description
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
-        };
-
-        mutations.push(buildComponentMutation(
-            'description',
-            { componentId: 'product-info', type: 'piece' },
-            JSON.stringify(componentStructure).replace(/"([^"]+)":/g, '$1:'),
-            itemId
-        ));
-    }
-
-    // Handle dimensions
-    if (data.dim && Object.keys(data.dim).length > 0) {
-        const dimInfo = componentMapping.dim;
-        const dimComponents = [];
-
-        Object.entries(data.dim).forEach(([key, value]) => {
-            if (value && dimInfo.components[key]) {
-                dimComponents.push({
-                    componentId: dimInfo.components[key].componentId,
-                    numeric: {
-                        number: value.number,
-                        unit: value.unit
-                    }
-                });
-            }
-        });
-
-        if (dimComponents.length > 0) {
-            mutations.push(buildComponentMutation(
-                'dim',
-                { componentId: 'dim', type: 'componentMultipleChoice' },
-                JSON.stringify(dimComponents).replace(/"([^"]+)":/g, '$1:'),
-                itemId
-            ));
-        }
-    }
-
-    // Handle product attributes
-    if (data.produktattributer?.attributer?.sections) {
-        const attrInfo = componentMapping.produktattributer;
-        const sections = data.produktattributer.attributer.sections
-            .filter(section => section.title && section.properties.length > 0);
-
-        if (sections.length > 0) {
-            const attributeComponent = [{
-                componentId: 'attributer',
-                propertiesTable: {
-                    sections: sections
-                }
-            }];
-
-            mutations.push(buildComponentMutation(
-                'produktattributer',
-                { componentId: 'produktattributer', type: 'componentMultipleChoice' },
-                JSON.stringify(attributeComponent).replace(/"([^"]+)":/g, '$1:'),
-                itemId
-            ));
-        }
-    }
-
-    // Handle image if present
-    if (data.image) {
-        const imageComponent = {
-            identifier: "product-info",
-            components: [
-                {
-                    componentId: "general-product-images",
-                    images: [
-                        {
-                            key: data.imageKey, // This will be set after copyRemoteAsset
-                            altText: `Image for ${data.name || data.sku}`
-                        }
-                    ]
-                }
-            ]
-        };
-
-        mutations.push(buildComponentMutation(
-            'imageUpdate',
-            { componentId: 'product-info', type: 'piece' },
-            JSON.stringify(imageComponent).replace(/"([^"]+)":/g, '$1:'),
-            itemId
-        ));
-    }
-
-    return `
-        mutation {
-            ${mutations.join('\n')}
-        }
-    `;
-}
-
+/**
+ * Builds a GraphQL mutation for updating a component in Crystallize.
+ * The mutation structure follows Crystallize's PIM API requirements.
+ * 
+ * Example mutation structure:
+ * ```graphql
+ * fieldName: updateComponent(
+ *   itemId: "123"
+ *   language: "en"
+ *   component: {
+ *     componentId: "product-info",
+ *     piece: { ... } or componentMultipleChoice: [ ... ]
+ *   }
+ * )
+ * ```
+ */
 function buildComponentMutation(
     fieldName: string,
     componentInfo: { componentId: string; type: string },
     componentStructureString: string,
     itemId: string
 ): string {
-    return `
+    // Log the input parameters for debugging
+    console.log('\nBuilding component mutation:', {
+        fieldName,
+        componentInfo,
+        itemId
+    });
+
+    const mutation = `
         ${fieldName}: updateComponent(
             itemId: "${itemId}"
             language: "en"
@@ -203,7 +111,175 @@ function buildComponentMutation(
                 message
             }
         }
-    `;
+    `.trim();
+
+    // Log the generated mutation for debugging
+    console.log('\nGenerated mutation structure:', {
+        componentStructureString,
+        fullMutation: mutation
+    });
+
+    return mutation;
+}
+
+interface DimComponent {
+    componentId: string;
+    singleLine?: {
+        text: string;
+    };
+    numeric?: {
+        number: number;
+        unit: string;
+    };
+}
+
+function buildSkuMutation(itemId: string, data: SKUFields) {
+    console.log('\nStarting SKU mutation build for itemId:', itemId);
+    
+    const mutations: string[] = [];
+
+    // Handle description and/or image
+    if (data.description || (data.image && data.imageKey)) {
+        console.log('\nProcessing description/image components');
+        const components = [];
+
+        // Add image component if present
+        if (data.image && data.imageKey) {
+            console.log('Adding image component with key:', data.imageKey);
+            components.push({
+                componentId: "general-product-images",
+                images: [{
+                    key: data.imageKey,
+                    altText: `Image for ${data.name || data.sku}`
+                }]
+            });
+        }
+
+        // Add description component if present
+        if (data.description) {
+            console.log('Adding description component');
+            components.push({
+                componentId: "description",
+                paragraphCollection: {
+                    paragraphs: [{ 
+                        body: { 
+                            html: data.description 
+                        } 
+                    }]
+                }
+            });
+        }
+
+        const componentStructure = {
+            identifier: "product-info",
+            components: components
+        };
+
+        // Convert to string for GraphQL, maintaining proper structure
+        const formattedStructure = JSON.stringify(componentStructure, null, 2)
+            .replace(/"([^"]+)":/g, '$1:');
+
+        console.log('\nFormatted product-info structure:', formattedStructure);
+
+        mutations.push(buildComponentMutation(
+            'contentUpdate',
+            { componentId: 'product-info', type: 'piece' },
+            formattedStructure,
+            itemId
+        ));
+    }
+
+    // Handle dimensions
+    if (data.dim && Object.keys(data.dim).length > 0) {
+        console.log('\nProcessing dimensions');
+        const dimInfo = componentMapping.dim;
+        const dimComponents: DimComponent[] = [];
+
+        Object.entries(data.dim).forEach(([key, value]) => {
+            const componentConfig = dimInfo.components[key as keyof typeof dimInfo.components];
+            
+            if (value && componentConfig) {
+                if (componentConfig.type === 'singleLine') {
+                    // Handle string dimensions (kon, gjenger, bolt-type)
+                    dimComponents.push({
+                        componentId: key,
+                        singleLine: {
+                            text: String(value)
+                        }
+                    });
+                } else if (componentConfig.type === 'numeric' && typeof value === 'object' && 'number' in value && 'unit' in value) {
+                    // Handle numeric dimensions
+                    dimComponents.push({
+                        componentId: key,
+                        numeric: {
+                            number: value.number,
+                            unit: value.unit
+                        }
+                    });
+                }
+            }
+        });
+
+        if (dimComponents.length > 0) {
+            // Format the dimension components for GraphQL
+            const formattedDimComponents = JSON.stringify(dimComponents, null, 2)
+                .replace(/"([^"]+)":/g, '$1:');
+
+            console.log('\nFormatted dimension components:', formattedDimComponents);
+
+            mutations.push(buildComponentMutation(
+                'dim',
+                { componentId: 'dim', type: 'componentMultipleChoice' },
+                formattedDimComponents,
+                itemId
+            ));
+        }
+    }
+
+    // Handle product attributes with proper type checking
+    const sections = data.produktattributer?.attributer?.sections;
+    if (sections && Array.isArray(sections) && sections.length > 0) {
+        console.log('\nProcessing product attributes');
+        const validSections = sections.filter(section => 
+            section && 
+            typeof section.title === 'string' && 
+            Array.isArray(section.properties) && 
+            section.properties.length > 0
+        );
+
+        if (validSections.length > 0) {
+            const attributeComponent = [{
+                componentId: 'attributer',
+                propertiesTable: {
+                    sections: validSections
+                }
+            }];
+
+            // Format the attribute components for GraphQL
+            const formattedAttributes = JSON.stringify(attributeComponent, null, 2)
+                .replace(/"([^"]+)":/g, '$1:');
+
+            console.log('\nFormatted attribute components:', formattedAttributes);
+
+            mutations.push(buildComponentMutation(
+                'produktattributer',
+                { componentId: 'produktattributer', type: 'componentMultipleChoice' },
+                formattedAttributes,
+                itemId
+            ));
+        }
+    }
+
+    // Combine all mutations into a single GraphQL mutation
+    const finalMutation = mutations.length > 0 ? `mutation {\n${mutations.join('\n')}\n}` : '';
+    
+    // Log the final combined mutation
+    console.log('\nFinal combined mutation:', {
+        numberOfMutations: mutations.length,
+        mutation: finalMutation
+    });
+
+    return finalMutation;
 }
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -230,122 +306,135 @@ export const POST: RequestHandler = async ({ request }) => {
             }>
         };
 
-        // Process each row
-        for (const row of mappedData) {
-            console.log('Processing row for SKU:', row.sku);
-            
-            if (!row.sku) {
-                results.errors.push('Row missing SKU value');
-                results.details.push({
-                    sku: 'unknown',
-                    status: 'error',
-                    message: 'Missing SKU value'
-                });
-                continue;
+        // Process in batches of 5
+        const BATCH_SIZE = 5;
+        const batches = [];
+        for (let i = 0; i < mappedData.length; i += BATCH_SIZE) {
+            batches.push(mappedData.slice(i, i + BATCH_SIZE));
+        }
+
+        // Process each batch
+        for (const batch of batches) {
+            // Add a small delay between batches to avoid rate limits
+            if (batches.indexOf(batch) > 0) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
-            try {
-                // Get ItemId for the SKU
-                const itemId = await getItemIdFromSku(row.sku);
-                console.log(`Found ItemId ${itemId} for SKU ${row.sku}`);
+            // Process each row in the batch
+            const batchPromises = batch.map(async (row) => {
+                if (!row.sku) {
+                    results.errors.push('Row missing SKU value');
+                    results.details.push({
+                        sku: 'unknown',
+                        status: 'error',
+                        message: 'Missing SKU value'
+                    });
+                    return;
+                }
 
-                let updatePerformed = false;
+                try {
+                    // Get ItemId for the SKU
+                    const itemId = await getItemIdFromSku(row.sku);
+                    console.log(`Found ItemId ${itemId} for SKU ${row.sku}`);
 
-                // Handle name update separately using PIM API if name is present
-                if (row.name) {
-                    try {
-                        const nameUpdateMutation = `
-                            mutation UPDATE_NAME($id: ID!, $name: String!) {
-                                product {
-                                    update(
-                                        id: $id,
-                                        language: "en",
-                                        input: { name: $name }
-                                    ) {
-                                        name
+                    let updatePerformed = false;
+
+                    // Handle name update separately using PIM API if name is present
+                    if (row.name) {
+                        try {
+                            const nameUpdateMutation = `
+                                mutation UPDATE_NAME($id: ID!, $name: String!) {
+                                    product {
+                                        update(
+                                            id: $id,
+                                            language: "en",
+                                            input: { name: $name }
+                                        ) {
+                                            name
+                                        }
                                     }
                                 }
-                            }
-                        `;
+                            `;
 
-                        await client.pimApi(nameUpdateMutation, {
-                            id: itemId,
-                            name: row.name
-                        });
-                        updatePerformed = true;
-                    } catch (nameError) {
-                        console.error(`Error updating name for SKU ${row.sku}:`, nameError);
-                        results.errors.push(`Error updating name for SKU ${row.sku}: ${nameError.message}`);
-                    }
-                }
-
-                // Handle image upload first if present
-                if (row.image) {
-                    try {
-                        const fileName = `${row.sku}-${Date.now()}`;
-                        const imageKey = await copyRemoteImage(row.image, fileName, client);
-                        if (imageKey) {
-                            row.imageKey = imageKey; // Add the image key to the row data
+                            await client.pimApi(nameUpdateMutation, {
+                                id: itemId,
+                                name: row.name
+                            });
+                            updatePerformed = true;
+                        } catch (nameError) {
+                            console.error(`Error updating name for SKU ${row.sku}:`, nameError);
+                            results.errors.push(`Error updating name for SKU ${row.sku}: ${nameError.message}`);
                         }
-                    } catch (imageError) {
-                        console.error(`Error uploading image for SKU ${row.sku}:`, imageError);
-                        results.errors.push(`Failed to upload image for SKU ${row.sku}: ${imageError.message}`);
                     }
-                }
 
-                // Build mutation for other fields
-                const mutation = buildSkuMutation(itemId, row);
-                const hasMutations = mutation.includes('updateComponent');  // Check if there are any component updates
+                    // Handle image upload first if present
+                    if (row.image) {
+                        try {
+                            const fileName = `${row.sku}-${Date.now()}`;
+                            const imageKey = await copyRemoteImage(row.image, fileName, client);
+                            if (imageKey) {
+                                row.imageKey = imageKey;
+                            }
+                        } catch (imageError) {
+                            console.error(`Error uploading image for SKU ${row.sku}:`, imageError);
+                            results.errors.push(`Failed to upload image for SKU ${row.sku}: ${imageError.message}`);
+                        }
+                    }
 
-                // Only execute NextPIM mutation if there are actual component updates
-                if (hasMutations) {
-                    console.log('Generated mutation:', mutation);
-                    const mutationResult = await client.nextPimApi(mutation);
-                    console.log('Mutation result:', mutationResult);
+                    // Build mutation for other fields
+                    const mutation = buildSkuMutation(itemId, row);
+                    const hasMutations = mutation.includes('updateComponent');
+
+                    if (hasMutations) {
+                        console.log('Generated mutation:', mutation);
+                        const mutationResult = await client.nextPimApi(mutation);
+                        console.log('Mutation result:', mutationResult);
+                        
+                        const hasErrors = Object.values(mutationResult).some(
+                            (result: any) => result.__typename === 'BasicError'
+                        );
+
+                        if (hasErrors) {
+                            const errorMessages = Object.values(mutationResult)
+                                .filter((result: any) => result.__typename === 'BasicError')
+                                .map((error: any) => error.message)
+                                .join(', ');
+
+                            throw new Error(errorMessages);
+                        }
+                        updatePerformed = true;
+                    }
+
+                    if (updatePerformed) {
+                        results.updated++;
+                        results.details.push({
+                            sku: row.sku,
+                            status: 'updated',
+                            message: 'Successfully updated'
+                        });
+                    } else {
+                        results.skipped++;
+                        results.details.push({
+                            sku: row.sku,
+                            status: 'updated',
+                            message: 'No updates required'
+                        });
+                    }
                     
-                    // Check for errors in the mutation result
-                    const hasErrors = Object.values(mutationResult).some(
-                        (result: any) => result.__typename === 'BasicError'
-                    );
-
-                    if (hasErrors) {
-                        const errorMessages = Object.values(mutationResult)
-                            .filter((result: any) => result.__typename === 'BasicError')
-                            .map((error: any) => error.message)
-                            .join(', ');
-
-                        throw new Error(errorMessages);
-                    }
-                    updatePerformed = true;
-                }
-
-                // Only increment counter if any updates were performed
-                if (updatePerformed) {
-                    results.updated++;
+                } catch (error) {
+                    console.error(`Error processing SKU ${row.sku}:`, error);
+                    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                    results.errors.push(`Error processing SKU ${row.sku}: ${errorMessage}`);
                     results.details.push({
                         sku: row.sku,
-                        status: 'updated',
-                        message: 'Successfully updated'
-                    });
-                } else {
-                    results.skipped++;
-                    results.details.push({
-                        sku: row.sku,
-                        status: 'updated',
-                        message: 'No updates required'
+                        status: 'error',
+                        message: errorMessage
                     });
                 }
-                
-            } catch (error) {
-                console.error(`Error processing SKU ${row.sku}:`, error);
-                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-                results.errors.push(`Error processing SKU ${row.sku}: ${errorMessage}`);
-                results.details.push({
-                    sku: row.sku,
-                    status: 'error',
-                    message: errorMessage
-                });
-            }
+            });
+
+            // Wait for all SKUs in the batch to complete
+            await Promise.all(batchPromises);
         }
 
         console.log('Final results:', results);

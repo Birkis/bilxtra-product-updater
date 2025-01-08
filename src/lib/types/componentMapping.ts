@@ -8,6 +8,13 @@ interface NumericComponent extends BaseComponent {
     type: 'numeric';
 }
 
+interface SingleLineComponent extends BaseComponent {
+    type: 'singleLine';
+    singleLine?: {
+        text: string;
+    };
+}
+
 interface ParagraphComponent extends BaseComponent {
     type: 'piece';
     structure: {
@@ -50,6 +57,9 @@ interface DimensionsComponent extends ComponentChoice {
         volum: NumericComponent;
         diameter: NumericComponent;
         radius: NumericComponent;
+        kon: SingleLineComponent;
+        gjenger: SingleLineComponent;
+        'bolt-type': SingleLineComponent;
         attributer: PropertiesTableComponent;
     };
 }
@@ -115,6 +125,9 @@ export interface ProductData {
         number: number;
         unit: string;
     };
+    kon?: string;
+    gjenger?: string;
+    'bolt-type'?: string;
     properties?: Record<string, string>;
     produktattributer?: Record<string, string>;
 } 

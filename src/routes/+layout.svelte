@@ -1,6 +1,42 @@
 <script lang="ts">
 	import '../app.css';
-	let { children } = $props();
+	import { page } from '$app/stores';
 </script>
 
-{@render children()}
+<div class="min-h-screen flex flex-col">
+	<nav class="bg-gray-800 text-white p-4">
+		<div class="container mx-auto flex items-center justify-between">
+			<div class="text-xl font-bold">Crystallize Tools</div>
+			<div class="flex gap-6">
+				<a 
+					href="/" 
+					class="hover:text-gray-300 {$page.url.pathname === '/' ? 'text-blue-400' : ''}"
+				>
+					Dashboard
+				</a>
+				<a 
+					href="/orders_v3" 
+					class="hover:text-gray-300 {$page.url.pathname === '/orders_v3' ? 'text-blue-400' : ''}"
+				>
+					Orders
+				</a>
+				<a 
+					href="/search" 
+					class="hover:text-gray-300 {$page.url.pathname === '/search' ? 'text-blue-400' : ''}"
+				>
+					Search
+				</a>
+				<a 
+					href="/product-image-update" 
+					class="hover:text-gray-300 {$page.url.pathname === '/product-image-update' ? 'text-blue-400' : ''}"
+				>
+					Product Image Update
+				</a>
+			</div>
+		</div>
+	</nav>
+
+	<main class="flex-1">
+		<slot />
+	</main>
+</div>

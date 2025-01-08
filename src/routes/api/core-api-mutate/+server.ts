@@ -62,43 +62,66 @@ export const POST: RequestHandler = async ({ request }) => {
             if (dimInfo && dimInfo.components) {
                 const dimComponents = [];
                 
-                // Handle numeric components (dimensions)
+                console.log('Starting dimension processing with product data:', JSON.stringify(productData, null, 2));
+                
                 Object.entries(dimInfo.components).forEach(([key, component]) => {
-                    const dimensionData = productData[key as keyof ProductData];
-                    if (dimensionData && 'number' in dimensionData && 'unit' in dimensionData) {
-                        dimComponents.push({
-                            componentId: component.componentId,
-                            numeric: {
-                                number: dimensionData.number,
-                                unit: dimensionData.unit
-                            }
+                    const dimensionData = productData.dim?.[key as keyof typeof DIMENSION_FIELDS];
+                    console.log(`\nProcessing dimension ${key}:`, {
+                        dimensionData,
+                        type: typeof dimensionData,
+                        isStringDim: ['kon', 'gjenger', 'bolt-type'].includes(key),
+                        component: JSON.stringify(component, null, 2)
+                    });
+
+                    if (dimensionData) {
+                        // Check the component type from YAML
+                        const isStringComponent = component.type === 'singleLine';
+                        console.log(`Component type check for ${key}:`, {
+                            componentType: component.type,
+                            isStringComponent
                         });
+
+                        if (isStringComponent) {
+                            // Handle string-based dimensions
+                            const stringComponent = {
+                                componentId: key,
+                                singleLine: {
+                                    text: String(dimensionData)
+                                }
+                            };
+                            console.log(`Adding string component for ${key}:`, stringComponent);
+                            dimComponents.push(stringComponent);
+                        } else if (typeof dimensionData === 'object' && 'number' in dimensionData && 'unit' in dimensionData) {
+                            // Handle numeric dimensions
+                            const numericComponent = {
+                                componentId: key,
+                                numeric: {
+                                    number: dimensionData.number,
+                                    unit: dimensionData.unit
+                                }
+                            };
+                            console.log(`Adding numeric component for ${key}:`, numericComponent);
+                            dimComponents.push(numericComponent);
+                        }
                     }
                 });
 
-                // Handle properties table if present
-                if (productData.properties) {
-                    dimComponents.push({
-                        componentId: 'attributer',
-                        propertiesTable: {
-                            sections: [
-                                {
-                                    title: 'Additional Properties',
-                                    properties: Object.entries(productData.properties).map(([key, value]) => ({
-                                        key,
-                                        value: String(value)
-                                    }))
-                                }
-                            ]
-                        }
-                    });
-                }
+                console.log('\nFinal dimComponents:', JSON.stringify(dimComponents, null, 2));
 
                 // Only create mutation if we have components to update
                 if (dimComponents.length > 0) {
-                    const componentStructureString = JSON.stringify(dimComponents, null, 2)
+                    const componentStructure = {
+                        componentId: "dim",
+                        componentMultipleChoice: dimComponents
+                    };
+
+                    console.log('\nComponent structure before stringify:', JSON.stringify(componentStructure, null, 2));
+
+                    const componentStructureString = JSON.stringify(componentStructure, null, 2)
                         .replace(/"([^"]+)":/g, '$1:')
                         .replace(/"/g, '"');
+
+                    console.log('\nFinal component structure string:', componentStructureString);
 
                     mutations.push(buildComponentMutation('dim', dimInfo, componentStructureString, itemId));
                 }

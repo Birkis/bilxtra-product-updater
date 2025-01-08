@@ -2,6 +2,8 @@ import type { RequestHandler } from './$types';
 import fetch from 'node-fetch';
 import { env } from '$env/dynamic/private';
 
+//THIS IS THE DISCOVERY API CALLER
+
 export const GET: RequestHandler = async ({url}) => {
     const itemId = url.searchParams.get('id');
 

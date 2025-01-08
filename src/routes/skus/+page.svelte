@@ -88,12 +88,18 @@
         
         if (file) {
             selectedFile = file;
+            // Parse the full file first
             Papa.parse(file, {
                 header: true,
-                preview: previewRows + 1,
                 complete: (results) => {
+                    // Store all data
                     csvData = results.data;
                     csvHeaders = results.meta.fields || [];
+                    
+                    // Show only preview rows in the UI
+                    const previewData = results.data.slice(0, previewRows);
+                    console.log(`Loaded ${results.data.length} rows total, showing ${previewRows} in preview`);
+                    
                     initializeMappings();
                     showMapping = true;
                 }
@@ -160,14 +166,8 @@
     async function handleSubmit() {
         console.log('handleSubmit called');
         
-        if (!selectedFile) {
-            console.warn('No file selected');
-            return;
-        }
-
-        if (!columnMapping.sku) {
-            alert('SKU field mapping is required');
-            console.error('SKU field mapping is missing');
+        if (!selectedFile || !columnMapping.sku) {
+            console.warn('No file selected or SKU field mapping is required');
             return;
         }
 
@@ -176,22 +176,23 @@
         console.log('Processing started');
 
         try {
-            // Check for existing SKUs before processing
+            // Batch SKU existence checks instead of individual requests
             const skusToCheck = csvData.map(row => row[columnMapping.sku]).filter(Boolean);
-            const existingSkus = await Promise.all(
-                skusToCheck.map(async (sku) => {
-                    const response = await fetch(`/api/sku-exists?sku=${encodeURIComponent(sku)}`);
-                    const data = await response.json();
-                    return { sku, exists: data.exists };
-                })
-            );
+            const batchSize = 100; // Adjust this number based on your needs
+            const existingSkus = [];
+
+            // Process SKUs in batches
+            for (let i = 0; i < skusToCheck.length; i += batchSize) {
+                const batch = skusToCheck.slice(i, i + batchSize);
+                const queryString = batch.map(sku => `skus=${encodeURIComponent(sku)}`).join('&');
+                const response = await fetch(`/api/sku-exists-batch?${queryString}`);
+                const data = await response.json();
+                existingSkus.push(...data.results);
+            }
 
             const duplicateSkus = existingSkus.filter(result => result.exists);
             if (duplicateSkus.length > 0) {
-                if (!confirm(`The following SKUs already exist:\n${duplicateSkus.map(d => d.sku).join(', ')}\n\nDo you want to update them?`)) {
-                    processing = false;
-                    return;
-                }
+                console.log('Updating existing SKUs:', duplicateSkus.map(d => d.sku));
             }
 
             // Transform CSV data using the mapping and include AI generation flags
@@ -217,11 +218,34 @@
 
                 // Map dimensions
                 Object.entries(dimensionMapping).forEach(([dim, mapping]) => {
-                    if (mapping.value && mapping.unit) {
-                        mappedRow.dim![dim as keyof typeof DIMENSION_FIELDS] = {
-                            number: parseFloat(row[mapping.value]) || 0,
-                            unit: row[mapping.unit] || mapping.unit
-                        };
+                    if (mapping.value) {
+                        const isStringDim = ['kon', 'gjenger', 'bolt-type'].includes(dim);
+                        const rawValue = row[mapping.value];
+                        
+                        console.log(`Dimension mapping for ${dim}:`, {
+                            isStringDim,
+                            rawValue,
+                            mapping,
+                            type: typeof rawValue
+                        });
+
+                        if (isStringDim) {
+                            // Handle string-based dimensions
+                            const stringValue = String(rawValue);
+                            console.log(`Setting string dimension ${dim}:`, {
+                                value: stringValue,
+                                type: typeof stringValue
+                            });
+                            mappedRow.dim![dim as keyof typeof DIMENSION_FIELDS] = stringValue;
+                        } else if (mapping.unit) {
+                            // Handle numeric dimensions
+                            const numericValue = {
+                                number: parseFloat(rawValue) || 0,
+                                unit: row[mapping.unit] || mapping.unit
+                            };
+                            console.log(`Setting numeric dimension ${dim}:`, numericValue);
+                            mappedRow.dim![dim as keyof typeof DIMENSION_FIELDS] = numericValue;
+                        }
                     }
                 });
 
@@ -251,6 +275,8 @@
                     }
                 });
 
+                console.log('Final mapped row:', JSON.stringify(mappedRow, null, 2));
+
                 return mappedRow;
             });
             console.log('CSV data mapped:', mappedData);
@@ -278,13 +304,16 @@
             showMapping = false;
 
             console.log('Processing completed successfully');
-            // Show success message
-            const successMessage = `Successfully processed SKUs:
-                - ${results.updated} SKUs updated
-                - ${results.created} SKUs created
-                ${results.errors.length ? `\n- ${results.errors.length} errors occurred` : ''}`;
             
-            alert(successMessage);
+            // Move the success message to the UI instead of using an alert
+            results = {
+                ...result,
+                successMessage: `Successfully processed SKUs:
+                    - ${result.updated} SKUs updated
+                    - ${result.created} SKUs created
+                    ${result.errors.length ? `\n- ${result.errors.length} errors occurred` : ''}`
+            };
+            
         } catch (error) {
             console.error('Error during upload:', error);
             results = {
@@ -442,20 +471,22 @@
                                             </select>
                                         </label>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">
-                                            Unit
-                                            <select
-                                                bind:value={dimensionMapping[dim].unit}
-                                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                                            >
-                                                <option value="">-- Select Unit --</option>
-                                                {#each COMMON_UNITS[dim.includes('vekt') ? 'weight' : dim.includes('volum') ? 'volume' : 'length'] as unit}
-                                                    <option value={unit}>{unit}</option>
-                                                {/each}
-                                            </select>
-                                        </label>
-                                    </div>
+                                    {#if !['kon', 'gjenger', 'bolt-type'].includes(dim)}
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">
+                                                Unit
+                                                <select
+                                                    bind:value={dimensionMapping[dim].unit}
+                                                    class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                                >
+                                                    <option value="">-- Select Unit --</option>
+                                                    {#each COMMON_UNITS[dim.includes('vekt') ? 'weight' : dim.includes('volum') ? 'volume' : 'length'] as unit}
+                                                        <option value={unit}>{unit}</option>
+                                                    {/each}
+                                                </select>
+                                            </label>
+                                        </div>
+                                    {/if}
                                 </div>
                             {/each}
                         </div>
@@ -611,3 +642,9 @@
         {/if}
     </div>
 </div>
+
+{#if results?.successMessage}
+    <div class="mt-4 p-4 bg-green-100 text-green-800 rounded">
+        <pre class="whitespace-pre-wrap">{results.successMessage}</pre>
+    </div>
+{/if}

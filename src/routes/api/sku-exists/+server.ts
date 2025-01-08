@@ -3,6 +3,7 @@ import { env } from '$env/dynamic/private';
 import { json } from '@sveltejs/kit';
 import fetch from 'node-fetch';
 
+
 export const GET: RequestHandler = async ({ url }) => {
     const sku = url.searchParams.get('sku');
     
