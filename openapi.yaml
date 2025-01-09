@@ -7,8 +7,8 @@ info:
     url: https://bilxtra.no
 
 servers:
-  - url: http://localhost:5173
-    description: Local development server
+  - url: https://bilxtra-product-updater.vercel.app
+    description: Production server
 
 paths:
   /api/product-search:
@@ -36,6 +36,7 @@ paths:
                     - name
                     - itemId
                     - url
+                    - variant
                   properties:
                     name:
                       type: string
@@ -49,6 +50,35 @@ paths:
                       type: string
                       description: Clean URL to the product page on Bilxtra.no
                       example: "https://bilxtra.no/ukategorisert/thule-cl-10-030"
+                    variant:
+                      type: object
+                      required:
+                        - sku
+                        - name
+                        - image
+                      properties:
+                        sku:
+                          type: string
+                          description: Product SKU (Stock Keeping Unit)
+                          example: "THU-CL-10 030"
+                        name:
+                          type: string
+                          description: Variant name/description
+                          example: "10mm selvjusterende kjetting - Thule CL-10 030"
+                        image:
+                          type: object
+                          required:
+                            - url
+                            - key
+                          properties:
+                            url:
+                              type: string
+                              description: URL to the product image
+                              example: "https://media.crystallize.com/bilxtra-prod/24/9/3/552/1264-10mm-selvjusterende-kjetting-thule-cl-10-030-thu-cl-10-030.jpg"
+                            key:
+                              type: string
+                              description: Crystallize media key for the image
+                              example: "bilxtra-prod/24/9/3/552/1264-10mm-selvjusterende-kjetting-thule-cl-10-030-thu-cl-10-030.jpg"
         '400':
           description: Bad request - missing search term
           content:
@@ -70,8 +100,18 @@ paths:
                 type: object
                 required:
                   - error
+                  - details
+                  - searchTerm
                 properties:
                   error:
                     type: string
                     description: Error message
-                    example: "Failed to perform search" 
+                    example: "Failed to perform search"
+                  details:
+                    type: string
+                    description: Detailed error information
+                    example: "GraphQL error: Invalid query structure"
+                  searchTerm:
+                    type: string
+                    description: The search term that caused the error
+                    example: "kjetting" 

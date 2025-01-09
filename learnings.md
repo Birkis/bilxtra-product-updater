@@ -2,29 +2,61 @@
 
 ## Discovery API
 - The Discovery API provides powerful search capabilities across product information
-- Search can be performed on product descriptions using the `productInfo_description_body_plainText` filter
+- Simple text-based search using `productInfo_description_body_plainText` is reliable and fast
 - Results include:
   - `itemId`: Unique identifier for the product
   - `name`: Product name
   - `shortcuts`: Array of category paths/URLs for the product
+  - `defaultVariant`: Product variant information including images
 - Use the centralized `discoveryApi` client from `crystallizeClient.ts` for all Discovery API communication
 
 ## Query Structure
 ```graphql
 query FIND_PRODUCTS($search_term: String) {
-  search(filters: {
-    productInfo_description_body_plainText: {
-      contains: $search_term
+    search(
+        filters: {
+            productInfo_description_body_plainText: {
+                contains: $search_term
+            }
+        }
+    ) {
+        hits {
+            ... on Product {
+                shortcuts
+                name
+                itemId
+                defaultVariant {
+                    sku
+                    name
+                    images {
+                        url
+                        key
+                    }
+                }
+            }
+        }
     }
-  }) {
-    hits {
-      shortcuts
-      name
-      itemId
-    }
-  }
 }
 ```
+
+### Key Insights
+- **Simple is Better**: 
+  - Direct text search using `productInfo_description_body_plainText` works reliably
+  - No need for complex fuzzy matching or additional filters
+  - Single query approach is faster than multiple queries
+- **Type Handling**:
+  - Use `... on Product` fragment to access product-specific fields
+  - Required for accessing `defaultVariant` and other product-only fields
+  - Helps GraphQL validate the query structure
+- **Response Processing**:
+  - Take first 5 results for quick response times
+  - Use first valid category path from shortcuts
+  - Clean URLs by removing '/categories' prefix
+  - Extract first image from variant for thumbnails
+- **Error Handling**:
+  - Return empty array for no results
+  - Provide detailed error messages in development
+  - Use appropriate HTTP status codes (400, 500)
 
 ## URL Construction
 - Product URLs are constructed by:
@@ -35,6 +67,23 @@ query FIND_PRODUCTS($search_term: String) {
   - Original path: `/categories/ukategorisert/thule-cl-10-030`
   - Cleaned path: `/ukategorisert/thule-cl-10-030`
   - Final URL: `https://bilxtra.no/ukategorisert/thule-cl-10-030`
+
+## API Response Format
+```typescript
+interface ProcessedResult {
+    name: string;      // Product name
+    itemId: string;    // Crystallize ID
+    url: string;       // Clean Bilxtra.no URL
+    variant: {
+        sku: string;   // Product SKU
+        name: string;  // Variant name
+        image: {       // Primary product image
+            url: string;
+            key: string;
+        }
+    }
+}
+```
 
 ## Project Configuration
 - YAML files are used for configuration in the project

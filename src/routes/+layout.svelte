@@ -39,4 +39,15 @@
 	<main class="flex-1">
 		<slot />
 	</main>
+
+	<footer class="bg-gray-100 py-4 mt-8">
+		<div class="container mx-auto px-4 text-center text-gray-600">
+			<a 
+				href="/privacy" 
+				class="hover:text-gray-900 {$page.url.pathname === '/privacy' ? 'text-blue-600' : ''}"
+			>
+				Privacy Policy
+			</a>
+		</div>
+	</footer>
 </div>
