@@ -10,6 +10,8 @@ interface ProductVariant {
     sku: string;
     name: string;
     images: ProductImage[];
+    defaultPrice: number;
+    defaultStock: number;
 }
 
 interface ProductHit {
@@ -20,8 +22,10 @@ interface ProductHit {
 }
 
 interface SearchResponse {
-    search: {
-        hits: ProductHit[];
+    browse: {
+        generiskProdukt: {
+            hits: ProductHit[];
+        }
     };
 }
 
@@ -33,6 +37,8 @@ interface ProcessedResult {
         sku: string;
         name: string;
         image: ProductImage;
+        price: number;
+        stock: number;
     };
 }
 
@@ -48,24 +54,28 @@ export const GET: RequestHandler = async ({ url }) => {
 
     const query = `
         query FIND_PRODUCTS($search_term: String) {
-            search(
-                filters: {
-                    productInfo_description_body_plainText: {
-                        contains: $search_term
+            browse {
+                generiskProdukt(
+                    filters: {
+                        productInfo_description_body_plainText: {
+                            contains: $search_term
+                        }
                     }
-                }
-            ) {
-                hits {
-                    ... on Product {
-                        shortcuts
-                        name
-                        itemId
-                        defaultVariant {
-                            sku
+                ) {
+                    hits {
+                        ... on Product {
+                            shortcuts
                             name
-                            images {
-                                url
-                                key
+                            itemId
+                            defaultVariant {
+                                sku
+                                name
+                                images {
+                                    url
+                                    key
+                                }
+                                defaultPrice
+                                defaultStock
                             }
                         }
                     }
@@ -79,7 +89,7 @@ export const GET: RequestHandler = async ({ url }) => {
         const data = await discoveryApi<SearchResponse>(query, { search_term: searchTerm });
         
         // Process the results
-        const processedResults = data.search.hits
+        const processedResults = data.browse.generiskProdukt.hits
             .slice(0, 5) // Limit to top 5 results
             .map(hit => {
                 // Find the first shortcut that starts with '/categories'
@@ -93,16 +103,19 @@ export const GET: RequestHandler = async ({ url }) => {
                 const firstImage = hit.defaultVariant?.images?.[0];
                 if (!firstImage) return null;
 
-                return {
+                const result: ProcessedResult = {
                     name: hit.name,
                     itemId: hit.itemId,
                     url: `https://bilxtra.no${cleanPath}`,
                     variant: {
                         sku: hit.defaultVariant.sku,
                         name: hit.defaultVariant.name,
-                        image: firstImage
+                        image: firstImage,
+                        price: hit.defaultVariant.defaultPrice,
+                        stock: hit.defaultVariant.defaultStock
                     }
                 };
+                return result;
             })
             .filter((result): result is ProcessedResult => result !== null);
 

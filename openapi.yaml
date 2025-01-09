@@ -56,6 +56,8 @@ paths:
                         - sku
                         - name
                         - image
+                        - price
+                        - stock
                       properties:
                         sku:
                           type: string
@@ -79,6 +81,14 @@ paths:
                               type: string
                               description: Crystallize media key for the image
                               example: "bilxtra-prod/24/9/3/552/1264-10mm-selvjusterende-kjetting-thule-cl-10-030-thu-cl-10-030.jpg"
+                        price:
+                          type: number
+                          description: The default price of the product variant in NOK
+                          example: 207.20
+                        stock:
+                          type: number
+                          description: The current stock level of the product variant
+                          example: 76
         '400':
           description: Bad request - missing search term
           content:
