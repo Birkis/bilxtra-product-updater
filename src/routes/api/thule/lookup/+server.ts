@@ -12,58 +12,28 @@ export async function GET({ url }) {
         const doors = url.searchParams.get('doors');
         const carType = url.searchParams.get('type');
 
-        console.log('Raw query parameters:', {
-            make,
-            model,
-            year,
-            doors,
-            carType,
-            searchParams: Object.fromEntries(url.searchParams.entries())
-        });
+        console.log('Query parameters:', { make, model, year, doors, carType });
 
-        // Validate required parameters
-        if (!make || !model || !year || !doors || !carType) {
-            console.log('Missing parameters:', {
-                hasMake: !!make,
-                hasModel: !!model,
-                hasYear: !!year,
-                hasDoors: !!doors,
-                hasType: !!carType
-            });
-            throw error(400, 'Missing required parameters');
-        }
-
-        // First, let's just get ALL records to see what's in the database
-        console.log('Fetching first 10 records to check structure...');
-        const { data: sampleData } = await supabase
+        // First, let's get distinct values to understand our data
+        console.log('Fetching distinct door types...');
+        const { data: doorTypes } = await supabase
             .from('car_fits')
-            .select('*')
-            .limit(10);
+            .select('number_of_doors')
+            .not('number_of_doors', 'is', null);
         
-        if (sampleData && sampleData.length > 0) {
-            console.log('Sample record structure:', sampleData[0]);
-        }
-
-        // Now let's try to find just by make
-        console.log('Searching by make only...');
-        const { data: makeMatches } = await supabase
+        console.log('Fetching distinct car types...');
+        const { data: carTypes } = await supabase
             .from('car_fits')
-            .select('*')
-            .ilike('car_make', `%${make}%`);
+            .select('car_type')
+            .not('car_type', 'is', null);
 
-        if (makeMatches && makeMatches.length > 0) {
-            console.log(`Found ${makeMatches.length} matches by make:`, 
-                makeMatches.map(car => ({
-                    make: car.car_make,
-                    model: car.car_model
-                }))
-            );
-        } else {
-            console.log('No matches found by make');
-        }
+        // Log unique values
+        console.log('Unique door types:', new Set(doorTypes?.map(d => d.number_of_doors)));
+        console.log('Unique car types:', new Set(carTypes?.map(c => c.car_type)));
 
-        // Now try the full search but with more lenient matching
-        const { data: allMatches, error: queryError } = await supabase
+        // Now try to find matches for this specific car
+        console.log('Searching for car matches...');
+        const { data: matches, error: queryError } = await supabase
             .from('car_fits')
             .select('*')
             .ilike('car_make', `%${make}%`)
@@ -72,19 +42,27 @@ export async function GET({ url }) {
             .ilike('car_type', `%${carType}%`);
 
         if (queryError) {
-            console.error('Supabase query error:', queryError);
+            console.error('Database query error:', queryError);
             throw error(500, {
                 message: 'Database query failed',
                 details: queryError.message
             });
         }
 
-        console.log('Found matches:', allMatches?.length || 0);
-        if (allMatches && allMatches.length > 0) {
-            console.log('First match:', allMatches[0]);
+        console.log(`Found ${matches?.length || 0} potential matches`);
+        if (matches && matches.length > 0) {
+            console.log('First match:', matches[0]);
+            console.log('Year ranges of matches:', matches.map(m => ({
+                make: m.car_make,
+                model: m.car_model,
+                start: m.car_start_year,
+                stop: m.car_stop_year,
+                doors: m.number_of_doors,
+                type: m.car_type
+            })));
         }
 
-        if (!allMatches || allMatches.length === 0) {
+        if (!matches || matches.length === 0) {
             return json({
                 success: false,
                 products: [],
@@ -94,7 +72,7 @@ export async function GET({ url }) {
         }
 
         // Use the first match
-        const data = allMatches[0];
+        const data = matches[0];
         
         // Transform the data into product URLs
         const products = [];
