@@ -1,18 +1,47 @@
 import { error, json } from '@sveltejs/kit';
 import { supabase } from '../../../../lib/db/supabaseClient';
 
+// Known valid car variations
+const VALID_CAR_VARIATIONS = new Set([
+    'med integrerte relinger',
+    'med takrenner, med høyt tak',
+    'med takrenner',
+    'med normalt tak',
+    'med integrerte relinger og klemfot',
+    'med normalt tak uten glasstak',
+    'med T-profil',
+    'Integrerte relinger og festepunktfot',
+    'med faste punkter',
+    'med takskinner',
+    'med hevede skinner',
+    'med faste punkter, uten glasstak',
+    'med faste punkter, med høyt tak',
+    'med fabrikkinstallert tverrstang'
+]);
+
 export async function GET({ url }) {
     try {
         console.log('=== Starting car lookup ===');
         
         // Get and log query parameters
-        const make = url.searchParams.get('make');
-        const model = url.searchParams.get('model');
+        const make = url.searchParams.get('make')?.trim();
+        const model = url.searchParams.get('model')?.trim();
         const year = parseInt(url.searchParams.get('year') || '0');
-        const doors = url.searchParams.get('doors');
-        const carType = url.searchParams.get('type');
+        const doors = url.searchParams.get('doors')?.trim();
+        const carVariation = url.searchParams.get('variation')?.trim();
 
-        console.log('Query parameters:', { make, model, year, doors, carType });
+        // Validate required parameters
+        if (!make || !model || !year || !doors || !carVariation) {
+            console.log('Missing required parameters:', { make, model, year, doors, carVariation });
+            return json({
+                success: false,
+                products: [],
+                message: 'Missing required parameters',
+                query: { make, model, year, doors, variation: carVariation }
+            });
+        }
+
+        console.log('Query parameters:', { make, model, year, doors, carVariation });
 
         // First, let's get distinct values to understand our data
         console.log('Fetching distinct door types...');
@@ -21,53 +50,114 @@ export async function GET({ url }) {
             .select('number_of_doors')
             .not('number_of_doors', 'is', null);
         
-        console.log('Fetching distinct car types...');
-        const { data: carTypes } = await supabase
+        console.log('Fetching distinct car variations...');
+        const { data: carVariations } = await supabase
             .from('car_fits')
-            .select('car_type')
-            .not('car_type', 'is', null);
+            .select('car_variation')
+            .not('car_variation', 'is', null);
+
+        // Create sets of unique values
+        const uniqueDoorTypes = new Set(doorTypes?.map(d => d.number_of_doors));
+        const uniqueCarVariations = new Set(carVariations?.map(c => c.car_variation));
 
         // Log unique values
-        console.log('Unique door types:', new Set(doorTypes?.map(d => d.number_of_doors)));
-        console.log('Unique car types:', new Set(carTypes?.map(c => c.car_type)));
+        console.log('Unique door types:', Array.from(uniqueDoorTypes));
+        console.log('Unique car variations:', Array.from(uniqueCarVariations));
+        console.log('Requested variation exists in known values:', VALID_CAR_VARIATIONS.has(carVariation));
+
+        // Log search criteria
+        console.log('Searching with criteria:', {
+            make,
+            model,
+            year,
+            doors,
+            carVariation
+        });
 
         // Now try to find matches for this specific car
         console.log('Searching for car matches...');
         const { data: matches, error: queryError } = await supabase
             .from('car_fits')
             .select('*')
-            .ilike('car_make', `%${make}%`)
-            .ilike('car_model', `%${model}%`)
-            .ilike('number_of_doors', `%${doors}%`)
-            .ilike('car_type', `%${carType}%`);
+            // Exact match for make (case-insensitive)
+            .ilike('car_make', make)
+            // Exact match for model (case-insensitive)
+            .ilike('car_model', model)
+            // Exact match for doors
+            .eq('number_of_doors', doors)
+            // Exact match for variation
+            .eq('car_variation', carVariation)
+            // Filter by year range
+            .lte('car_start_year', year)
+            .gte('car_stop_year', year);
 
         if (queryError) {
             console.error('Database query error:', queryError);
-            throw error(500, {
-                message: 'Database query failed',
-                details: queryError.message
-            });
+            throw error(500, { message: queryError.message });
         }
 
         console.log(`Found ${matches?.length || 0} potential matches`);
+        
+        // Log each match with detailed information
         if (matches && matches.length > 0) {
-            console.log('First match:', matches[0]);
-            console.log('Year ranges of matches:', matches.map(m => ({
-                make: m.car_make,
-                model: m.car_model,
-                start: m.car_start_year,
-                stop: m.car_stop_year,
-                doors: m.number_of_doors,
-                type: m.car_type
-            })));
+            matches.forEach((match, index) => {
+                console.log(`Match ${index + 1}:`, {
+                    make: match.car_make,
+                    model: match.car_model,
+                    doors: match.number_of_doors,
+                    variation: match.car_variation,
+                    yearRange: {
+                        start: match.car_start_year,
+                        end: match.car_stop_year,
+                        requestedYear: year,
+                        isInRange: year >= match.car_start_year && year <= match.car_stop_year
+                    },
+                    exactMatches: {
+                        make: match.car_make.toLowerCase() === make.toLowerCase(),
+                        model: match.car_model.toLowerCase() === model.toLowerCase(),
+                        doors: match.number_of_doors === doors,
+                        variation: match.car_variation === carVariation
+                    }
+                });
+            });
         }
 
+        // If no exact matches, try a broader search to help with debugging
         if (!matches || matches.length === 0) {
+            console.log('No exact matches, trying broader search...');
+            const { data: broadMatches } = await supabase
+                .from('car_fits')
+                .select('*')
+                .or(`car_make.ilike.%${make}%,car_model.ilike.%${model}%`)
+                .order('car_make', { ascending: true });
+
+            if (broadMatches && broadMatches.length > 0) {
+                console.log('Found similar matches:', broadMatches.map(m => ({
+                    make: m.car_make,
+                    model: m.car_model,
+                    doors: m.number_of_doors,
+                    variation: m.car_variation,
+                    yearRange: `${m.car_start_year}-${m.car_stop_year}`
+                })));
+            }
+
             return json({
                 success: false,
                 products: [],
                 message: 'No matching car found',
-                query: { make, model, year, doors, carType }
+                query: { make, model, year, doors, variation: carVariation },
+                debug: {
+                    availableDoorTypes: Array.from(uniqueDoorTypes),
+                    availableCarVariations: Array.from(uniqueCarVariations),
+                    validCarVariations: Array.from(VALID_CAR_VARIATIONS),
+                    similarMatches: broadMatches?.map(m => ({
+                        make: m.car_make,
+                        model: m.car_model,
+                        doors: m.number_of_doors,
+                        variation: m.car_variation,
+                        yearRange: `${m.car_start_year}-${m.car_stop_year}`
+                    }))
+                }
             });
         }
 
@@ -117,12 +207,36 @@ export async function GET({ url }) {
             car: {
                 make: data.car_make,
                 model: data.car_model,
-                type: data.car_type,
+                variation: data.car_variation,
                 doors: data.number_of_doors,
                 yearRange: {
                     start: data.car_start_year,
                     end: data.car_stop_year
                 }
+            },
+            debug: {
+                query: { make, model, year, doors, variation: carVariation },
+                matchDetails: {
+                    make: data.car_make,
+                    model: data.car_model,
+                    doors: data.number_of_doors,
+                    variation: data.car_variation,
+                    yearRange: {
+                        start: data.car_start_year,
+                        end: data.car_stop_year,
+                        requestedYear: year,
+                        isInRange: year >= data.car_start_year && year <= data.car_stop_year
+                    },
+                    exactMatches: {
+                        make: data.car_make.toLowerCase() === make?.toLowerCase(),
+                        model: data.car_model.toLowerCase() === model?.toLowerCase(),
+                        doors: data.number_of_doors === doors,
+                        variation: data.car_variation === carVariation
+                    }
+                },
+                availableDoorTypes: Array.from(uniqueDoorTypes),
+                availableCarVariations: Array.from(uniqueCarVariations),
+                validCarVariations: Array.from(VALID_CAR_VARIATIONS)
             }
         });
 
@@ -132,9 +246,6 @@ export async function GET({ url }) {
             message: err instanceof Error ? err.message : 'Unknown error',
             stack: err instanceof Error ? err.stack : undefined
         });
-        throw error(500, {
-            message: 'Failed to lookup Thule products',
-            details: err instanceof Error ? err.message : 'Unknown error'
-        });
+        throw error(500, { message: err instanceof Error ? err.message : 'Unknown error' });
     }
 } 
