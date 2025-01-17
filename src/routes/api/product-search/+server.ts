@@ -53,14 +53,12 @@ export const GET: RequestHandler = async ({ url }) => {
     }
 
     const query = `
-        query FIND_PRODUCTS($search_term: String) {
+        query FIND_PRODUCTS($search_term: String!) {
             browse {
                 generiskProdukt(
                     filters: {
-                        variants: {
-                            sku: {
-                                eq: $search_term
-                            }
+                        sku: {
+                            regex: $search_term
                         }
                     }
                 ) {
