@@ -19,19 +19,20 @@
         updated: number;
         created: number;
         errors: string[];
+        successMessage?: string;
     } | null = null;
 
     // CSV Preview and Mapping State
-    let csvData: any[] = [];
+    let csvData: Record<string, string>[] = [];
     let csvHeaders: string[] = [];
     let columnMapping: Record<string, string> = {};
-    let dimensionMapping: Record<keyof typeof DIMENSION_FIELDS, { value: string; unit: string }> = {} as any;
+    let dimensionMapping: Record<string, { value: string; unit: string }> = {};
     let attributeSections: AttributeSection[] = [{ title: '', properties: [] }];
     let aiGenerate: Record<string, boolean> = {};
     let showMapping = false;
     let previewRows = 5;
 
-    let selectedDimensions: Set<keyof typeof DIMENSION_FIELDS> = new Set();
+    let selectedDimensions = new Set<keyof typeof DIMENSION_FIELDS>();
     let showDimensionSelector = false;
 
     function initializeMappings() {
@@ -43,12 +44,41 @@
         // Initialize dimension mappings
         dimensionMapping = Object.fromEntries(
             Object.keys(DIMENSION_FIELDS).map(field => [field, { value: '', unit: '' }])
-        ) as typeof dimensionMapping;
+        );
 
         // Initialize AI generation flags
         aiGenerate = Object.fromEntries(
             AI_GENERATABLE_FIELDS.map(field => [field, false])
         );
+    }
+
+    function handleFileSelect(event: Event) {
+        const input = event.target as HTMLInputElement;
+        const file = input?.files?.[0];
+        
+        if (file) {
+            selectedFile = file;
+            Papa.parse<Record<string, string>>(file, {
+                header: true,
+                complete: (results) => {
+                    csvData = results.data;
+                    csvHeaders = results.meta.fields || [];
+                    initializeMappings();
+                    showMapping = true;
+                }
+            });
+        }
+    }
+
+    function toggleDimension(dim: keyof typeof DIMENSION_FIELDS) {
+        if (selectedDimensions.has(dim)) {
+            selectedDimensions.delete(dim);
+            delete dimensionMapping[dim];
+        } else {
+            selectedDimensions.add(dim);
+            dimensionMapping[dim] = { value: '', unit: '' };
+        }
+        selectedDimensions = selectedDimensions; // trigger reactivity
     }
 
     function guessMapping() {
@@ -80,31 +110,6 @@
                 }
             });
         });
-    }
-
-    function handleFileSelect(event: Event) {
-        const input = event.target as HTMLInputElement;
-        const file = input?.files?.[0];
-        
-        if (file) {
-            selectedFile = file;
-            // Parse the full file first
-            Papa.parse(file, {
-                header: true,
-                complete: (results) => {
-                    // Store all data
-                    csvData = results.data;
-                    csvHeaders = results.meta.fields || [];
-                    
-                    // Show only preview rows in the UI
-                    const previewData = results.data.slice(0, previewRows);
-                    console.log(`Loaded ${results.data.length} rows total, showing ${previewRows} in preview`);
-                    
-                    initializeMappings();
-                    showMapping = true;
-                }
-            });
-        }
     }
 
     function addAttributeSection() {
@@ -139,17 +144,6 @@
         attributeSections = updatedSections;
     }
 
-    function toggleDimension(dimension: keyof typeof DIMENSION_FIELDS) {
-        if (selectedDimensions.has(dimension)) {
-            selectedDimensions.delete(dimension);
-            delete dimensionMapping[dimension];
-        } else {
-            selectedDimensions.add(dimension);
-            dimensionMapping[dimension] = { value: '', unit: '' };
-        }
-        selectedDimensions = selectedDimensions; // trigger reactivity
-    }
-
     function addPredefinedSection(template: typeof PREDEFINED_ATTRIBUTE_SECTIONS[number]) {
         attributeSections = [
             ...attributeSections,
@@ -161,6 +155,15 @@
                 }))
             }
         ];
+    }
+
+    function handlePredefinedSectionChange(event: Event) {
+        const select = event.target as HTMLSelectElement;
+        const index = select.selectedIndex - 1;
+        if (index >= 0) {
+            addPredefinedSection(PREDEFINED_ATTRIBUTE_SECTIONS[index]);
+            select.selectedIndex = 0;
+        }
     }
 
     async function handleSubmit() {
@@ -381,15 +384,15 @@
                                 </label>
                             </div>
                             
-                            {#if AI_GENERATABLE_FIELDS.includes(field as any) && !columnMapping[field]}
+                            {#if AI_GENERATABLE_FIELDS.includes(field) && !columnMapping[field]}
                                 <div class="flex items-center mt-8">
                                     <label class="inline-flex items-center">
                                         <input
                                             type="checkbox"
                                             bind:checked={aiGenerate[field]}
                                             class="form-checkbox h-4 w-4 text-indigo-600"
-                                        >
-                                        <span class="ml-2 text-sm text-gray-600">Fill with AI</span>
+                                        />
+                                        <span class="ml-2">Generate with AI</span>
                                     </label>
                                 </div>
                             {/if}
@@ -506,13 +509,7 @@
                             </button>
                             <div class="relative inline-block text-left">
                                 <select
-                                    on:change={(e) => {
-                                        const index = e.currentTarget.selectedIndex - 1;
-                                        if (index >= 0) {
-                                            addPredefinedSection(PREDEFINED_ATTRIBUTE_SECTIONS[index]);
-                                            e.currentTarget.selectedIndex = 0;
-                                        }
-                                    }}
+                                    on:change={handlePredefinedSectionChange}
                                     class="text-sm text-indigo-600 border-none bg-transparent"
                                 >
                                     <option value="">Add Predefined Section</option>

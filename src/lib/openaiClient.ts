@@ -1,8 +1,9 @@
 import OpenAI from 'openai';
-import { OPENAI_API_KEY } from '$env/static/private';
+
+const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
 if (!OPENAI_API_KEY) {
-    throw new Error('OPENAI_API_KEY environment variable is not set');
+    throw new Error('VITE_OPENAI_API_KEY environment variable is not set');
 }
 
 export const openai = new OpenAI({

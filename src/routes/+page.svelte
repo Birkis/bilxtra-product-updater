@@ -29,6 +29,12 @@
 			description: 'Search functionality',
 			href: '/search',
 			icon: '🔍'
+		},
+		{
+			title: 'Thule Data',
+			description: 'Download latest Thule master data',
+			href: '/thule-data',
+			icon: '📥'
 		}
 	];
 </script>

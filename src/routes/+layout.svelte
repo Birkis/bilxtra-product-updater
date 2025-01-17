@@ -10,27 +10,45 @@
 			<div class="flex gap-6">
 				<a 
 					href="/" 
-					class="hover:text-gray-300 {$page.url.pathname === '/' ? 'text-blue-400' : ''}"
+					class="hover:text-gray-300"
+					class:text-blue-400={$page?.url?.pathname === '/'}
 				>
 					Dashboard
 				</a>
 				<a 
 					href="/orders_v3" 
-					class="hover:text-gray-300 {$page.url.pathname === '/orders_v3' ? 'text-blue-400' : ''}"
+					class="hover:text-gray-300"
+					class:text-blue-400={$page?.url?.pathname === '/orders_v3'}
 				>
 					Orders
 				</a>
 				<a 
 					href="/search" 
-					class="hover:text-gray-300 {$page.url.pathname === '/search' ? 'text-blue-400' : ''}"
+					class="hover:text-gray-300"
+					class:text-blue-400={$page?.url?.pathname === '/search'}
 				>
 					Search
 				</a>
 				<a 
 					href="/product-image-update" 
-					class="hover:text-gray-300 {$page.url.pathname === '/product-image-update' ? 'text-blue-400' : ''}"
+					class="hover:text-gray-300"
+					class:text-blue-400={$page?.url?.pathname === '/product-image-update'}
 				>
 					Product Image Update
+				</a>
+				<a 
+					href="/thule-data" 
+					class="hover:text-gray-300"
+					class:text-blue-400={$page?.url?.pathname === '/thule-data'}
+				>
+					Thule Data
+				</a>
+				<a 
+					href="/thule-db" 
+					class="hover:text-gray-300"
+					class:text-blue-400={$page?.url?.pathname === '/thule-db'}
+				>
+					Thule DB
 				</a>
 			</div>
 		</div>
@@ -44,7 +62,8 @@
 		<div class="container mx-auto px-4 text-center text-gray-600">
 			<a 
 				href="/privacy" 
-				class="hover:text-gray-900 {$page.url.pathname === '/privacy' ? 'text-blue-600' : ''}"
+				class="hover:text-gray-900"
+				class:text-blue-600={$page?.url?.pathname === '/privacy'}
 			>
 				Privacy Policy
 			</a>
