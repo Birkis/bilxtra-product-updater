@@ -1,11 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
 import { error, json } from '@sveltejs/kit';
-import { env } from '$env/dynamic/private';
-
-const supabase = createClient(
-    env.SUPABASE_URL,
-    env.SUPABASE_SERVICE_ROLE
-);
+import { supabase } from '$lib/supabaseClient';
 
 export async function GET({ url }) {
     try {
@@ -151,9 +145,6 @@ export async function GET({ url }) {
                     start: data.car_start_year,
                     end: data.car_stop_year
                 }
-            },
-            debug: {
-                rawRecord: data
             }
         });
 
