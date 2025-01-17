@@ -81,10 +81,9 @@
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                 <p class="font-semibold">Import successful!</p>
                 <ul class="mt-2">
-                    <li>Cars processed: {stats.cars}</li>
-                    <li>Solutions processed: {stats.solutions}</li>
-                    <li>Products processed: {stats.products}</li>
-                    <li>Links created: {stats.links}</li>
+                    <li>Rows processed: {stats.processed}</li>
+                    <li>Rows skipped: {stats.skipped}</li>
+                    <li>Duplicates found: {stats.duplicates}</li>
                 </ul>
             </div>
         {/if}

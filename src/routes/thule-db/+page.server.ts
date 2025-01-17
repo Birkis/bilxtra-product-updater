@@ -2,6 +2,24 @@ import { supabase } from '$lib/db/supabaseClient';
 import type { PostgrestError } from '@supabase/supabase-js';
 import type { Actions } from './$types';
 
+interface CsvRow {
+    'Car Make'?: string;
+    'Car Model'?: string;
+    'Car Start Year'?: string;
+    'Car Stop Year'?: string;
+    'Car Type'?: string;
+    'Number of Doors'?: string;
+    'Car Variation'?: string;
+    'K-TYPE'?: string;
+    'Solution Product ID'?: string;
+    'Complete Front Rack ID'?: string;
+    'Bar ID'?: string;
+    'Foot ID'?: string;
+    'RackSolution Kit ID'?: string;
+    'Adapter ID'?: string;
+    [key: string]: string | undefined;
+}
+
 interface ImportResult {
     success: boolean;
     error?: PostgrestError | Error;
@@ -15,7 +33,7 @@ interface ImportResult {
 export const actions = {
     importCsv: async ({ request }) => {
         const data = await request.json();
-        const csvData = data.csvData;
+        const csvData = data.csvData as CsvRow[];
         
         const BATCH_SIZE = 100; // Process 100 rows at a time
         let processedRows = 0;
@@ -33,7 +51,7 @@ export const actions = {
                 // Use a Map to deduplicate rows based on the unique constraint
                 const uniqueRows = new Map();
                 
-                batch.forEach(row => {
+                batch.forEach((row: CsvRow) => {
                     // Skip row if missing required data
                     if (!row['Car Make'] || !row['Car Model']) {
                         stats.skipped++;
