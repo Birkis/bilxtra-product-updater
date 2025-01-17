@@ -57,8 +57,10 @@ export const GET: RequestHandler = async ({ url }) => {
             browse {
                 generiskProdukt(
                     filters: {
-                        defaultVariant_sku: {
-                            eq: $search_term
+                        variants: {
+                            sku: {
+                                eq: $search_term
+                            }
                         }
                     }
                 ) {
