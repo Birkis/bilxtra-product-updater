@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { importCsvData } from '$lib/db/importCsv';
     import type { ParseResult, ParseError } from 'papaparse';
     import Papa from 'papaparse';
 
@@ -7,10 +6,9 @@
     let loading = false;
     let error: string | null = null;
     let stats: {
-        cars: number;
-        solutions: number;
-        products: number;
-        links: number;
+        processed: number;
+        skipped: number;
+        duplicates: number;
     } | null = null;
 
     async function handleFileUpload(event: Event) {
@@ -42,11 +40,19 @@
                 throw new Error(`CSV parsing errors: ${errors.map((e: ParseError) => e.message).join(', ')}`);
             }
 
-            // Import data
-            const result = await importCsvData(data);
+            // Send data to server action
+            const formData = new FormData();
+            formData.append('csvData', JSON.stringify(data));
             
-            if (!result.success || !result.stats) {
-                throw result.error || new Error('Import failed without error details');
+            const response = await fetch('?/importCsv', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error || 'Import failed without error details');
             }
 
             stats = result.stats;
