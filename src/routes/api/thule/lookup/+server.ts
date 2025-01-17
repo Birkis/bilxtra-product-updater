@@ -19,6 +19,38 @@ const VALID_CAR_VARIATIONS = new Set([
     'med fabrikkinstallert tverrstang'
 ]);
 
+async function getProductUrl(sku: string, requestUrl: URL): Promise<string | null> {
+    try {
+        const searchSku = `THU-${sku}`;
+        console.log('Searching for product URL with SKU:', searchSku);
+        
+        // Use the same origin as the current request
+        const productSearchUrl = new URL('/api/product-search', requestUrl.origin);
+        productSearchUrl.searchParams.set('q', searchSku);
+        
+        console.log('Making request to:', productSearchUrl.toString());
+        const response = await fetch(productSearchUrl);
+        if (!response.ok) {
+            console.warn(`Failed to fetch product URL for SKU ${searchSku}:`, response.statusText);
+            return null;
+        }
+        
+        const results = await response.json();
+        console.log('Product search results:', JSON.stringify(results, null, 2));
+        
+        if (results && results.length > 0) {
+            console.log('Found product URL:', results[0].url);
+            return results[0].url;
+        }
+        
+        console.warn('No product URL found for SKU:', searchSku);
+        return null;
+    } catch (err) {
+        console.error('Error fetching product URL:', err);
+        return null;
+    }
+}
+
 export async function GET({ url }) {
     try {
         console.log('=== Starting car lookup ===');
@@ -79,15 +111,10 @@ export async function GET({ url }) {
         const { data: matches, error: queryError } = await supabase
             .from('car_fits')
             .select('*')
-            // Exact match for make (case-insensitive)
             .ilike('car_make', make)
-            // Exact match for model (case-insensitive)
             .ilike('car_model', model)
-            // Exact match for doors
             .eq('number_of_doors', doors)
-            // Exact match for variation
             .eq('car_variation', carVariation)
-            // Filter by year range
             .lte('car_start_year', year)
             .gte('car_stop_year', year);
 
@@ -167,35 +194,39 @@ export async function GET({ url }) {
         // Transform the data into product URLs
         const products = [];
         
-        // Add each product ID if it exists
+        // Add each product ID if it exists and fetch its URL
         if (data.complete_front_rack_id) {
+            const productUrl = await getProductUrl(data.complete_front_rack_id, url);
             products.push({
                 sku: data.complete_front_rack_id,
-                url: `https://bilxtra.no/${data.complete_front_rack_id}`,
+                url: productUrl || `https://bilxtra.no/${data.complete_front_rack_id}`,
                 type: 'complete_front_rack'
             });
         }
         
         if (data.bar_id) {
+            const productUrl = await getProductUrl(data.bar_id, url);
             products.push({
                 sku: data.bar_id,
-                url: `https://bilxtra.no/${data.bar_id}`,
+                url: productUrl || `https://bilxtra.no/${data.bar_id}`,
                 type: 'bar'
             });
         }
         
         if (data.foot_id) {
+            const productUrl = await getProductUrl(data.foot_id, url);
             products.push({
                 sku: data.foot_id,
-                url: `https://bilxtra.no/${data.foot_id}`,
+                url: productUrl || `https://bilxtra.no/${data.foot_id}`,
                 type: 'foot'
             });
         }
         
         if (data.adapter_id) {
+            const productUrl = await getProductUrl(data.adapter_id, url);
             products.push({
                 sku: data.adapter_id,
-                url: `https://bilxtra.no/${data.adapter_id}`,
+                url: productUrl || `https://bilxtra.no/${data.adapter_id}`,
                 type: 'adapter'
             });
         }
