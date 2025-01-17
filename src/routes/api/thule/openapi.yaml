@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: Thule Product Lookup API
+  description: API for looking up compatible Thule products based on car specifications
+  version: 1.0.0
+servers:
+  - url: http://localhost:5174
+    description: Development server
+paths:
+  /api/thule/lookup:
+    get:
+      summary: Find compatible Thule products for a specific car
+      description: Returns a list of compatible Thule products based on car make, model, year, and specifications
+      parameters:
+        - name: make
+          in: query
+          required: true
+          description: Car manufacturer (e.g., HYUNDAI)
+          schema:
+            type: string
+          example: HYUNDAI
+        - name: model
+          in: query
+          required: true
+          description: Car model (e.g., Ioniq 9)
+          schema:
+            type: string
+          example: Ioniq 9
+        - name: year
+          in: query
+          required: true
+          description: Car model year
+          schema:
+            type: integer
+            minimum: 1900
+            maximum: 2100
+          example: 2025
+        - name: doors
+          in: query
+          required: true
+          description: Number of doors specification (e.g., 5-dr)
+          schema:
+            type: string
+          example: 5-dr
+        - name: type
+          in: query
+          required: true
+          description: Car type/body style (e.g., SUV)
+          schema:
+            type: string
+          example: SUV
+      responses:
+        '200':
+          description: Successful response with product matches
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Whether the lookup was successful
+                  products:
+                    type: array
+                    description: List of compatible Thule products
+                    items:
+                      type: object
+                      properties:
+                        sku:
+                          type: string
+                          description: Product SKU/ID
+                        url:
+                          type: string
+                          description: Product URL at bilxtra.no
+                        type:
+                          type: string
+                          description: Product type (complete_front_rack, bar, foot, or adapter)
+                          enum:
+                            - complete_front_rack
+                            - bar
+                            - foot
+                            - adapter
+                  k_type:
+                    type: string
+                    nullable: true
+                    description: K-type specification if applicable
+                  car:
+                    type: object
+                    description: Matched car details
+                    properties:
+                      make:
+                        type: string
+                        description: Car manufacturer
+                      model:
+                        type: string
+                        description: Car model
+                      type:
+                        type: string
+                        description: Car type/body style
+                      doors:
+                        type: string
+                        description: Number of doors specification
+                      yearRange:
+                        type: object
+                        description: Valid year range for this configuration
+                        properties:
+                          start:
+                            type: integer
+                            description: Start year
+                          end:
+                            type: integer
+                            nullable: true
+                            description: End year (null if ongoing)
+              example:
+                success: true
+                products:
+                  - sku: "721420"
+                    url: "https://bilxtra.no/721420"
+                    type: "complete_front_rack"
+                  - sku: "720600"
+                    url: "https://bilxtra.no/720600"
+                    type: "foot"
+                k_type: null
+                car:
+                  make: "HYUNDAI"
+                  model: "Ioniq 9"
+                  type: "SUV"
+                  doors: "5-dr"
+                  yearRange:
+                    start: 2025
+                    end: null
+        '400':
+          description: Bad request - missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                example:
+                  message: "Missing required parameters"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                  details:
+                    type: string
+                    description: Detailed error information
+                example:
+                  message: "Failed to lookup Thule products"
+                  details: "Database query failed" 

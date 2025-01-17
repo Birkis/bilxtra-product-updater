@@ -1,0 +1,300 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Bilxtra Product APIs
+  description: APIs for searching Crystallize products and looking up compatible Thule products
+  contact:
+    url: https://bilxtra.no
+
+servers:
+  - url: https://bilxtra-product-updater.vercel.app
+    description: Production API server
+
+paths:
+  /api/product-search:
+    get:
+      operationId: searchProducts
+      summary: Search for products in the Crystallize catalog
+      description: Returns a list of products matching the search term, with cleaned URLs for Bilxtra.no
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: The search term to find products
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of products matching the search criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - name
+                    - itemId
+                    - url
+                    - variant
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the product
+                      example: "Thule CL-10 030"
+                    itemId:
+                      type: string
+                      description: Unique identifier for the product in Crystallize
+                      example: "66d760987a3c149f55b38892"
+                    url:
+                      type: string
+                      description: Clean URL to the product page on Bilxtra.no
+                      example: "https://bilxtra.no/ukategorisert/thule-cl-10-030"
+                    variant:
+                      type: object
+                      required:
+                        - sku
+                        - name
+                        - image
+                        - price
+                        - stock
+                      properties:
+                        sku:
+                          type: string
+                          description: Product SKU (Stock Keeping Unit)
+                          example: "THU-CL-10 030"
+                        name:
+                          type: string
+                          description: Variant name/description
+                          example: "10mm selvjusterende kjetting - Thule CL-10 030"
+                        image:
+                          type: object
+                          required:
+                            - url
+                            - key
+                          properties:
+                            url:
+                              type: string
+                              description: URL to the product image
+                              example: "https://media.crystallize.com/bilxtra-prod/24/9/3/552/1264-10mm-selvjusterende-kjetting-thule-cl-10-030-thu-cl-10-030.jpg"
+                            key:
+                              type: string
+                              description: Crystallize media key for the image
+                              example: "bilxtra-prod/24/9/3/552/1264-10mm-selvjusterende-kjetting-thule-cl-10-030-thu-cl-10-030.jpg"
+                        price:
+                          type: number
+                          description: The default price of the product variant in NOK
+                          example: 207.20
+                        stock:
+                          type: number
+                          description: The current stock level of the product variant
+                          example: 76
+        '400':
+          description: Bad request - missing search term
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                    example: "Search term is required"
+        '500':
+          description: Server error during search
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - details
+                  - searchTerm
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                    example: "Failed to perform search"
+                  details:
+                    type: string
+                    description: Detailed error information
+                    example: "GraphQL error: Invalid query structure"
+                  searchTerm:
+                    type: string
+                    description: The search term that caused the error
+                    example: "kjetting"
+
+  /api/thule/lookup:
+    get:
+      operationId: lookupThuleProducts
+      summary: Find compatible Thule products for a specific car
+      description: Returns a list of compatible Thule products based on car make, model, year, and specifications
+      parameters:
+        - name: make
+          in: query
+          required: true
+          description: Car manufacturer (e.g., HYUNDAI)
+          schema:
+            type: string
+          example: HYUNDAI
+        - name: model
+          in: query
+          required: true
+          description: Car model (e.g., Ioniq 9)
+          schema:
+            type: string
+          example: Ioniq 9
+        - name: year
+          in: query
+          required: true
+          description: Car model year
+          schema:
+            type: integer
+            minimum: 1900
+            maximum: 2100
+          example: 2025
+        - name: doors
+          in: query
+          required: true
+          description: Number of doors specification (e.g., 5-dr)
+          schema:
+            type: string
+          example: 5-dr
+        - name: type
+          in: query
+          required: true
+          description: Car type/body style (e.g., SUV)
+          schema:
+            type: string
+          example: SUV
+      responses:
+        '200':
+          description: Successful response with product matches
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - products
+                  - car
+                properties:
+                  success:
+                    type: boolean
+                    description: Whether the lookup was successful
+                  products:
+                    type: array
+                    description: List of compatible Thule products
+                    items:
+                      type: object
+                      required:
+                        - sku
+                        - url
+                        - type
+                      properties:
+                        sku:
+                          type: string
+                          description: Product SKU/ID
+                        url:
+                          type: string
+                          description: Product URL at bilxtra.no
+                        type:
+                          type: string
+                          description: Product type (complete_front_rack, bar, foot, or adapter)
+                          enum:
+                            - complete_front_rack
+                            - bar
+                            - foot
+                            - adapter
+                  k_type:
+                    type: string
+                    nullable: true
+                    description: K-type specification if applicable
+                  car:
+                    type: object
+                    description: Matched car details
+                    required:
+                      - make
+                      - model
+                      - type
+                      - doors
+                      - yearRange
+                    properties:
+                      make:
+                        type: string
+                        description: Car manufacturer
+                      model:
+                        type: string
+                        description: Car model
+                      type:
+                        type: string
+                        description: Car type/body style
+                      doors:
+                        type: string
+                        description: Number of doors specification
+                      yearRange:
+                        type: object
+                        description: Valid year range for this configuration
+                        required:
+                          - start
+                        properties:
+                          start:
+                            type: integer
+                            description: Start year
+                          end:
+                            type: integer
+                            nullable: true
+                            description: End year (null if ongoing)
+              example:
+                success: true
+                products:
+                  - sku: "721420"
+                    url: "https://bilxtra.no/721420"
+                    type: "complete_front_rack"
+                  - sku: "720600"
+                    url: "https://bilxtra.no/720600"
+                    type: "foot"
+                k_type: null
+                car:
+                  make: "HYUNDAI"
+                  model: "Ioniq 9"
+                  type: "SUV"
+                  doors: "5-dr"
+                  yearRange:
+                    start: 2025
+                    end: null
+        '400':
+          description: Bad request - missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                example:
+                  message: "Missing required parameters"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - details
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                  details:
+                    type: string
+                    description: Detailed error information
+                example:
+                  message: "Failed to lookup Thule products"
+                  details: "Database query failed" 

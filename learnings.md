@@ -96,3 +96,40 @@ interface ProcessedResult {
     plugins: [sveltekit(), yaml()]
   });
   ``` 
+
+## Supabase Integration
+- **Environment Variables**:
+  - Client-side variables must be prefixed with `VITE_` (e.g., `VITE_SUPABASE_URL`)
+  - Server-side code requires non-VITE prefixed variables (e.g., `SUPABASE_URL`)
+  - Some variables may need both versions if used in both contexts
+
+- **Server Actions**:
+  - Move Supabase operations to server-side actions in `+page.server.ts`
+  - Benefits:
+    - Better security (API keys not exposed to client)
+    - Improved error handling
+    - Cleaner client-side code
+  - Example structure:
+    ```typescript
+    export const actions = {
+        recordDownload: async ({ request }) => {
+            const formData = await request.formData();
+            // Process data and interact with Supabase
+            return { success: true };
+        }
+    };
+    ```
+
+- **Client-Side Integration**:
+  - Use form actions to communicate with server:
+    ```typescript
+    const formData = new FormData();
+    formData.append('key', 'value');
+    const response = await fetch('?/actionName', {
+        method: 'POST',
+        body: formData
+    });
+    ```
+  - Handle responses appropriately with try/catch blocks
+  - Provide user feedback for success/failure states
+  
