@@ -1,4 +1,4 @@
-import { supabase } from '$lib/supabaseClient';
+import { supabase } from './supabaseClient';
 import type { PostgrestError } from '@supabase/supabase-js';
 
 interface ImportResult {
