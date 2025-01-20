@@ -135,17 +135,17 @@ paths:
         - name: make
           in: query
           required: true
-          description: Car manufacturer (e.g., HYUNDAI)
+          description: Car manufacturer (e.g., Audi)
           schema:
             type: string
-          example: HYUNDAI
+          example: Audi
         - name: model
           in: query
           required: true
-          description: Car model (e.g., Ioniq 9)
+          description: Car model (e.g., e-tron)
           schema:
             type: string
-          example: Ioniq 9
+          example: e-tron
         - name: year
           in: query
           required: true
@@ -154,21 +154,37 @@ paths:
             type: integer
             minimum: 1900
             maximum: 2100
-          example: 2025
+          example: 2019
         - name: doors
           in: query
           required: true
           description: Number of doors specification (e.g., 5-dr)
           schema:
             type: string
+            enum: [5-dr, 4-dr, 3-dr, 2-dr]
           example: 5-dr
-        - name: type
+        - name: variation
           in: query
           required: true
-          description: Car type/body style (e.g., SUV)
+          description: Car variation/configuration
           schema:
             type: string
-          example: SUV
+            enum:
+              - med integrerte relinger
+              - med takrenner, med høyt tak
+              - med takrenner
+              - med normalt tak
+              - med integrerte relinger og klemfot
+              - med normalt tak uten glasstak
+              - med T-profil
+              - Integrerte relinger og festepunktfot
+              - med faste punkter
+              - med takskinner
+              - med hevede skinner
+              - med faste punkter, uten glasstak
+              - med faste punkter, med høyt tak
+              - med fabrikkinstallert tverrstang
+          example: med integrerte relinger
       responses:
         '200':
           description: Successful response with product matches
@@ -180,6 +196,7 @@ paths:
                   - success
                   - products
                   - car
+                  - k_type
                 properties:
                   success:
                     type: boolean
@@ -197,74 +214,66 @@ paths:
                         sku:
                           type: string
                           description: Product SKU/ID
+                          example: "710600"
                         url:
                           type: string
-                          description: Product URL at bilxtra.no
+                          description: Product URL at bilxtra.no, null if not in catalog
+                          nullable: true
+                          example: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-evo-flush-rail"
                         type:
                           type: string
-                          description: Product type (complete_front_rack, bar, foot, or adapter)
+                          description: Product type
                           enum:
-                            - complete_front_rack
                             - bar
                             - foot
-                            - adapter
+                            - kit
                   k_type:
-                    type: string
-                    nullable: true
-                    description: K-type specification if applicable
+                    type: array
+                    description: K-type specifications
+                    items:
+                      type: string
+                    example: ["138779", "134328"]
                   car:
                     type: object
                     description: Matched car details
                     required:
                       - make
                       - model
-                      - type
+                      - variation
                       - doors
                       - yearRange
                     properties:
                       make:
                         type: string
                         description: Car manufacturer
+                        example: "AUDI"
                       model:
                         type: string
                         description: Car model
-                      type:
+                        example: "e-tron"
+                      variation:
                         type: string
-                        description: Car type/body style
+                        description: Car variation/configuration
+                        example: "med integrerte relinger"
                       doors:
                         type: string
                         description: Number of doors specification
+                        example: "5-dr"
                       yearRange:
                         type: object
                         description: Valid year range for this configuration
                         required:
                           - start
+                          - end
                         properties:
                           start:
                             type: integer
                             description: Start year
+                            example: 2019
                           end:
                             type: integer
-                            nullable: true
-                            description: End year (null if ongoing)
-              example:
-                success: true
-                products:
-                  - sku: "721420"
-                    url: "https://bilxtra.no/721420"
-                    type: "complete_front_rack"
-                  - sku: "720600"
-                    url: "https://bilxtra.no/720600"
-                    type: "foot"
-                k_type: null
-                car:
-                  make: "HYUNDAI"
-                  model: "Ioniq 9"
-                  type: "SUV"
-                  doors: "5-dr"
-                  yearRange:
-                    start: 2025
-                    end: null
+                            description: End year
+                            example: 2023
         '400':
           description: Bad request - missing or invalid parameters
           content:
@@ -272,13 +281,38 @@ paths:
               schema:
                 type: object
                 required:
+                  - success
+                  - products
                   - message
+                  - query
                 properties:
+                  success:
+                    type: boolean
+                    example: false
+                  products:
+                    type: array
+                    items: {}
                   message:
                     type: string
-                    description: Error message
-                example:
-                  message: "Missing required parameters"
+                    example: "Missing required parameters"
+                  query:
+                    type: object
+                    properties:
+                      make:
+                        type: string
+                        nullable: true
+                      model:
+                        type: string
+                        nullable: true
+                      year:
+                        type: integer
+                        nullable: true
+                      doors:
+                        type: string
+                        nullable: true
+                      variation:
+                        type: string
+                        nullable: true
         '500':
           description: Server error
           content:
@@ -286,15 +320,45 @@ paths:
               schema:
                 type: object
                 required:
-                  - message
-                  - details
+                  - success
+                  - error
+                  - car
+                  - products
+                  - k_type
                 properties:
-                  message:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
                     type: string
-                    description: Error message
-                  details:
-                    type: string
-                    description: Detailed error information
-                example:
-                  message: "Failed to lookup Thule products"
-                  details: "Database query failed" 
+                    example: "Failed to process request"
+                  car:
+                    type: object
+                    properties:
+                      make:
+                        type: string
+                        example: ""
+                      model:
+                        type: string
+                        example: ""
+                      variation:
+                        type: string
+                        example: ""
+                      doors:
+                        type: string
+                        example: ""
+                      yearRange:
+                        type: object
+                        properties:
+                          start:
+                            type: integer
+                            example: 0
+                          end:
+                            type: integer
+                            example: 0
+                  products:
+                    type: array
+                    items: {}
+                  k_type:
+                    type: array
+                    items: {} 
