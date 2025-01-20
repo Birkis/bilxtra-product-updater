@@ -194,39 +194,78 @@ paths:
                 type: object
                 required:
                   - success
-                  - products
+                  - productGroups
                   - car
                   - k_type
                 properties:
                   success:
                     type: boolean
                     description: Whether the lookup was successful
-                  products:
+                  productGroups:
                     type: array
-                    description: List of compatible Thule products
+                    description: Groups of compatible Thule products
                     items:
                       type: object
                       required:
-                        - sku
-                        - url
                         - type
+                        - isPreferred
+                        - products
                       properties:
-                        sku:
-                          type: string
-                          description: Product SKU/ID
-                          example: "710600"
-                        url:
-                          type: string
-                          description: Product URL at bilxtra.no, null if not in catalog
-                          nullable: true
-                          example: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-evo-flush-rail"
                         type:
                           type: string
-                          description: Product type
+                          description: Type of product group
                           enum:
-                            - bar
-                            - foot
-                            - kit
+                            - complete_rack
+                            - individual_components
+                        isPreferred:
+                          type: boolean
+                          description: Whether this group represents the preferred solution
+                        products:
+                          type: array
+                          description: List of products in this group
+                          items:
+                            type: object
+                            required:
+                              - sku
+                              - url
+                              - type
+                            properties:
+                              sku:
+                                type: string
+                                description: Product SKU/ID
+                                example: "710600"
+                              url:
+                                type: string
+                                description: Product URL at bilxtra.no, null if not in catalog
+                                nullable: true
+                                example: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-evo-flush-rail"
+                              type:
+                                type: string
+                                description: Product type
+                                enum:
+                                  - bar
+                                  - foot
+                                  - kit
+                                  - complete_rack
+                    example:
+                      - type: complete_rack
+                        isPreferred: true
+                        products:
+                          - sku: "721520"
+                            type: "complete_rack"
+                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/komplett/thule-evo-clamp"
+                      - type: individual_components
+                        isPreferred: false
+                        products:
+                          - sku: "391000"
+                            type: "bar"
+                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/takboyler/thule-wingbar-evo"
+                          - sku: "710600"
+                            type: "foot"
+                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-evo-flush-rail"
+                          - sku: "186046"
+                            type: "kit"
+                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-kit-6046"
                   k_type:
                     type: array
                     description: K-type specifications
@@ -282,14 +321,14 @@ paths:
                 type: object
                 required:
                   - success
-                  - products
+                  - productGroups
                   - message
                   - query
                 properties:
                   success:
                     type: boolean
                     example: false
-                  products:
+                  productGroups:
                     type: array
                     items: {}
                   message:
@@ -323,7 +362,7 @@ paths:
                   - success
                   - error
                   - car
-                  - products
+                  - productGroups
                   - k_type
                 properties:
                   success:
@@ -356,7 +395,7 @@ paths:
                           end:
                             type: integer
                             example: 0
-                  products:
+                  productGroups:
                     type: array
                     items: {}
                   k_type:

@@ -65,16 +65,80 @@ interface CarInfo {
 
 interface Product {
     sku: string;
-    type: 'bar' | 'foot' | 'kit';  // Enumerate known product types
-    url: string | null;  // null when product is not in catalog
+    type: 'bar' | 'foot' | 'kit' | 'complete_rack';
+    url: string | null;
+}
+
+interface ProductGroup {
+    type: 'complete_rack' | 'individual_components';
+    isPreferred: boolean;
+    products: Product[];
 }
 
 interface ThuleLookupResponse {
     success: boolean;
     car: CarInfo;
-    products: Product[];
+    productGroups: ProductGroup[];
     k_type: string[];
-    error?: string;  // Only present when success is false
+    error?: string;
+}
+
+async function createProductGroup(match: any, requestUrl: URL): Promise<ProductGroup[]> {
+    const groups: ProductGroup[] = [];
+    
+    // Check for complete rack solution
+    if (match.complete_front_rack_id) {
+        const completeRackUrl = await getProductUrl(match.complete_front_rack_id, requestUrl);
+        groups.push({
+            type: 'complete_rack',
+            isPreferred: true,
+            products: [{
+                sku: match.complete_front_rack_id,
+                type: 'complete_rack',
+                url: completeRackUrl
+            }]
+        });
+    }
+    
+    // Check for individual components
+    const individualProducts: Product[] = [];
+    
+    if (match.bar_id) {
+        const barUrl = await getProductUrl(match.bar_id, requestUrl);
+        individualProducts.push({
+            sku: match.bar_id,
+            type: 'bar',
+            url: barUrl
+        });
+    }
+    
+    if (match.foot_id) {
+        const footUrl = await getProductUrl(match.foot_id, requestUrl);
+        individualProducts.push({
+            sku: match.foot_id,
+            type: 'foot',
+            url: footUrl
+        });
+    }
+    
+    if (match.rackSolution_kit_id) {
+        const kitUrl = await getProductUrl(match.rackSolution_kit_id, requestUrl);
+        individualProducts.push({
+            sku: match.rackSolution_kit_id,
+            type: 'kit',
+            url: kitUrl
+        });
+    }
+    
+    if (individualProducts.length > 0) {
+        groups.push({
+            type: 'individual_components',
+            isPreferred: !match.complete_front_rack_id,  // Preferred only if no complete rack
+            products: individualProducts
+        });
+    }
+    
+    return groups;
 }
 
 export async function GET({ url }) {
@@ -93,7 +157,7 @@ export async function GET({ url }) {
             console.log('Missing required parameters:', { make, model, year, doors, carVariation });
             return json({
                 success: false,
-                products: [],
+                productGroups: [],
                 message: 'Missing required parameters',
                 query: { make, model, year, doors, variation: carVariation }
             });
@@ -196,7 +260,7 @@ export async function GET({ url }) {
 
             return json({
                 success: false,
-                products: [],
+                productGroups: [],
                 message: 'No matching car found',
                 query: { make, model, year, doors, variation: carVariation },
                 debug: {
@@ -217,46 +281,9 @@ export async function GET({ url }) {
         // Use the first match
         const data = matches[0];
         
-        // Transform the data into product URLs
-        const products = [];
+        // Create product groups from the match
+        const productGroups = await createProductGroup(data, url);
         
-        // Add each product ID if it exists and fetch its URL
-        if (data.complete_front_rack_id) {
-            const productUrl = await getProductUrl(data.complete_front_rack_id, url);
-            products.push({
-                sku: data.complete_front_rack_id,
-                url: productUrl || `https://bilxtra.no/${data.complete_front_rack_id}`,
-                type: 'complete_front_rack'
-            });
-        }
-        
-        if (data.bar_id) {
-            const productUrl = await getProductUrl(data.bar_id, url);
-            products.push({
-                sku: data.bar_id,
-                url: productUrl || `https://bilxtra.no/${data.bar_id}`,
-                type: 'bar'
-            });
-        }
-        
-        if (data.foot_id) {
-            const productUrl = await getProductUrl(data.foot_id, url);
-            products.push({
-                sku: data.foot_id,
-                url: productUrl || `https://bilxtra.no/${data.foot_id}`,
-                type: 'foot'
-            });
-        }
-        
-        if (data.adapter_id) {
-            const productUrl = await getProductUrl(data.adapter_id, url);
-            products.push({
-                sku: data.adapter_id,
-                url: productUrl || `https://bilxtra.no/${data.adapter_id}`,
-                type: 'adapter'
-            });
-        }
-
         // Format the response according to the new schema
         const response: ThuleLookupResponse = {
             success: true,
@@ -270,13 +297,7 @@ export async function GET({ url }) {
                     end: data.car_stop_year
                 }
             },
-            products: await Promise.all(
-                products.map(async (product) => ({
-                    sku: product.sku,
-                    type: product.type as 'bar' | 'foot' | 'kit',
-                    url: await getProductUrl(product.sku, url) || null
-                }))
-            ),
+            productGroups,
             k_type: data.k_type
         };
 
@@ -326,7 +347,7 @@ export async function GET({ url }) {
                 doors: '',
                 yearRange: { start: 0, end: 0 }
             },
-            products: [],
+            productGroups: [],
             k_type: []
         } as ThuleLookupResponse, { status: 500 });
     }
