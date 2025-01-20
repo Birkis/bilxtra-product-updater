@@ -51,6 +51,32 @@ async function getProductUrl(sku: string, requestUrl: URL): Promise<string | nul
     }
 }
 
+// Define response types for better documentation
+interface CarInfo {
+    make: string;
+    model: string;
+    variation: string;
+    doors: string;
+    yearRange: {
+        start: number;
+        end: number;
+    };
+}
+
+interface Product {
+    sku: string;
+    type: 'bar' | 'foot' | 'kit';  // Enumerate known product types
+    url: string | null;  // null when product is not in catalog
+}
+
+interface ThuleLookupResponse {
+    success: boolean;
+    car: CarInfo;
+    products: Product[];
+    k_type: string[];
+    error?: string;  // Only present when success is false
+}
+
 export async function GET({ url }) {
     try {
         console.log('=== Starting car lookup ===');
@@ -58,7 +84,7 @@ export async function GET({ url }) {
         // Get and log query parameters
         const make = url.searchParams.get('make')?.trim();
         const model = url.searchParams.get('model')?.trim();
-        const year = parseInt(url.searchParams.get('year') || '0');
+        const year = parseInt(url.searchParams.get('year') || '');
         const doors = url.searchParams.get('doors')?.trim();
         const carVariation = url.searchParams.get('variation')?.trim();
 
@@ -231,52 +257,77 @@ export async function GET({ url }) {
             });
         }
 
-        return json({
+        // Format the response according to the new schema
+        const response: ThuleLookupResponse = {
             success: true,
-            products,
-            k_type: data.k_type,
             car: {
                 make: data.car_make,
                 model: data.car_model,
                 variation: data.car_variation,
-                doors: data.number_of_doors,
+                doors: data.number_of_doors.toString(),
                 yearRange: {
                     start: data.car_start_year,
                     end: data.car_stop_year
                 }
             },
-            debug: {
-                query: { make, model, year, doors, variation: carVariation },
-                matchDetails: {
-                    make: data.car_make,
-                    model: data.car_model,
-                    doors: data.number_of_doors,
-                    variation: data.car_variation,
-                    yearRange: {
-                        start: data.car_start_year,
-                        end: data.car_stop_year,
-                        requestedYear: year,
-                        isInRange: year >= data.car_start_year && year <= data.car_stop_year
-                    },
-                    exactMatches: {
-                        make: data.car_make.toLowerCase() === make?.toLowerCase(),
-                        model: data.car_model.toLowerCase() === model?.toLowerCase(),
-                        doors: data.number_of_doors === doors,
-                        variation: data.car_variation === carVariation
-                    }
-                },
-                availableDoorTypes: Array.from(uniqueDoorTypes),
-                availableCarVariations: Array.from(uniqueCarVariations),
-                validCarVariations: Array.from(VALID_CAR_VARIATIONS)
-            }
-        });
+            products: await Promise.all(
+                products.map(async (product) => ({
+                    sku: product.sku,
+                    type: product.type as 'bar' | 'foot' | 'kit',
+                    url: await getProductUrl(product.sku, url) || null
+                }))
+            ),
+            k_type: data.k_type
+        };
 
-    } catch (err) {
-        console.error('Thule lookup error:', {
-            error: err,
-            message: err instanceof Error ? err.message : 'Unknown error',
-            stack: err instanceof Error ? err.stack : undefined
-        });
-        throw error(500, { message: err instanceof Error ? err.message : 'Unknown error' });
+        // Only include debug information in development
+        if (process.env.NODE_ENV === 'development') {
+            return json({
+                ...response,
+                debug: {
+                    query: {
+                        make, model, year, doors, variation: carVariation
+                    },
+                    matchDetails: {
+                        make: data.car_make,
+                        model: data.car_model,
+                        doors: data.number_of_doors,
+                        variation: data.car_variation,
+                        yearRange: {
+                            start: data.car_start_year,
+                            end: data.car_stop_year,
+                            requestedYear: year,
+                            isInRange: year >= data.car_start_year && year <= data.car_stop_year
+                        },
+                        exactMatches: {
+                            make: data.car_make.toLowerCase() === make?.toLowerCase(),
+                            model: data.car_model.toLowerCase() === model?.toLowerCase(),
+                            doors: data.number_of_doors === doors,
+                            variation: data.car_variation === carVariation
+                        }
+                    },
+                    availableDoorTypes: Array.from(uniqueDoorTypes),
+                    availableCarVariations: Array.from(uniqueCarVariations),
+                    validCarVariations: Array.from(VALID_CAR_VARIATIONS)
+                }
+            });
+        }
+
+        return json(response);
+    } catch (error) {
+        console.error('Error in Thule lookup:', error);
+        return json({
+            success: false,
+            error: 'Failed to process request',
+            car: {
+                make: '',
+                model: '',
+                variation: '',
+                doors: '',
+                yearRange: { start: 0, end: 0 }
+            },
+            products: [],
+            k_type: []
+        } as ThuleLookupResponse, { status: 500 });
     }
 } 
