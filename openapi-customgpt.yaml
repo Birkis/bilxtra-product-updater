@@ -130,7 +130,11 @@ paths:
     get:
       operationId: lookupThuleProducts
       summary: Find compatible Thule products for a specific car
-      description: Returns a list of compatible Thule products based on car make, model, year, and specifications
+      description: |
+        Returns compatible Thule products based on car specifications. Uses a scoring system:
+        - Complete racks (3 points each)
+        - Individual components (1 point each)
+        Best match selected by: highest score, complete solutions preferred, then full component sets.
       parameters:
         - name: make
           in: query
@@ -227,6 +231,7 @@ paths:
                             type: object
                             required:
                               - sku
+                              - name
                               - url
                               - type
                             properties:
@@ -234,6 +239,10 @@ paths:
                                 type: string
                                 description: Product SKU/ID
                                 example: "710600"
+                              name:
+                                type: string
+                                description: Product name/description
+                                example: "Thule Edge Flush Rail"
                               url:
                                 type: string
                                 description: Product URL at bilxtra.no, null if not in catalog
@@ -253,18 +262,22 @@ paths:
                         products:
                           - sku: "721520"
                             type: "complete_rack"
+                            name: "Thule WingBar Edge"
                             url: "https://bilxtra.no/lasteutstyr/tak/takstativ/komplett/thule-evo-clamp"
                       - type: individual_components
                         isPreferred: false
                         products:
                           - sku: "391000"
                             type: "bar"
+                            name: "Thule WingBar Evo"
                             url: "https://bilxtra.no/lasteutstyr/tak/takstativ/takboyler/thule-wingbar-evo"
                           - sku: "710600"
                             type: "foot"
+                            name: "Thule Edge Flush Rail"
                             url: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-evo-flush-rail"
                           - sku: "186046"
                             type: "kit"
+                            name: "Thule Kit 6046"
                             url: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-kit-6046"
                   k_type:
                     type: array

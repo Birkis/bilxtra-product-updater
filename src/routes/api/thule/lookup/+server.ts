@@ -67,6 +67,7 @@ interface Product {
     sku: string;
     type: 'bar' | 'foot' | 'kit' | 'complete_rack';
     url: string | null;
+    name: string;
 }
 
 interface ProductGroup {
@@ -83,19 +84,108 @@ interface ThuleLookupResponse {
     error?: string;
 }
 
+interface ProductMatch {
+    score: number;
+    hasCompleteSolution: boolean;
+    hasFullComponentSet: boolean;
+    match: any;
+}
+
+function scoreMatch(match: any): ProductMatch {
+    let score = 0;
+    let componentCount = 0;
+    
+    // Check for complete solutions (highest priority)
+    const hasCompleteFront = !!match['Complete Front Rack ID'];
+    const hasCompleteRear = !!match['Complete Rear Rack ID'];
+    if (hasCompleteFront) score += 3;
+    if (hasCompleteRear) score += 3;
+    
+    // Check for individual components
+    const hasBar = !!match['Bar ID'];
+    const hasFoot = !!match['Foot ID'];
+    const hasKit = !!match['RackSolution Kit ID'];
+    
+    if (hasBar) {
+        score += 1;
+        componentCount++;
+    }
+    if (hasFoot) {
+        score += 1;
+        componentCount++;
+    }
+    if (hasKit) {
+        score += 1;
+        componentCount++;
+    }
+    
+    return {
+        score,
+        hasCompleteSolution: hasCompleteFront || hasCompleteRear,
+        hasFullComponentSet: componentCount === 3, // All individual components present
+        match
+    };
+}
+
+function findBestMatch(matches: any[]): any {
+    if (!matches || matches.length === 0) return null;
+    
+    // Score all matches
+    const scoredMatches = matches.map(match => scoreMatch(match));
+    
+    // Sort by:
+    // 1. Highest score
+    // 2. Complete solution preferred
+    // 3. Full component set preferred
+    scoredMatches.sort((a, b) => {
+        // First, compare scores
+        if (b.score !== a.score) {
+            return b.score - a.score;
+        }
+        
+        // If scores are equal, prefer complete solutions
+        if (a.hasCompleteSolution !== b.hasCompleteSolution) {
+            return a.hasCompleteSolution ? -1 : 1;
+        }
+        
+        // If neither has complete solution, prefer full component sets
+        if (a.hasFullComponentSet !== b.hasFullComponentSet) {
+            return a.hasFullComponentSet ? -1 : 1;
+        }
+        
+        return 0;
+    });
+    
+    console.log('Scored matches:', scoredMatches.map(m => ({
+        score: m.score,
+        hasCompleteSolution: m.hasCompleteSolution,
+        hasFullComponentSet: m.hasFullComponentSet,
+        products: {
+            completeFront: m.match['Complete Front Rack ID'],
+            completeRear: m.match['Complete Rear Rack ID'],
+            bar: m.match['Bar ID'],
+            foot: m.match['Foot ID'],
+            kit: m.match['RackSolution Kit ID']
+        }
+    })));
+    
+    return scoredMatches[0].match;
+}
+
 async function createProductGroup(match: any, requestUrl: URL): Promise<ProductGroup[]> {
     const groups: ProductGroup[] = [];
     
     // Check for complete rack solution
-    if (match.complete_front_rack_id) {
-        const completeRackUrl = await getProductUrl(match.complete_front_rack_id, requestUrl);
+    if (match['Complete Front Rack ID']) {
+        const completeRackUrl = await getProductUrl(match['Complete Front Rack ID'], requestUrl);
         groups.push({
             type: 'complete_rack',
             isPreferred: true,
             products: [{
-                sku: match.complete_front_rack_id,
+                sku: match['Complete Front Rack ID'],
                 type: 'complete_rack',
-                url: completeRackUrl
+                url: completeRackUrl,
+                name: match['Complete Front Rack Name'] || ''
             }]
         });
     }
@@ -103,37 +193,40 @@ async function createProductGroup(match: any, requestUrl: URL): Promise<ProductG
     // Check for individual components
     const individualProducts: Product[] = [];
     
-    if (match.bar_id) {
-        const barUrl = await getProductUrl(match.bar_id, requestUrl);
+    if (match['Bar ID']) {
+        const barUrl = await getProductUrl(match['Bar ID'], requestUrl);
         individualProducts.push({
-            sku: match.bar_id,
+            sku: match['Bar ID'],
             type: 'bar',
-            url: barUrl
+            url: barUrl,
+            name: match['Bar Name'] || ''
         });
     }
     
-    if (match.foot_id) {
-        const footUrl = await getProductUrl(match.foot_id, requestUrl);
+    if (match['Foot ID']) {
+        const footUrl = await getProductUrl(match['Foot ID'], requestUrl);
         individualProducts.push({
-            sku: match.foot_id,
+            sku: match['Foot ID'],
             type: 'foot',
-            url: footUrl
+            url: footUrl,
+            name: match['Foot Name'] || ''
         });
     }
     
-    if (match.rackSolution_kit_id) {
-        const kitUrl = await getProductUrl(match.rackSolution_kit_id, requestUrl);
+    if (match['RackSolution Kit ID']) {
+        const kitUrl = await getProductUrl(match['RackSolution Kit ID'], requestUrl);
         individualProducts.push({
-            sku: match.rackSolution_kit_id,
+            sku: match['RackSolution Kit ID'],
             type: 'kit',
-            url: kitUrl
+            url: kitUrl,
+            name: match['RackSolution Kit Name'] || ''
         });
     }
     
     if (individualProducts.length > 0) {
         groups.push({
             type: 'individual_components',
-            isPreferred: !match.complete_front_rack_id,  // Preferred only if no complete rack
+            isPreferred: !match['Complete Front Rack ID'],  // Preferred only if no complete rack
             products: individualProducts
         });
     }
@@ -169,18 +262,18 @@ export async function GET({ url }) {
         console.log('Fetching distinct door types...');
         const { data: doorTypes } = await supabase
             .from('car_fits')
-            .select('number_of_doors')
-            .not('number_of_doors', 'is', null);
+            .select('"Number of Doors"')
+            .not('Number of Doors', 'is', null);
         
         console.log('Fetching distinct car variations...');
         const { data: carVariations } = await supabase
             .from('car_fits')
-            .select('car_variation')
-            .not('car_variation', 'is', null);
+            .select('"Car Variation"')
+            .not('Car Variation', 'is', null);
 
         // Create sets of unique values
-        const uniqueDoorTypes = new Set(doorTypes?.map(d => d.number_of_doors));
-        const uniqueCarVariations = new Set(carVariations?.map(c => c.car_variation));
+        const uniqueDoorTypes = new Set(doorTypes?.map(d => d['Number of Doors']));
+        const uniqueCarVariations = new Set(carVariations?.map(c => c['Car Variation']));
 
         // Log unique values
         console.log('Unique door types:', Array.from(uniqueDoorTypes));
@@ -201,12 +294,12 @@ export async function GET({ url }) {
         const { data: matches, error: queryError } = await supabase
             .from('car_fits')
             .select('*')
-            .ilike('car_make', make)
-            .ilike('car_model', model)
-            .eq('number_of_doors', doors)
-            .eq('car_variation', carVariation)
-            .lte('car_start_year', year)
-            .gte('car_stop_year', year);
+            .ilike('"Car Make"', make)
+            .ilike('"Car Model"', model)
+            .eq('"Number of Doors"', doors)
+            .eq('"Car Variation"', carVariation)
+            .lte('"Car Start Year"', year)
+            .or(`"Car Stop Year".is.null,"Car Stop Year".gte.${year}`);
 
         if (queryError) {
             console.error('Database query error:', queryError);
@@ -219,21 +312,21 @@ export async function GET({ url }) {
         if (matches && matches.length > 0) {
             matches.forEach((match, index) => {
                 console.log(`Match ${index + 1}:`, {
-                    make: match.car_make,
-                    model: match.car_model,
-                    doors: match.number_of_doors,
-                    variation: match.car_variation,
+                    make: match['Car Make'],
+                    model: match['Car Model'],
+                    doors: match['Number of Doors'],
+                    variation: match['Car Variation'],
                     yearRange: {
-                        start: match.car_start_year,
-                        end: match.car_stop_year,
+                        start: match['Car Start Year'],
+                        end: match['Car Stop Year'],
                         requestedYear: year,
-                        isInRange: year >= match.car_start_year && year <= match.car_stop_year
+                        isInRange: year >= match['Car Start Year'] && year <= match['Car Stop Year']
                     },
                     exactMatches: {
-                        make: match.car_make.toLowerCase() === make.toLowerCase(),
-                        model: match.car_model.toLowerCase() === model.toLowerCase(),
-                        doors: match.number_of_doors === doors,
-                        variation: match.car_variation === carVariation
+                        make: match['Car Make'].toLowerCase() === make.toLowerCase(),
+                        model: match['Car Model'].toLowerCase() === model.toLowerCase(),
+                        doors: match['Number of Doors'] === doors,
+                        variation: match['Car Variation'] === carVariation
                     }
                 });
             });
@@ -245,16 +338,16 @@ export async function GET({ url }) {
             const { data: broadMatches } = await supabase
                 .from('car_fits')
                 .select('*')
-                .or(`car_make.ilike.%${make}%,car_model.ilike.%${model}%`)
-                .order('car_make', { ascending: true });
+                .or(`"Car Make".ilike.%${make}%,"Car Model".ilike.%${model}%`)
+                .order('"Car Make"', { ascending: true });
 
             if (broadMatches && broadMatches.length > 0) {
                 console.log('Found similar matches:', broadMatches.map(m => ({
-                    make: m.car_make,
-                    model: m.car_model,
-                    doors: m.number_of_doors,
-                    variation: m.car_variation,
-                    yearRange: `${m.car_start_year}-${m.car_stop_year}`
+                    make: m['Car Make'],
+                    model: m['Car Model'],
+                    doors: m['Number of Doors'],
+                    variation: m['Car Variation'],
+                    yearRange: `${m['Car Start Year']}-${m['Car Stop Year']}`
                 })));
             }
 
@@ -268,18 +361,26 @@ export async function GET({ url }) {
                     availableCarVariations: Array.from(uniqueCarVariations),
                     validCarVariations: Array.from(VALID_CAR_VARIATIONS),
                     similarMatches: broadMatches?.map(m => ({
-                        make: m.car_make,
-                        model: m.car_model,
-                        doors: m.number_of_doors,
-                        variation: m.car_variation,
-                        yearRange: `${m.car_start_year}-${m.car_stop_year}`
+                        make: m['Car Make'],
+                        model: m['Car Model'],
+                        doors: m['Number of Doors'],
+                        variation: m['Car Variation'],
+                        yearRange: `${m['Car Start Year']}-${m['Car Stop Year']}`
                     }))
                 }
             });
         }
 
-        // Use the first match
-        const data = matches[0];
+        // Find the best match instead of just taking the first one
+        const data = findBestMatch(matches);
+        if (!data) {
+            return json({
+                success: false,
+                productGroups: [],
+                message: 'No suitable match found',
+                query: { make, model, year, doors, variation: carVariation }
+            });
+        }
         
         // Create product groups from the match
         const productGroups = await createProductGroup(data, url);
@@ -288,51 +389,18 @@ export async function GET({ url }) {
         const response: ThuleLookupResponse = {
             success: true,
             car: {
-                make: data.car_make,
-                model: data.car_model,
-                variation: data.car_variation,
-                doors: data.number_of_doors.toString(),
+                make: data['Car Make'],
+                model: data['Car Model'],
+                variation: data['Car Variation'],
+                doors: data['Number of Doors'].toString(),
                 yearRange: {
-                    start: data.car_start_year,
-                    end: data.car_stop_year
+                    start: data['Car Start Year'],
+                    end: data['Car Stop Year']
                 }
             },
             productGroups,
-            k_type: data.k_type
+            k_type: data['K-TYPE'] || []
         };
-
-        // Only include debug information in development
-        if (process.env.NODE_ENV === 'development') {
-            return json({
-                ...response,
-                debug: {
-                    query: {
-                        make, model, year, doors, variation: carVariation
-                    },
-                    matchDetails: {
-                        make: data.car_make,
-                        model: data.car_model,
-                        doors: data.number_of_doors,
-                        variation: data.car_variation,
-                        yearRange: {
-                            start: data.car_start_year,
-                            end: data.car_stop_year,
-                            requestedYear: year,
-                            isInRange: year >= data.car_start_year && year <= data.car_stop_year
-                        },
-                        exactMatches: {
-                            make: data.car_make.toLowerCase() === make?.toLowerCase(),
-                            model: data.car_model.toLowerCase() === model?.toLowerCase(),
-                            doors: data.number_of_doors === doors,
-                            variation: data.car_variation === carVariation
-                        }
-                    },
-                    availableDoorTypes: Array.from(uniqueDoorTypes),
-                    availableCarVariations: Array.from(uniqueCarVariations),
-                    validCarVariations: Array.from(VALID_CAR_VARIATIONS)
-                }
-            });
-        }
 
         return json(response);
     } catch (error) {
