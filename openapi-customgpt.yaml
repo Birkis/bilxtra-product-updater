@@ -152,8 +152,7 @@ paths:
         - Single complete rack (3 points)
         - Individual components (1 point each)
         Best match selected by: highest score, complete solutions preferred, then full component sets.
-        
-        A complete solution with both front and rear racks is always preferred when available.
+
       parameters:
         - name: make
           in: query
@@ -181,15 +180,20 @@ paths:
         - name: doors
           in: query
           required: true
-          description: Number of doors specification (e.g., 5-dr)
+          description: |
+            Number of doors specification (e.g., 5-dr).
+            Note: The API will try alternative door configurations if no match is found.
+            For example, a car listed as 4-dr in Vegvesen might match a 5-dr in Thule's database.
           schema:
             type: string
             enum: [5-dr, 4-dr, 3-dr, 2-dr]
           example: 5-dr
         - name: variation
           in: query
-          required: true
-          description: Car variation/configuration
+          required: false
+          description: |
+            Car roof rail type/configuration. If not provided or if no matches are found,
+            the API will attempt to detect the correct type automatically.
           schema:
             type: string
             enum:
@@ -228,86 +232,6 @@ paths:
                     type: array
                     description: Groups of compatible Thule products
                     items:
-                      type: object
-                      required:
-                        - type
-                        - isPreferred
-                        - products
-                      properties:
-                        type:
-                          type: string
-                          description: Type of product group
-                          enum:
-                            - complete_rack
-                            - individual_components
-                        isPreferred:
-                          type: boolean
-                          description: Whether this group represents the preferred solution
-                        products:
-                          type: array
-                          description: List of products in this group
-                          items:
-                            type: object
-                            required:
-                              - sku
-                              - name
-                              - url
-                              - type
-                              - position
-                            properties:
-                              sku:
-                                type: string
-                                description: Product SKU/ID
-                                example: "710600"
-                              name:
-                                type: string
-                                description: Product name/description
-                                example: "Thule Edge Flush Rail"
-                              url:
-                                type: string
-                                description: Product URL at bilxtra.no, null if not in catalog
-                                nullable: true
-                                example: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-evo-flush-rail"
-                              type:
-                                type: string
-                                description: Product type
-                                enum:
-                                  - bar
-                                  - foot
-                                  - kit
-                                  - complete_rack
-                              position:
-                                type: string
-                                description: Position of the rack (for complete racks)
-                                enum:
-                                  - front
-                                  - rear
-                                example: "front"
-                    example:
-                      - type: complete_rack
-                        isPreferred: true
-                        products:
-                          - sku: "721400"
-                            type: "complete_rack"
-                            name: "Thule WingBar Edge"
-                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/thule-wingbar-edge-95-1-pk"
-                            position: "front"
-                          - sku: "721400"
-                            type: "complete_rack"
-                            name: "Thule WingBar Edge"
-                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/thule-wingbar-edge-95-1-pk"
-                            position: "rear"
-                      - type: individual_components
-                        isPreferred: false
-                        products:
-                          - sku: "720600"
-                            type: "foot"
-                            name: "Thule Edge Flush Rail"
-                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/wingbar/thule-edge-flush-rail"
-                          - sku: "186025"
-                            type: "kit"
-                            name: "Thule Kit 186025"
-                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-kit-186025"
                   k_type:
                     type: array
                     description: K-type specifications
@@ -315,46 +239,48 @@ paths:
                       type: string
                     example: ["138779", "134328"]
                   car:
+                    $ref: '#/components/schemas/CarInfo'
+                  inferred:
                     type: object
-                    description: Matched car details
+                    description: Present when rail type and/or door configuration were automatically detected
                     required:
-                      - make
-                      - model
-                      - variation
-                      - doors
-                      - yearRange
+                      - message
+                      - detected
+                      - original
                     properties:
-                      make:
+                      message:
                         type: string
-                        description: Car manufacturer
-                        example: "AUDI"
-                      model:
-                        type: string
-                        description: Car model
-                        example: "e-tron"
-                      variation:
-                        type: string
-                        description: Car variation/configuration
-                        example: "med integrerte relinger"
-                      doors:
-                        type: string
-                        description: Number of doors specification
-                        example: "5-dr"
-                      yearRange:
+                        description: User-friendly message about what was automatically detected
+                        example: "Rail type and door configuration were automatically detected"
+                      detected:
                         type: object
-                        description: Valid year range for this configuration
                         required:
-                          - start
-                          - end
+                          - variation
+                          - doors
                         properties:
-                          start:
-                            type: integer
-                            description: Start year
-                            example: 2019
-                          end:
-                            type: integer
-                            description: End year
-                            example: 2023
+                          variation:
+                            type: string
+                            description: The rail type that was automatically detected
+                            example: "med normalt tak"
+                          doors:
+                            type: string
+                            description: The door configuration that was automatically detected
+                            example: "5-dr"
+                      original:
+                        type: object
+                        required:
+                          - variation
+                          - doors
+                        properties:
+                          variation:
+                            type: string
+                            nullable: true
+                            description: The original rail type that was provided (if any)
+                            example: null
+                          doors:
+                            type: string
+                            description: The original door configuration that was provided
+                            example: "4-dr"
         '400':
           description: Bad request - missing or invalid parameters
           content:

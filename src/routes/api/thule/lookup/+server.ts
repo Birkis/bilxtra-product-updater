@@ -85,6 +85,17 @@ interface ThuleLookupResponse {
     productGroups: ProductGroup[];
     k_type: string[];
     error?: string;
+    inferred?: {
+        message: string;
+        detected: {
+            variation: string;
+            doors: string;
+        };
+        original: {
+            variation: string | null;
+            doors: string;
+        };
+    };
 }
 
 interface ProductMatch {
@@ -274,9 +285,9 @@ export async function GET({ url }) {
         const doors = url.searchParams.get('doors')?.trim();
         const carVariation = url.searchParams.get('variation')?.trim();
 
-        // Validate required parameters
-        if (!make || !model || !year || !doors || !carVariation) {
-            console.log('Missing required parameters:', { make, model, year, doors, carVariation });
+        // Validate required parameters (except variation)
+        if (!make || !model || !year || !doors) {
+            console.warn('Missing required parameters:', { make, model, year, doors });
             return json({
                 success: false,
                 productGroups: [],
@@ -285,155 +296,118 @@ export async function GET({ url }) {
             });
         }
 
-        console.log('Query parameters:', { make, model, year, doors, carVariation });
+        // Log search parameters
+        console.log('Searching for car:', { make, model, year, doors, variation: carVariation });
 
-        // First, let's get distinct values to understand our data
-        console.log('Fetching distinct door types...');
-        const { data: doorTypes } = await supabase
-            .from('car_fits')
-            .select('"Number of Doors"')
-            .not('Number of Doors', 'is', null);
-        
-        console.log('Fetching distinct car variations...');
-        const { data: carVariations } = await supabase
-            .from('car_fits')
-            .select('"Car Variation"')
-            .not('Car Variation', 'is', null);
-
-        // Create sets of unique values
-        const uniqueDoorTypes = new Set(doorTypes?.map(d => d['Number of Doors']));
-        const uniqueCarVariations = new Set(carVariations?.map(c => c['Car Variation']));
-
-        // Log unique values
-        console.log('Unique door types:', Array.from(uniqueDoorTypes));
-        console.log('Unique car variations:', Array.from(uniqueCarVariations));
-        console.log('Requested variation exists in known values:', VALID_CAR_VARIATIONS.has(carVariation));
-
-        // Log search criteria
-        console.log('Searching with criteria:', {
-            make,
-            model,
-            year,
-            doors,
-            carVariation
-        });
-
-        // Now try to find matches for this specific car
-        console.log('Searching for car matches...');
-        const { data: matches, error: queryError } = await supabase
+        // First, try to find matches without door restriction
+        let { data: matches, error: dbError } = await supabase
             .from('car_fits')
             .select('*')
             .ilike('"Car Make"', make)
-            .ilike('"Car Model"', model)
-            .eq('"Number of Doors"', doors)
-            .eq('"Car Variation"', carVariation)
-            .lte('"Car Start Year"', year)
-            .or(`"Car Stop Year".is.null,"Car Stop Year".gte.${year}`);
+            .ilike('"Car Model"', model);
 
-        if (queryError) {
-            console.error('Database query error:', queryError);
-            throw error(500, { message: queryError.message });
+        if (dbError) {
+            console.error('Database error:', dbError);
+            throw error(500, 'Failed to process request');
         }
 
-        console.log(`Found ${matches?.length || 0} potential matches`);
-        
-        // Log each match with detailed information
-        if (matches && matches.length > 0) {
-            matches.forEach((match, index) => {
-                console.log(`Match ${index + 1}:`, {
-                    make: match['Car Make'],
-                    model: match['Car Model'],
-                    doors: match['Number of Doors'],
-                    variation: match['Car Variation'],
-                    yearRange: {
-                        start: match['Car Start Year'],
-                        end: match['Car Stop Year'],
-                        requestedYear: year,
-                        isInRange: year >= match['Car Start Year'] && year <= match['Car Stop Year']
-                    },
-                    exactMatches: {
-                        make: match['Car Make'].toLowerCase() === make.toLowerCase(),
-                        model: match['Car Model'].toLowerCase() === model.toLowerCase(),
-                        doors: match['Number of Doors'] === doors,
-                        variation: match['Car Variation'] === carVariation
-                    }
-                });
-            });
-        }
+        // Filter matches by year range
+        matches = matches?.filter(match => {
+            const startYear = parseInt(match['Car Start Year']);
+            const endYear = parseInt(match['Car Stop Year'] || '9999');
+            return year >= startYear && year <= endYear;
+        }) || [];
 
-        // If no exact matches, try a broader search to help with debugging
-        if (!matches || matches.length === 0) {
-            console.log('No exact matches, trying broader search...');
-            const { data: broadMatches } = await supabase
-                .from('car_fits')
-                .select('*')
-                .or(`"Car Make".ilike.%${make}%,"Car Model".ilike.%${model}%`)
-                .order('"Car Make"', { ascending: true });
+        console.log(`Found ${matches.length} initial matches`);
 
-            if (broadMatches && broadMatches.length > 0) {
-                console.log('Found similar matches:', broadMatches.map(m => ({
-                    make: m['Car Make'],
-                    model: m['Car Model'],
-                    doors: m['Number of Doors'],
-                    variation: m['Car Variation'],
-                    yearRange: `${m['Car Start Year']}-${m['Car Stop Year']}`
-                })));
+        let bestMatch = null;
+        let inferredVariation = false;
+        let inferredDoors = false;
+
+        // Try exact door and variation match first
+        if (matches.length > 0) {
+            let filteredMatches = matches.filter(m => m['Number of Doors'] === doors);
+            
+            if (carVariation && VALID_CAR_VARIATIONS.has(carVariation)) {
+                const exactMatches = filteredMatches.filter(m => m['Car Variation'] === carVariation);
+                bestMatch = findBestMatch(exactMatches);
             }
-
-            return json({
-                success: false,
-                productGroups: [],
-                message: 'No matching car found',
-                query: { make, model, year, doors, variation: carVariation },
-                debug: {
-                    availableDoorTypes: Array.from(uniqueDoorTypes),
-                    availableCarVariations: Array.from(uniqueCarVariations),
-                    validCarVariations: Array.from(VALID_CAR_VARIATIONS),
-                    similarMatches: broadMatches?.map(m => ({
-                        make: m['Car Make'],
-                        model: m['Car Model'],
-                        doors: m['Number of Doors'],
-                        variation: m['Car Variation'],
-                        yearRange: `${m['Car Start Year']}-${m['Car Stop Year']}`
-                    }))
+            
+            // If no match with exact variation, try all variations but keep door restriction
+            if (!bestMatch && filteredMatches.length > 0) {
+                inferredVariation = true;
+                bestMatch = findBestMatch(filteredMatches);
+            }
+            
+            // If still no match, try without door restriction
+            if (!bestMatch) {
+                inferredDoors = true;
+                if (carVariation && VALID_CAR_VARIATIONS.has(carVariation)) {
+                    const doorlessMatches = matches.filter(m => m['Car Variation'] === carVariation);
+                    bestMatch = findBestMatch(doorlessMatches);
                 }
-            });
+                
+                // If still no match, try all variations without door restriction
+                if (!bestMatch) {
+                    inferredVariation = true;
+                    bestMatch = findBestMatch(matches);
+                }
+            }
         }
 
-        // Find the best match instead of just taking the first one
-        const data = findBestMatch(matches);
-        if (!data) {
+        if (!bestMatch) {
+            console.warn('No matches found for car');
             return json({
                 success: false,
                 productGroups: [],
-                message: 'No suitable match found',
+                message: 'No matches found for the specified car',
                 query: { make, model, year, doors, variation: carVariation }
             });
         }
-        
-        // Create product groups from the match
-        const productGroups = await createProductGroup(data, url);
-        
-        // Format the response according to the new schema
+
+        // Create product groups from best match
+        const productGroups = await createProductGroup(bestMatch, url);
+
+        // Prepare response
         const response: ThuleLookupResponse = {
             success: true,
             car: {
-                make: data['Car Make'],
-                model: data['Car Model'],
-                variation: data['Car Variation'],
-                doors: data['Number of Doors'].toString(),
+                make: bestMatch['Car Make'],
+                model: bestMatch['Car Model'],
+                variation: bestMatch['Car Variation'],
+                doors: bestMatch['Number of Doors'],
                 yearRange: {
-                    start: data['Car Start Year'],
-                    end: data['Car Stop Year']
+                    start: parseInt(bestMatch['Car Start Year']),
+                    end: parseInt(bestMatch['Car Stop Year'] || '9999')
                 }
             },
             productGroups,
-            k_type: data['K-TYPE'] || []
+            k_type: bestMatch['K-TYPE'] ? [bestMatch['K-TYPE']] : []
         };
 
+        // Add inference notes
+        if (inferredVariation || inferredDoors) {
+            response.inferred = {
+                message: inferredVariation && inferredDoors 
+                    ? "Rail type and door configuration were automatically detected"
+                    : inferredVariation 
+                        ? "Rail type was automatically detected"
+                        : "Door configuration was automatically detected",
+                detected: {
+                    variation: bestMatch['Car Variation'],
+                    doors: bestMatch['Number of Doors']
+                },
+                original: {
+                    variation: carVariation || null,
+                    doors: doors
+                }
+            };
+        }
+
         return json(response);
-    } catch (error) {
-        console.error('Error in Thule lookup:', error);
+
+    } catch (err) {
+        console.error('Error processing request:', err);
         return json({
             success: false,
             error: 'Failed to process request',
@@ -446,6 +420,6 @@ export async function GET({ url }) {
             },
             productGroups: [],
             k_type: []
-        } as ThuleLookupResponse, { status: 500 });
+        }, { status: 500 });
     }
 } 
