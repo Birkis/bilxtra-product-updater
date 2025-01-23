@@ -148,9 +148,12 @@ paths:
       summary: Find compatible Thule products for a specific car
       description: |
         Returns compatible Thule products based on car specifications. Uses a scoring system:
-        - Complete racks (3 points each)
+        - Complete rack set (front + rear) (8 points)
+        - Single complete rack (3 points)
         - Individual components (1 point each)
         Best match selected by: highest score, complete solutions preferred, then full component sets.
+        
+        A complete solution with both front and rear racks is always preferred when available.
       parameters:
         - name: make
           in: query
@@ -250,6 +253,7 @@ paths:
                               - name
                               - url
                               - type
+                              - position
                             properties:
                               sku:
                                 type: string
@@ -272,29 +276,38 @@ paths:
                                   - foot
                                   - kit
                                   - complete_rack
+                              position:
+                                type: string
+                                description: Position of the rack (for complete racks)
+                                enum:
+                                  - front
+                                  - rear
+                                example: "front"
                     example:
                       - type: complete_rack
                         isPreferred: true
                         products:
-                          - sku: "721520"
+                          - sku: "721400"
                             type: "complete_rack"
                             name: "Thule WingBar Edge"
-                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/komplett/thule-evo-clamp"
+                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/thule-wingbar-edge-95-1-pk"
+                            position: "front"
+                          - sku: "721400"
+                            type: "complete_rack"
+                            name: "Thule WingBar Edge"
+                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/thule-wingbar-edge-95-1-pk"
+                            position: "rear"
                       - type: individual_components
                         isPreferred: false
                         products:
-                          - sku: "391000"
-                            type: "bar"
-                            name: "Thule WingBar Evo"
-                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/takboyler/thule-wingbar-evo"
-                          - sku: "710600"
+                          - sku: "720600"
                             type: "foot"
                             name: "Thule Edge Flush Rail"
-                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-evo-flush-rail"
-                          - sku: "186046"
+                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/wingbar/thule-edge-flush-rail"
+                          - sku: "186025"
                             type: "kit"
-                            name: "Thule Kit 6046"
-                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-kit-6046"
+                            name: "Thule Kit 186025"
+                            url: "https://bilxtra.no/lasteutstyr/tak/takstativ/monteringssett/thule-kit-186025"
                   k_type:
                     type: array
                     description: K-type specifications
