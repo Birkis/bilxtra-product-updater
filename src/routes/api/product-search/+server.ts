@@ -57,9 +57,10 @@ export const GET: RequestHandler = async ({ url }) => {
             browse {
                 generiskProdukt(
                     filters: {
-                        sku: {
-                            regex: $search_term
-                        }
+                        OR: [
+                            { name: { contains: $search_term } },
+                            { sku: { regex: $search_term } }
+                        ]
                     }
                 ) {
                     hits {
@@ -102,6 +103,9 @@ export const GET: RequestHandler = async ({ url }) => {
                 // Get the first image if available
                 const firstImage = hit.defaultVariant?.images?.[0];
                 if (!firstImage) return null;
+
+                // Skip items with low stock (less than 3)
+                if (hit.defaultVariant.defaultStock < 3) return null;
 
                 const result: ProcessedResult = {
                     name: hit.name,

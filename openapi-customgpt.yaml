@@ -27,17 +27,21 @@ paths:
     get:
       operationId: searchProducts
       summary: Search for products in the Crystallize catalog
-      description: Returns a list of products matching the search term, with cleaned URLs for Bilxtra.no
+      description: |
+        Returns a list of products matching the search term, with cleaned URLs for Bilxtra.no.
+        Products with stock less than 3 are filtered out to ensure availability.
+        Results are limited to top 5 matches.
       parameters:
         - name: q
           in: query
           required: true
-          description: The search term to find products
+          description: The search term to find products (matches against product name or SKU)
           schema:
             type: string
+            example: "ladekabel til etron"
       responses:
         '200':
-          description: A list of products matching the search criteria
+          description: A list of products matching the search criteria (max 5 results, stock >= 3)
           content:
             application/json:
               schema:
@@ -53,15 +57,15 @@ paths:
                     name:
                       type: string
                       description: The name of the product
-                      example: "Thule CL-10 030"
+                      example: "BAG TIL LADEKABEL PACKLINE"
                     itemId:
                       type: string
                       description: Unique identifier for the product in Crystallize
-                      example: "66d760987a3c149f55b38892"
+                      example: "670e7081b31888406ab9c536"
                     url:
                       type: string
                       description: Clean URL to the product page on Bilxtra.no
-                      example: "https://bilxtra.no/ukategorisert/thule-cl-10-030"
+                      example: "https://bilxtra.no/utstyr/elbil-og-hybrid/tilbehor/bag-til-ladekabel-packline"
                     variant:
                       type: object
                       required:
@@ -74,11 +78,11 @@ paths:
                         sku:
                           type: string
                           description: Product SKU (Stock Keeping Unit)
-                          example: "THU-CL-10 030"
+                          example: "LAD-11009663"
                         name:
                           type: string
                           description: Variant name/description
-                          example: "10mm selvjusterende kjetting - Thule CL-10 030"
+                          example: "BAG TIL LADEKABEL PACKLINE"
                         image:
                           type: object
                           required:
@@ -88,19 +92,19 @@ paths:
                             url:
                               type: string
                               description: URL to the product image
-                              example: "https://media.crystallize.com/bilxtra-prod/24/9/3/552/1264-10mm-selvjusterende-kjetting-thule-cl-10-030-thu-cl-10-030.jpg"
+                              example: "https://media.crystallize.com/bilxtra-prod/24/10/16/1/pac-11009663-packline-ladekabelbag-01.jpg"
                             key:
                               type: string
                               description: Crystallize media key for the image
-                              example: "bilxtra-prod/24/9/3/552/1264-10mm-selvjusterende-kjetting-thule-cl-10-030-thu-cl-10-030.jpg"
+                              example: "bilxtra-prod/24/10/16/1/pac-11009663-packline-ladekabelbag-01.jpg"
                         price:
                           type: number
                           description: The default price of the product variant in NOK
-                          example: 207.20
+                          example: 119.20
                         stock:
                           type: number
-                          description: The current stock level of the product variant
-                          example: 76
+                          description: The current stock level of the product variant (always >= 3)
+                          example: 298
         '400':
           description: Bad request - missing search term
           content:
@@ -432,11 +436,10 @@ paths:
       operationId: lookupVehicle
       summary: Get detailed vehicle information from a Norwegian license plate
       description: |
-        Returns comprehensive vehicle information from Statens Vegvesen's database using a Norwegian license plate.
-        This data can be used to:
-        1. Find compatible Thule products using the /api/thule/lookup endpoint
-        2. Get detailed specifications to help select other car accessories
-        3. Verify vehicle details before making product purchases
+        Returns vehicle information from Statens Vegvesen's database. Use this data to:
+        1. Find compatible Thule products via /api/thule/lookup
+        2. Get specs for selecting car accessories
+        3. Verify vehicle details
       parameters:
         - name: plate
           in: query
