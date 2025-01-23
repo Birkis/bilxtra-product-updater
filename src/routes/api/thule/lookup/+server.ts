@@ -21,8 +21,10 @@ const VALID_CAR_VARIATIONS = new Set([
 
 async function getProductUrl(sku: string, requestUrl: URL): Promise<string | null> {
     try {
-        const searchSku = `THU-${sku}`;
-        console.log('Searching for product URL with SKU:', searchSku);
+        // Extract just the number if it's a kit ID (format: "Thule Kit 145219")
+        const cleanSku = sku.includes('Kit') ? sku.split(' ').pop() || sku : sku;
+        const searchSku = `THU-${cleanSku}`;
+        console.log('Searching for product URL with SKU:', searchSku, '(original:', sku, ')');
         
         // Use the same origin as the current request
         const productSearchUrl = new URL('/api/product-search', requestUrl.origin);

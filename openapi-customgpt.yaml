@@ -2,7 +2,19 @@ openapi: 3.1.0
 info:
   version: 1.0.0
   title: Bilxtra Product APIs
-  description: APIs for searching Crystallize products and looking up compatible Thule products
+  description: |
+    APIs for searching Crystallize products, looking up compatible Thule products, and retrieving vehicle details.
+    
+    Common use cases:
+    1. Finding a roof rack:
+       - If you have the license plate, use /api/vehicle-lookup to get car details
+       - Then use /api/thule/lookup with those details to find compatible racks
+       - If no license plate, manually enter car details in /api/thule/lookup
+    
+    2. Finding other car accessories:
+       - Use /api/vehicle-lookup to get detailed car specifications
+       - Use /api/product-search with relevant terms to find products
+       - Vehicle details can help select the right product variant
   contact:
     url: https://bilxtra.no
 
@@ -413,4 +425,254 @@ paths:
                     items: {}
                   k_type:
                     type: array
-                    items: {} 
+                    items: {}
+
+  /api/vehicle-lookup:
+    get:
+      operationId: lookupVehicle
+      summary: Get detailed vehicle information from a Norwegian license plate
+      description: |
+        Returns comprehensive vehicle information from Statens Vegvesen's database using a Norwegian license plate.
+        This data can be used to:
+        1. Find compatible Thule products using the /api/thule/lookup endpoint
+        2. Get detailed specifications to help select other car accessories
+        3. Verify vehicle details before making product purchases
+      parameters:
+        - name: plate
+          in: query
+          required: true
+          description: Norwegian license plate (e.g., EB34033)
+          schema:
+            type: string
+            pattern: ^[A-Z]{2}[0-9]{4,5}$
+          example: "EB34033"
+      responses:
+        '200':
+          description: Successful vehicle lookup
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - car
+                properties:
+                  success:
+                    type: boolean
+                    description: Whether the lookup was successful
+                  car:
+                    type: object
+                    required:
+                      - make
+                      - model
+                      - year
+                      - doors
+                    properties:
+                      make:
+                        type: string
+                        description: Vehicle manufacturer
+                        example: "AUDI"
+                      model:
+                        type: string
+                        description: Vehicle model
+                        example: "e-tron 50"
+                      year:
+                        type: integer
+                        description: Manufacturing year
+                        example: 2020
+                      doors:
+                        type: string
+                        description: Number of physical doors (excluding trunk)
+                        example: "4-dr"
+                      color:
+                        type: string
+                        description: Vehicle color
+                        example: "Blå"
+                      bodyType:
+                        type: string
+                        description: Type of vehicle body
+                        example: "Stasjonsvogn ISO-standard 3833:1977, def. nr. 3.1.1.4"
+                      dimensions:
+                        type: object
+                        properties:
+                          length:
+                            type: integer
+                            description: Vehicle length in mm
+                            example: 4901
+                          width:
+                            type: integer
+                            description: Vehicle width in mm
+                            example: 1935
+                          height:
+                            type: integer
+                            description: Vehicle height in mm
+                            example: 1583
+                      weight:
+                        type: object
+                        properties:
+                          total:
+                            type: integer
+                            description: Vehicle weight in kg
+                            example: 2465
+                          maxRoofLoad:
+                            type: integer
+                            description: Maximum roof load in kg
+                            example: 75
+                          payload:
+                            type: integer
+                            description: Maximum payload in kg
+                            example: 500
+                          totalAllowed:
+                            type: integer
+                            description: Maximum total allowed weight in kg
+                            example: 3040
+                          trailerWeight:
+                            type: object
+                            properties:
+                              withBrakes:
+                                type: integer
+                                description: Maximum trailer weight with brakes in kg
+                                example: 1800
+                              withoutBrakes:
+                                type: integer
+                                description: Maximum trailer weight without brakes in kg
+                                example: 750
+                              verticalLoad:
+                                type: integer
+                                description: Maximum vertical coupling load in kg
+                                example: 80
+                              totalTrainWeight:
+                                type: integer
+                                description: Maximum total train weight in kg
+                                example: 4840
+                      engine:
+                        type: object
+                        required:
+                          - type
+                        properties:
+                          type:
+                            type: string
+                            enum: [electric, hybrid, conventional]
+                            description: Type of engine/powertrain
+                            example: "electric"
+                          maxSpeed:
+                            type: integer
+                            description: Maximum speed in km/h
+                            example: 190
+                          motors:
+                            type: array
+                            description: List of electric motors (for electric/hybrid vehicles)
+                            items:
+                              type: object
+                              properties:
+                                power:
+                                  type: object
+                                  properties:
+                                    hourly:
+                                      type: integer
+                                      description: Continuous power output in kW
+                                      example: 70
+                                    peak:
+                                      type: integer
+                                      description: Peak power output in kW
+                                      example: 115
+                                code:
+                                  type: string
+                                  description: Motor code
+                                  example: "EAS"
+                          transmission:
+                            type: string
+                            description: Transmission type
+                            example: "Automat"
+                      electric:
+                        type: object
+                        description: Electric vehicle specific data
+                        properties:
+                          range:
+                            type: integer
+                            description: Range in km (WLTP)
+                            example: 295
+                          consumption:
+                            type: integer
+                            description: Energy consumption in Wh/km
+                            example: 251
+                          emissionClass:
+                            type: string
+                            description: Emission class
+                            example: "0-utslipp"
+                      seating:
+                        type: object
+                        properties:
+                          total:
+                            type: integer
+                            description: Total number of seats
+                            example: 5
+                          front:
+                            type: integer
+                            description: Number of front seats
+                            example: 2
+                      noise:
+                        type: object
+                        properties:
+                          level:
+                            type: integer
+                            description: Noise level in dB
+                            example: 68
+                          source:
+                            type: string
+                            description: Source of noise measurement
+                            example: "Produsent"
+                  debug:
+                    type: object
+                    description: Additional technical data for debugging (only in development)
+        '400':
+          description: Bad request - invalid license plate format or missing parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - error
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Invalid license plate format"
+        '404':
+          description: Vehicle not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - error
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Vehicle not found"
+        '500':
+          description: Server error during lookup
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - error
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Failed to fetch vehicle data"
+                  debug:
+                    type: object
+                    description: Additional error details (only in development) 
