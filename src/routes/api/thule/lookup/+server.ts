@@ -70,6 +70,7 @@ interface Product {
     type: 'bar' | 'foot' | 'kit' | 'complete_rack';
     url: string | null;
     name: string;
+    position?: 'front' | 'rear';  // Optional field for rack position
 }
 
 interface ProductGroup {
@@ -101,6 +102,7 @@ interface ProductMatch {
     score: number;
     hasCompleteSolution: boolean;
     hasFullComponentSet: boolean;
+    hasBothRacks: boolean;
     match: any;
 }
 
@@ -109,10 +111,15 @@ function scoreMatch(match: any): ProductMatch {
     let componentCount = 0;
     
     // Check for complete solutions (highest priority)
-    const hasCompleteFront = !!match['Complete Front Rack ID'];
-    const hasCompleteRear = !!match['Complete Rear Rack ID'];
-    if (hasCompleteFront) score += 3;
-    if (hasCompleteRear) score += 3;
+    const hasFrontRack = !!match['Complete Front Rack ID'];
+    const hasRearRack = !!match['Complete Rear Rack ID'];
+    
+    // Give extra points for having both front and rear racks
+    if (hasFrontRack && hasRearRack) {
+        score += 8; // Higher score for complete set
+    } else if (hasFrontRack || hasRearRack) {
+        score += 3; // Original score for single rack
+    }
     
     // Check for individual components
     const hasBar = !!match['Bar ID'];
@@ -134,8 +141,9 @@ function scoreMatch(match: any): ProductMatch {
     
     return {
         score,
-        hasCompleteSolution: hasCompleteFront || hasCompleteRear,
+        hasCompleteSolution: hasFrontRack || hasRearRack,
         hasFullComponentSet: componentCount === 3, // All individual components present
+        hasBothRacks: hasFrontRack && hasRearRack, // New flag for having both racks
         match
     };
 }
@@ -173,6 +181,7 @@ function findBestMatch(matches: any[]): any {
         score: m.score,
         hasCompleteSolution: m.hasCompleteSolution,
         hasFullComponentSet: m.hasFullComponentSet,
+        hasBothRacks: m.hasBothRacks,
         products: {
             completeFront: m.match['Complete Front Rack ID'],
             completeRear: m.match['Complete Rear Rack ID'],
@@ -188,18 +197,36 @@ function findBestMatch(matches: any[]): any {
 async function createProductGroup(match: any, requestUrl: URL): Promise<ProductGroup[]> {
     const groups: ProductGroup[] = [];
     
-    // Check for complete rack solution
+    // Check for complete rack solutions
+    const completeRacks: Product[] = [];
+    
     if (match['Complete Front Rack ID']) {
-        const completeRackUrl = await getProductUrl(match['Complete Front Rack ID'], requestUrl);
+        const frontRackUrl = await getProductUrl(match['Complete Front Rack ID'], requestUrl);
+        completeRacks.push({
+            sku: match['Complete Front Rack ID'],
+            type: 'complete_rack',
+            url: frontRackUrl,
+            name: match['Complete Front Rack Name'] || '',
+            position: 'front'
+        });
+    }
+    
+    if (match['Complete Rear Rack ID']) {
+        const rearRackUrl = await getProductUrl(match['Complete Rear Rack ID'], requestUrl);
+        completeRacks.push({
+            sku: match['Complete Rear Rack ID'],
+            type: 'complete_rack',
+            url: rearRackUrl,
+            name: match['Complete Rear Rack Name'] || '',
+            position: 'rear'
+        });
+    }
+    
+    if (completeRacks.length > 0) {
         groups.push({
             type: 'complete_rack',
             isPreferred: true,
-            products: [{
-                sku: match['Complete Front Rack ID'],
-                type: 'complete_rack',
-                url: completeRackUrl,
-                name: match['Complete Front Rack Name'] || ''
-            }]
+            products: completeRacks
         });
     }
     
@@ -239,7 +266,7 @@ async function createProductGroup(match: any, requestUrl: URL): Promise<ProductG
     if (individualProducts.length > 0) {
         groups.push({
             type: 'individual_components',
-            isPreferred: !match['Complete Front Rack ID'],  // Preferred only if no complete rack
+            isPreferred: !completeRacks.length,  // Preferred only if no complete racks
             products: individualProducts
         });
     }

@@ -148,14 +148,11 @@ paths:
       summary: Find compatible Thule products for a specific car
       description: |
         Returns compatible Thule products based on car specifications. Uses a scoring system:
-        - Complete racks (3 points each)
+        - Complete rack set (front + rear) (8 points)
+        - Single complete rack (3 points)
         - Individual components (1 point each)
         Best match selected by: highest score, complete solutions preferred, then full component sets.
 
-        The API uses flexible matching:
-        1. If the rail type (variation) is not provided or no matches are found, it will attempt to infer the correct type.
-        2. If no matches are found with the specified door count (e.g., 4-dr vs 5-dr), it will try alternative configurations.
-        3. The response will indicate what values were automatically detected.
       parameters:
         - name: make
           in: query
@@ -235,7 +232,6 @@ paths:
                     type: array
                     description: Groups of compatible Thule products
                     items:
-                      $ref: '#/components/schemas/ProductGroup'
                   k_type:
                     type: array
                     description: K-type specifications
