@@ -96,6 +96,32 @@ interface ThuleLookupResponse {
     };
 }
 
+interface ModelSuggestion {
+    model: string;
+    yearRange: {
+        start: number;
+        end: number;
+    };
+    variations: string[];
+}
+
+interface ThuleLookupErrorResponse {
+    success: false;
+    productGroups: [];
+    message: string;
+    query: {
+        make: string | null;
+        model: string | null;
+        year: number | null;
+        variation: string | null;
+    };
+    suggestions?: {
+        make: string;
+        models: ModelSuggestion[];
+        message: string;
+    };
+}
+
 interface ProductMatch {
     score: number;
     hasCompleteSolution: boolean;
@@ -284,6 +310,18 @@ function normalizeString(str: string): string {
         // Trim spaces
         .trim();
     
+    // Extract model series for common manufacturers
+    const modelSeriesMatch = normalized.match(/^([A-Z])\s*(?:CLASS|KLASSE|SERIES|CLASSE)/i);
+    if (modelSeriesMatch) {
+        return modelSeriesMatch[1].toLowerCase() + 'class';
+    }
+    
+    // Extract Mercedes model series from specific variants (e.g., "E 220 CDI" -> "eclass")
+    const mercedesMatch = normalized.match(/^([A-Z])\s*\d+/);
+    if (mercedesMatch) {
+        return mercedesMatch[1].toLowerCase() + 'class';
+    }
+    
     // Then do general normalization
     return normalized
         .toLowerCase()
@@ -356,6 +394,43 @@ function levenshteinDistance(s1: string, s2: string): number {
     return matrix[s2.length][s1.length];
 }
 
+// Helper function to get model suggestions for a manufacturer
+function getModelSuggestions(matches: any[], make: string, targetYear: number): ModelSuggestion[] {
+    // Get unique models for this manufacturer
+    const modelMap = new Map<string, ModelSuggestion>();
+    
+    matches.forEach(match => {
+        const makeSimilarity = stringSimilarity(match['Car Make'], make);
+        if (makeSimilarity >= 0.7) {
+            const model = match['Car Model'];
+            const startYear = parseInt(match['Car Start Year']);
+            const endYear = parseInt(match['Car Stop Year'] || '9999');
+            
+            // Only include models that could be relevant for the target year
+            const yearBuffer = 2; // Include models 2 years before/after target year
+            if (targetYear >= (startYear - yearBuffer) && targetYear <= (endYear + yearBuffer)) {
+                if (!modelMap.has(model)) {
+                    modelMap.set(model, {
+                        model,
+                        yearRange: { start: startYear, end: endYear },
+                        variations: [match['Car Variation']]
+                    });
+                } else {
+                    const suggestion = modelMap.get(model)!;
+                    if (!suggestion.variations.includes(match['Car Variation'])) {
+                        suggestion.variations.push(match['Car Variation']);
+                    }
+                    // Update year range if needed
+                    suggestion.yearRange.start = Math.min(suggestion.yearRange.start, startYear);
+                    suggestion.yearRange.end = Math.max(suggestion.yearRange.end, endYear);
+                }
+            }
+        }
+    });
+    
+    return Array.from(modelMap.values());
+}
+
 // Common variations to try first
 const COMMON_VARIATIONS = [
     'med normalt tak',
@@ -401,14 +476,19 @@ export async function GET({ url }) {
         const uniqueMakes = new Set(matches?.map(m => m['Car Make']) || []);
         console.log('Found manufacturers:', Array.from(uniqueMakes));
         
-        // Filter matches by make and model using fuzzy matching
-        matches = matches?.filter(match => {
+        // First filter by make only to get potential suggestions
+        const makeMatches = matches?.filter(match => {
             const makeSimilarity = stringSimilarity(match['Car Make'], make);
-            const modelSimilarity = stringSimilarity(match['Car Model'], model);
             console.log(`Make similarity for ${match['Car Make']}: ${makeSimilarity}`);
-            console.log(`Model similarity for ${match['Car Model']}: ${modelSimilarity}`);
-            return makeSimilarity >= 0.7 && modelSimilarity >= 0.7;
+            return makeSimilarity >= 0.7;
         }) || [];
+        
+        // Then try to find exact matches with both make and model
+        matches = makeMatches.filter(match => {
+            const modelSimilarity = stringSimilarity(match['Car Model'], model);
+            console.log(`Model similarity for ${match['Car Model']}: ${modelSimilarity}`);
+            return modelSimilarity >= 0.7;
+        });
 
         // Filter matches by year range
         matches = matches?.filter(match => {
@@ -450,13 +530,34 @@ export async function GET({ url }) {
         }
 
         if (!bestMatch) {
-            console.warn('No matches found for car');
+            console.warn('No exact matches found for car');
+            
+            // Get suggestions if we have make matches
+            if (makeMatches.length > 0) {
+                const suggestions = getModelSuggestions(makeMatches, make, year);
+                if (suggestions.length > 0) {
+                    const bestMakeName = makeMatches[0]['Car Make']; // Use the name from DB for consistency
+                    return json({
+                        success: false,
+                        productGroups: [],
+                        message: 'No exact match found for the specified car',
+                        query: { make, model, year, variation: carVariation },
+                        suggestions: {
+                            make: bestMakeName,
+                            models: suggestions,
+                            message: `We found "${bestMakeName}" but couldn't match "${model}". Did you mean one of these models?`
+                        }
+                    } as ThuleLookupErrorResponse);
+                }
+            }
+            
+            // If no suggestions, return the original error response
             return json({
                 success: false,
                 productGroups: [],
                 message: 'No matches found for the specified car',
                 query: { make, model, year, variation: carVariation }
-            });
+            } as ThuleLookupErrorResponse);
         }
 
         // Create product groups from best match
