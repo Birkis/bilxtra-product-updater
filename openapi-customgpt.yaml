@@ -3,18 +3,18 @@ info:
   version: 1.0.0
   title: Bilxtra Product APIs
   description: |
-    APIs for searching Crystallize products, looking up compatible Thule products, and retrieving vehicle details.
+    APIs for searching products, finding compatible Thule racks, and retrieving vehicle details.
     
     Common use cases:
     1. Finding a roof rack:
-       - If you have the license plate, use /api/vehicle-lookup to get car details
-       - Then use /api/thule/lookup with those details to find compatible racks
-       - If no license plate, manually enter car details in /api/thule/lookup
+       - Get car details via /api/vehicle-lookup (with plate)
+       - Find compatible racks via /api/thule/lookup
+       - Or enter car details manually
     
-    2. Finding other car accessories:
-       - Use /api/vehicle-lookup to get detailed car specifications
-       - Use /api/product-search with relevant terms to find products
-       - Vehicle details can help select the right product variant
+    2. Finding accessories:
+       - Get car specs via /api/vehicle-lookup
+       - Search products via /api/product-search
+       - Use car details to select variants
   contact:
     url: https://bilxtra.no
 
@@ -147,24 +147,19 @@ paths:
       operationId: lookupThuleProducts
       summary: Find compatible Thule products for a specific car
       description: |
-        Returns compatible Thule products based on car specifications. Uses a scoring system:
-        - Complete rack set (front + rear) (8 points)
-        - Single complete rack (3 points)
-        - Individual components (1 point each)
-        Best match selected by: highest score, complete solutions preferred, then full component sets.
-
+        Returns Thule products for car specs. Uses Levenshtein distance for model matching. Scoring: complete sets (8 pts), single racks (3 pts), components (1 pt).
       parameters:
         - name: make
           in: query
           required: true
-          description: Car manufacturer (e.g., Audi)
+          description: Car manufacturer
           schema:
             type: string
           example: Audi
         - name: model
           in: query
           required: true
-          description: Car model (e.g., e-tron)
+          description: Car model
           schema:
             type: string
           example: e-tron
@@ -177,23 +172,11 @@ paths:
             minimum: 1900
             maximum: 2100
           example: 2019
-        - name: doors
-          in: query
-          required: true
-          description: |
-            Number of doors specification (e.g., 5-dr).
-            Note: The API will try alternative door configurations if no match is found.
-            For example, a car listed as 4-dr in Vegvesen might match a 5-dr in Thule's database.
-          schema:
-            type: string
-            enum: [5-dr, 4-dr, 3-dr, 2-dr]
-          example: 5-dr
         - name: variation
           in: query
           required: false
           description: |
-            Car roof rail type/configuration. If not provided or if no matches are found,
-            the API will attempt to detect the correct type automatically.
+            Roof rail type. Auto-detects if not provided.
           schema:
             type: string
             enum:
@@ -224,14 +207,59 @@ paths:
                   - productGroups
                   - car
                   - k_type
+                  - matchConfidence
                 properties:
                   success:
                     type: boolean
                     description: Whether the lookup was successful
                   productGroups:
                     type: array
-                    description: Groups of compatible Thule products
+                    description: Groups of compatible Thule products (complete racks or individual components)
                     items:
+                      type: object
+                      required:
+                        - type
+                        - isPreferred
+                        - products
+                      properties:
+                        type:
+                          type: string
+                          enum: [complete_rack, individual_components]
+                          description: Type of product group
+                        isPreferred:
+                          type: boolean
+                          description: Whether this group is the preferred solution
+                        products:
+                          type: array
+                          description: List of compatible products in this group
+                          items:
+                            type: object
+                            required:
+                              - sku
+                              - type
+                              - url
+                              - name
+                            properties:
+                              sku:
+                                type: string
+                                description: Product SKU
+                                example: "721420"
+                              type:
+                                type: string
+                                enum: [bar, foot, kit, complete_rack]
+                                description: Product component type
+                              url:
+                                type: string
+                                description: URL to product page
+                                example: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/wingbar-edge-95-black-1-pk"
+                              name:
+                                type: string
+                                description: Product name
+                                example: "WINGBAR EDGE 95 BLACK 1-PK"
+                              position:
+                                type: string
+                                enum: [front, rear]
+                                description: Position for complete racks (optional)
                   k_type:
                     type: array
                     description: K-type specifications
@@ -242,7 +270,7 @@ paths:
                     $ref: '#/components/schemas/CarInfo'
                   inferred:
                     type: object
-                    description: Present when rail type and/or door configuration were automatically detected
+                    description: Present when rail type was automatically detected
                     required:
                       - message
                       - detected
@@ -251,36 +279,31 @@ paths:
                       message:
                         type: string
                         description: User-friendly message about what was automatically detected
-                        example: "Rail type and door configuration were automatically detected"
+                        example: "Rail type was automatically detected"
                       detected:
                         type: object
                         required:
                           - variation
-                          - doors
                         properties:
                           variation:
                             type: string
                             description: The rail type that was automatically detected
                             example: "med normalt tak"
-                          doors:
-                            type: string
-                            description: The door configuration that was automatically detected
-                            example: "5-dr"
                       original:
                         type: object
                         required:
                           - variation
-                          - doors
                         properties:
                           variation:
                             type: string
                             nullable: true
                             description: The original rail type that was provided (if any)
                             example: null
-                          doors:
-                            type: string
-                            description: The original door configuration that was provided
-                            example: "4-dr"
+                  matchConfidence:
+                    type: string
+                    enum: [high, medium, low]
+                    description: Confidence level of the match based on string similarity and inference
+                    example: "high"
         '400':
           description: Bad request - missing or invalid parameters
           content:
@@ -313,9 +336,6 @@ paths:
                         nullable: true
                       year:
                         type: integer
-                        nullable: true
-                      doors:
-                        type: string
                         nullable: true
                       variation:
                         type: string
@@ -351,18 +371,6 @@ paths:
                       variation:
                         type: string
                         example: ""
-                      doors:
-                        type: string
-                        example: ""
-                      yearRange:
-                        type: object
-                        properties:
-                          start:
-                            type: integer
-                            example: 0
-                          end:
-                            type: integer
-                            example: 0
                   productGroups:
                     type: array
                     items: {}
@@ -375,15 +383,12 @@ paths:
       operationId: lookupVehicle
       summary: Get detailed vehicle information from a Norwegian license plate
       description: |
-        Returns vehicle information from Statens Vegvesen's database. Use this data to:
-        1. Find compatible Thule products via /api/thule/lookup
-        2. Get specs for selecting car accessories
-        3. Verify vehicle details
+        Gets vehicle data from Vegvesen. Use for: 1. Finding Thule products 2. Selecting accessories 3. Verifying details.
       parameters:
         - name: plate
           in: query
           required: true
-          description: Norwegian license plate (e.g., EB34033)
+          description: Norwegian license plate
           schema:
             type: string
             pattern: ^[A-Z]{2}[0-9]{4,5}$
