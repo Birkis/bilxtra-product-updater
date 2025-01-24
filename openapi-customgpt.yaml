@@ -147,15 +147,15 @@ paths:
       operationId: lookupThuleProducts
       summary: Find compatible Thule products for a specific car
       description: |
-        Returns Thule products for car specs. Uses Levenshtein distance for model matching. Scoring: complete sets (8 pts), single racks (3 pts), components (1 pt).
+        Returns Thule products for car specs. Uses fuzzy matching for manufacturer names (e.g., "mercedes" matches "MERCEDES BENZ") and Levenshtein distance for model matching. Scoring: complete sets (8 pts), single racks (3 pts), components (1 pt).
       parameters:
         - name: make
           in: query
           required: true
-          description: Car manufacturer
+          description: Car manufacturer (flexible matching, e.g., "mercedes", "MERCEDES-BENZ", "Mercedes Benz" all work)
           schema:
             type: string
-          example: Audi
+          example: MERCEDES-BENZ
         - name: model
           in: query
           required: true

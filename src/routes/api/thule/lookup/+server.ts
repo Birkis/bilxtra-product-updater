@@ -274,9 +274,21 @@ async function createProductGroup(match: any, requestUrl: URL): Promise<ProductG
 
 // Helper function to normalize strings for comparison
 function normalizeString(str: string): string {
-    return str.toLowerCase()
-        .replace(/[-\s]/g, '')  // Remove hyphens and spaces
-        .replace(/[^\w\d]/g, ''); // Keep letters and numbers, remove other special chars
+    // First normalize manufacturer names
+    const normalized = str
+        .toUpperCase()
+        // Convert common separators to spaces
+        .replace(/[-_./\\]/g, ' ')
+        // Normalize multiple spaces to single space
+        .replace(/\s+/g, ' ')
+        // Trim spaces
+        .trim();
+    
+    // Then do general normalization
+    return normalized
+        .toLowerCase()
+        // Now remove all spaces and special chars for comparison
+        .replace(/[^\w\d]/g, '');
 }
 
 // Calculate similarity between two strings (0-1)
@@ -287,8 +299,8 @@ function stringSimilarity(str1: string, str2: string): number {
     if (s1 === s2) return 1;
     
     // Extract numbers from both strings
-    const nums1 = s1.match(/\d+/g) || [];
-    const nums2 = s2.match(/\d+/g) || [];
+    const nums1: string[] = s1.match(/\d+/g) || [];
+    const nums2: string[] = s2.match(/\d+/g) || [];
     
     // If both strings have numbers but they don't match, reduce similarity
     if (nums1.length > 0 && nums2.length > 0 && 
@@ -301,13 +313,18 @@ function stringSimilarity(str1: string, str2: string): number {
     const maxLength = Math.max(s1.length, s2.length);
     const similarity = 1 - (distance / maxLength);
     
-    // Only return high similarities if they're really close
-    if (similarity > 0.8) {
-        return similarity;
+    // For manufacturer names, be more lenient
+    if (str1.toUpperCase() === str1 || str2.toUpperCase() === str2) {
+        // Check if one string is a substring of the other (for partial matches like "mercedes" in "mercedes benz")
+        const [shorter, longer] = [s1, s2].sort((a, b) => a.length - b.length);
+        if (longer.includes(shorter)) {
+            return 0.8; // High score for substring matches in manufacturer names
+        }
+        return similarity > 0.6 ? similarity : similarity * 0.8;
     }
     
-    // Otherwise reduce the score
-    return similarity * 0.7;
+    // For other strings, be stricter
+    return similarity > 0.8 ? similarity : similarity * 0.7;
 }
 
 function levenshteinDistance(s1: string, s2: string): number {
@@ -370,22 +387,27 @@ export async function GET({ url }) {
         // Log search parameters
         console.log('Searching for car:', { make, model, year, variation: carVariation });
 
-        // First, try to find matches with exact make
+        // Get all records and filter with our string similarity
         let { data: matches, error: dbError } = await supabase
             .from('car_fits')
-            .select('*')
-            .ilike('"Car Make"', make);
+            .select('*');
 
         if (dbError) {
             console.error('Database error:', dbError);
             throw error(500, 'Failed to process request');
         }
 
-        // Filter matches by model using fuzzy matching
+        // Log all unique manufacturer names for debugging
+        const uniqueMakes = new Set(matches?.map(m => m['Car Make']) || []);
+        console.log('Found manufacturers:', Array.from(uniqueMakes));
+        
+        // Filter matches by make and model using fuzzy matching
         matches = matches?.filter(match => {
-            const similarity = stringSimilarity(match['Car Model'], model);
-            console.log(`Model similarity for ${match['Car Model']}: ${similarity}`);
-            return similarity >= 0.7; // Accept 70% similarity or better
+            const makeSimilarity = stringSimilarity(match['Car Make'], make);
+            const modelSimilarity = stringSimilarity(match['Car Model'], model);
+            console.log(`Make similarity for ${match['Car Make']}: ${makeSimilarity}`);
+            console.log(`Model similarity for ${match['Car Model']}: ${modelSimilarity}`);
+            return makeSimilarity >= 0.7 && modelSimilarity >= 0.7;
         }) || [];
 
         // Filter matches by year range
