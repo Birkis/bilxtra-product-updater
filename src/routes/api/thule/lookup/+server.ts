@@ -58,7 +58,6 @@ interface CarInfo {
     make: string;
     model: string;
     variation: string;
-    doors: string;
     yearRange: {
         start: number;
         end: number;
@@ -90,11 +89,9 @@ interface ThuleLookupResponse {
         message: string;
         detected: {
             variation: string;
-            doors: string;
         };
         original: {
             variation: string | null;
-            doors: string;
         };
     };
 }
@@ -357,22 +354,21 @@ export async function GET({ url }) {
         const make = url.searchParams.get('make')?.trim();
         const model = url.searchParams.get('model')?.trim();
         const year = parseInt(url.searchParams.get('year') || '');
-        const doors = url.searchParams.get('doors')?.trim();
         const carVariation = url.searchParams.get('variation')?.trim();
 
         // Validate required parameters (except variation)
-        if (!make || !model || !year || !doors) {
-            console.warn('Missing required parameters:', { make, model, year, doors });
+        if (!make || !model || !year) {
+            console.warn('Missing required parameters:', { make, model, year });
             return json({
                 success: false,
                 productGroups: [],
                 message: 'Missing required parameters',
-                query: { make, model, year, doors, variation: carVariation }
+                query: { make, model, year, variation: carVariation }
             });
         }
 
         // Log search parameters
-        console.log('Searching for car:', { make, model, year, doors, variation: carVariation });
+        console.log('Searching for car:', { make, model, year, variation: carVariation });
 
         // First, try to find matches with exact make
         let { data: matches, error: dbError } = await supabase
@@ -403,26 +399,22 @@ export async function GET({ url }) {
 
         let bestMatch = null;
         let inferredVariation = false;
-        let inferredDoors = false;
         let matchConfidence: 'high' | 'medium' | 'low' = 'high';
 
-        // Try exact door match first
+        // Try exact variation if provided
         if (matches.length > 0) {
-            let filteredMatches = matches.filter(m => m['Number of Doors'] === doors);
-            
-            // Try exact variation if provided
             if (carVariation && VALID_CAR_VARIATIONS.has(carVariation)) {
-                const exactMatches = filteredMatches.filter(m => m['Car Variation'] === carVariation);
+                const exactMatches = matches.filter(m => m['Car Variation'] === carVariation);
                 bestMatch = findBestMatch(exactMatches);
             }
             
             // If no match, try common variations
-            if (!bestMatch && filteredMatches.length > 0) {
+            if (!bestMatch) {
                 inferredVariation = true;
                 matchConfidence = 'medium';
                 
                 for (const variation of COMMON_VARIATIONS) {
-                    const commonMatches = filteredMatches.filter(m => m['Car Variation'] === variation);
+                    const commonMatches = matches.filter(m => m['Car Variation'] === variation);
                     bestMatch = findBestMatch(commonMatches);
                     if (bestMatch) break;
                 }
@@ -430,32 +422,6 @@ export async function GET({ url }) {
                 // If still no match, try all variations
                 if (!bestMatch) {
                     matchConfidence = 'low';
-                    bestMatch = findBestMatch(filteredMatches);
-                }
-            }
-            
-            // If still no match, try without door restriction
-            if (!bestMatch) {
-                inferredDoors = true;
-                matchConfidence = 'low';
-                
-                if (carVariation && VALID_CAR_VARIATIONS.has(carVariation)) {
-                    const doorlessMatches = matches.filter(m => m['Car Variation'] === carVariation);
-                    bestMatch = findBestMatch(doorlessMatches);
-                }
-                
-                // Try common variations without door restriction
-                if (!bestMatch) {
-                    inferredVariation = true;
-                    for (const variation of COMMON_VARIATIONS) {
-                        const commonMatches = matches.filter(m => m['Car Variation'] === variation);
-                        bestMatch = findBestMatch(commonMatches);
-                        if (bestMatch) break;
-                    }
-                }
-                
-                // If still no match, try all variations without door restriction
-                if (!bestMatch) {
                     bestMatch = findBestMatch(matches);
                 }
             }
@@ -467,7 +433,7 @@ export async function GET({ url }) {
                 success: false,
                 productGroups: [],
                 message: 'No matches found for the specified car',
-                query: { make, model, year, doors, variation: carVariation }
+                query: { make, model, year, variation: carVariation }
             });
         }
 
@@ -485,7 +451,6 @@ export async function GET({ url }) {
                 make: bestMatch['Car Make'],
                 model: bestMatch['Car Model'],
                 variation: bestMatch['Car Variation'],
-                doors: bestMatch['Number of Doors'],
                 yearRange: {
                     start: parseInt(bestMatch['Car Start Year']),
                     end: parseInt(bestMatch['Car Stop Year'] || '9999')
@@ -497,20 +462,14 @@ export async function GET({ url }) {
         };
 
         // Add inference notes
-        if (inferredVariation || inferredDoors) {
+        if (inferredVariation) {
             response.inferred = {
-                message: `${inferredVariation && inferredDoors 
-                    ? "Rail type and door configuration were"
-                    : inferredVariation 
-                        ? "Rail type was"
-                        : "Door configuration was"} automatically detected (${matchConfidence} confidence)`,
+                message: `Rail type was automatically detected (${matchConfidence} confidence)`,
                 detected: {
-                    variation: bestMatch['Car Variation'],
-                    doors: bestMatch['Number of Doors']
+                    variation: bestMatch['Car Variation']
                 },
                 original: {
-                    variation: carVariation || null,
-                    doors: doors
+                    variation: carVariation || null
                 }
             };
         }
@@ -526,7 +485,6 @@ export async function GET({ url }) {
                 make: '',
                 model: '',
                 variation: '',
-                doors: '',
                 yearRange: { start: 0, end: 0 }
             },
             productGroups: [],
