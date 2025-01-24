@@ -305,7 +305,7 @@ paths:
                     description: Confidence level of the match based on string similarity and inference
                     example: "high"
         '400':
-          description: Bad request - missing or invalid parameters
+          description: Bad request - missing or invalid parameters, or no exact match found
           content:
             application/json:
               schema:
@@ -324,7 +324,7 @@ paths:
                     items: {}
                   message:
                     type: string
-                    example: "Missing required parameters"
+                    example: "No exact match found for the specified car"
                   query:
                     type: object
                     properties:
@@ -340,6 +340,52 @@ paths:
                       variation:
                         type: string
                         nullable: true
+                  suggestions:
+                    type: object
+                    description: Present when a manufacturer is found but no exact model match
+                    properties:
+                      make:
+                        type: string
+                        description: The matched manufacturer name from the database
+                        example: "MERCEDES BENZ"
+                      models:
+                        type: array
+                        description: List of available models for this manufacturer
+                        items:
+                          type: object
+                          required:
+                            - model
+                            - yearRange
+                            - variations
+                          properties:
+                            model:
+                              type: string
+                              description: Model name
+                              example: "E-Class"
+                            yearRange:
+                              type: object
+                              required:
+                                - start
+                                - end
+                              properties:
+                                start:
+                                  type: integer
+                                  description: Start year of model availability
+                                  example: 2003
+                                end:
+                                  type: integer
+                                  description: End year of model availability
+                                  example: 2008
+                            variations:
+                              type: array
+                              description: Available roof rail variations for this model
+                              items:
+                                type: string
+                              example: ["med takskinner", "med faste punkter"]
+                      message:
+                        type: string
+                        description: User-friendly message explaining the suggestions
+                        example: 'We found "MERCEDES BENZ" but couldn\'t match "E 220 CDI". Did you mean one of these models?'
         '500':
           description: Server error
           content:
