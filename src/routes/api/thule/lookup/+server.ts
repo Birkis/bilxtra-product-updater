@@ -85,6 +85,7 @@ interface ThuleLookupResponse {
     productGroups: ProductGroup[];
     k_type: string[];
     error?: string;
+    matchConfidence: 'high' | 'medium' | 'low';
     inferred?: {
         message: string;
         detected: {
@@ -274,6 +275,80 @@ async function createProductGroup(match: any, requestUrl: URL): Promise<ProductG
     return groups;
 }
 
+// Helper function to normalize strings for comparison
+function normalizeString(str: string): string {
+    return str.toLowerCase()
+        .replace(/[-\s]/g, '')  // Remove hyphens and spaces
+        .replace(/[^\w\d]/g, ''); // Keep letters and numbers, remove other special chars
+}
+
+// Calculate similarity between two strings (0-1)
+function stringSimilarity(str1: string, str2: string): number {
+    const s1 = normalizeString(str1);
+    const s2 = normalizeString(str2);
+    
+    if (s1 === s2) return 1;
+    
+    // Extract numbers from both strings
+    const nums1 = s1.match(/\d+/g) || [];
+    const nums2 = s2.match(/\d+/g) || [];
+    
+    // If both strings have numbers but they don't match, reduce similarity
+    if (nums1.length > 0 && nums2.length > 0 && 
+        !nums1.some(n1 => nums2.includes(n1))) {
+        return 0.3;  // Low score for different numbers
+    }
+    
+    // Use Levenshtein distance for better positional matching
+    const distance = levenshteinDistance(s1, s2);
+    const maxLength = Math.max(s1.length, s2.length);
+    const similarity = 1 - (distance / maxLength);
+    
+    // Only return high similarities if they're really close
+    if (similarity > 0.8) {
+        return similarity;
+    }
+    
+    // Otherwise reduce the score
+    return similarity * 0.7;
+}
+
+function levenshteinDistance(s1: string, s2: string): number {
+    if (s1.length === 0) return s2.length;
+    if (s2.length === 0) return s1.length;
+
+    const matrix: number[][] = Array(s2.length + 1).fill(null).map(() => Array(s1.length + 1).fill(0));
+
+    for (let i = 0; i <= s2.length; i++) {
+        matrix[i][0] = i;
+    }
+    for (let j = 0; j <= s1.length; j++) {
+        matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= s2.length; i++) {
+        for (let j = 1; j <= s1.length; j++) {
+            if (s2.charAt(i - 1) === s1.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,  // substitution
+                    matrix[i][j - 1] + 1,      // insertion
+                    matrix[i - 1][j] + 1       // deletion
+                );
+            }
+        }
+    }
+    return matrix[s2.length][s1.length];
+}
+
+// Common variations to try first
+const COMMON_VARIATIONS = [
+    'med normalt tak',
+    'med integrerte relinger',
+    'med takrenner'
+];
+
 export async function GET({ url }) {
     try {
         console.log('=== Starting car lookup ===');
@@ -299,17 +374,23 @@ export async function GET({ url }) {
         // Log search parameters
         console.log('Searching for car:', { make, model, year, doors, variation: carVariation });
 
-        // First, try to find matches without door restriction
+        // First, try to find matches with exact make
         let { data: matches, error: dbError } = await supabase
             .from('car_fits')
             .select('*')
-            .ilike('"Car Make"', make)
-            .ilike('"Car Model"', model);
+            .ilike('"Car Make"', make);
 
         if (dbError) {
             console.error('Database error:', dbError);
             throw error(500, 'Failed to process request');
         }
+
+        // Filter matches by model using fuzzy matching
+        matches = matches?.filter(match => {
+            const similarity = stringSimilarity(match['Car Model'], model);
+            console.log(`Model similarity for ${match['Car Model']}: ${similarity}`);
+            return similarity >= 0.7; // Accept 70% similarity or better
+        }) || [];
 
         // Filter matches by year range
         matches = matches?.filter(match => {
@@ -323,33 +404,58 @@ export async function GET({ url }) {
         let bestMatch = null;
         let inferredVariation = false;
         let inferredDoors = false;
+        let matchConfidence: 'high' | 'medium' | 'low' = 'high';
 
-        // Try exact door and variation match first
+        // Try exact door match first
         if (matches.length > 0) {
             let filteredMatches = matches.filter(m => m['Number of Doors'] === doors);
             
+            // Try exact variation if provided
             if (carVariation && VALID_CAR_VARIATIONS.has(carVariation)) {
                 const exactMatches = filteredMatches.filter(m => m['Car Variation'] === carVariation);
                 bestMatch = findBestMatch(exactMatches);
             }
             
-            // If no match with exact variation, try all variations but keep door restriction
+            // If no match, try common variations
             if (!bestMatch && filteredMatches.length > 0) {
                 inferredVariation = true;
-                bestMatch = findBestMatch(filteredMatches);
+                matchConfidence = 'medium';
+                
+                for (const variation of COMMON_VARIATIONS) {
+                    const commonMatches = filteredMatches.filter(m => m['Car Variation'] === variation);
+                    bestMatch = findBestMatch(commonMatches);
+                    if (bestMatch) break;
+                }
+                
+                // If still no match, try all variations
+                if (!bestMatch) {
+                    matchConfidence = 'low';
+                    bestMatch = findBestMatch(filteredMatches);
+                }
             }
             
             // If still no match, try without door restriction
             if (!bestMatch) {
                 inferredDoors = true;
+                matchConfidence = 'low';
+                
                 if (carVariation && VALID_CAR_VARIATIONS.has(carVariation)) {
                     const doorlessMatches = matches.filter(m => m['Car Variation'] === carVariation);
                     bestMatch = findBestMatch(doorlessMatches);
                 }
                 
-                // If still no match, try all variations without door restriction
+                // Try common variations without door restriction
                 if (!bestMatch) {
                     inferredVariation = true;
+                    for (const variation of COMMON_VARIATIONS) {
+                        const commonMatches = matches.filter(m => m['Car Variation'] === variation);
+                        bestMatch = findBestMatch(commonMatches);
+                        if (bestMatch) break;
+                    }
+                }
+                
+                // If still no match, try all variations without door restriction
+                if (!bestMatch) {
                     bestMatch = findBestMatch(matches);
                 }
             }
@@ -368,6 +474,10 @@ export async function GET({ url }) {
         // Create product groups from best match
         const productGroups = await createProductGroup(bestMatch, url);
 
+        // Calculate model similarity for debugging
+        const modelSimilarity = stringSimilarity(bestMatch['Car Model'], model);
+        console.log('Model similarity score:', modelSimilarity);
+
         // Prepare response
         const response: ThuleLookupResponse = {
             success: true,
@@ -382,17 +492,18 @@ export async function GET({ url }) {
                 }
             },
             productGroups,
-            k_type: bestMatch['K-TYPE'] ? [bestMatch['K-TYPE']] : []
+            k_type: bestMatch['K-TYPE'] ? [bestMatch['K-TYPE']] : [],
+            matchConfidence: matchConfidence
         };
 
         // Add inference notes
         if (inferredVariation || inferredDoors) {
             response.inferred = {
-                message: inferredVariation && inferredDoors 
-                    ? "Rail type and door configuration were automatically detected"
+                message: `${inferredVariation && inferredDoors 
+                    ? "Rail type and door configuration were"
                     : inferredVariation 
-                        ? "Rail type was automatically detected"
-                        : "Door configuration was automatically detected",
+                        ? "Rail type was"
+                        : "Door configuration was"} automatically detected (${matchConfidence} confidence)`,
                 detected: {
                     variation: bestMatch['Car Variation'],
                     doors: bestMatch['Number of Doors']
