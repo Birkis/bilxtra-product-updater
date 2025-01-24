@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   version: 1.0.0
   title: Bilxtra Product APIs
@@ -321,7 +321,9 @@ paths:
                     example: false
                   productGroups:
                     type: array
-                    items: {}
+                    items:
+                      type: object
+                      additionalProperties: true
                   message:
                     type: string
                     example: "No exact match found for the specified car"
@@ -419,10 +421,17 @@ paths:
                         example: ""
                   productGroups:
                     type: array
-                    items: {}
+                    items:
+                      type: object
+                      additionalProperties: true
                   k_type:
                     type: array
-                    items: {}
+                    items:
+                      type: string
+                  debug:
+                    type: object
+                    description: Additional error details (only in development)
+                    additionalProperties: true
 
   /api/vehicle-lookup:
     get:
