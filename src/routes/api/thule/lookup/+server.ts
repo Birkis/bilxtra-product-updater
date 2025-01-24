@@ -278,8 +278,8 @@ async function createProductGroup(match: any, requestUrl: URL): Promise<ProductG
 // Helper function to normalize strings for comparison
 function normalizeString(str: string): string {
     return str.toLowerCase()
-        .replace(/[-\s]/g, '') // Remove hyphens and spaces
-        .replace(/[^\w\s]/g, ''); // Remove special characters
+        .replace(/[-\s]/g, '')  // Remove hyphens and spaces
+        .replace(/[^\w\d]/g, ''); // Keep letters and numbers, remove other special chars
 }
 
 // Calculate similarity between two strings (0-1)
@@ -288,14 +288,58 @@ function stringSimilarity(str1: string, str2: string): number {
     const s2 = normalizeString(str2);
     
     if (s1 === s2) return 1;
-    if (s1.includes(s2) || s2.includes(s1)) return 0.9;
     
-    // Count matching characters
-    let matches = 0;
-    for (let i = 0; i < s1.length; i++) {
-        if (s2.includes(s1[i])) matches++;
+    // Extract numbers from both strings
+    const nums1 = s1.match(/\d+/g) || [];
+    const nums2 = s2.match(/\d+/g) || [];
+    
+    // If both strings have numbers but they don't match, reduce similarity
+    if (nums1.length > 0 && nums2.length > 0 && 
+        !nums1.some(n1 => nums2.includes(n1))) {
+        return 0.3;  // Low score for different numbers
     }
-    return matches / Math.max(s1.length, s2.length);
+    
+    // Use Levenshtein distance for better positional matching
+    const distance = levenshteinDistance(s1, s2);
+    const maxLength = Math.max(s1.length, s2.length);
+    const similarity = 1 - (distance / maxLength);
+    
+    // Only return high similarities if they're really close
+    if (similarity > 0.8) {
+        return similarity;
+    }
+    
+    // Otherwise reduce the score
+    return similarity * 0.7;
+}
+
+function levenshteinDistance(s1: string, s2: string): number {
+    if (s1.length === 0) return s2.length;
+    if (s2.length === 0) return s1.length;
+
+    const matrix: number[][] = Array(s2.length + 1).fill(null).map(() => Array(s1.length + 1).fill(0));
+
+    for (let i = 0; i <= s2.length; i++) {
+        matrix[i][0] = i;
+    }
+    for (let j = 0; j <= s1.length; j++) {
+        matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= s2.length; i++) {
+        for (let j = 1; j <= s1.length; j++) {
+            if (s2.charAt(i - 1) === s1.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,  // substitution
+                    matrix[i][j - 1] + 1,      // insertion
+                    matrix[i - 1][j] + 1       // deletion
+                );
+            }
+        }
+    }
+    return matrix[s2.length][s1.length];
 }
 
 // Common variations to try first
