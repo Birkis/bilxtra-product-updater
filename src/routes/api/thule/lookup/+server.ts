@@ -339,6 +339,17 @@ function normalizeString(str: string): string {
         return result;
     }
     
+    // Special handling for e-tron models
+    if (normalized.toLowerCase().includes('e-tron')) {
+        const result = normalized
+            .toLowerCase()
+            // Keep spaces and hyphens for e-tron models
+            .replace(/[^\w\d\s-]/g, '')
+            .trim();
+        console.log('E-tron normalized:', result);
+        return result;
+    }
+    
     // Then do general normalization
     const result = normalized
         .toLowerCase()
@@ -462,15 +473,27 @@ const COMMON_VARIATIONS = [
 
 // Clean and normalize input for matching
 function normalizeInput(input: string): string {
-    return input.toLowerCase()
+    console.log('normalizeInput input:', input);
+    const result = input.toLowerCase()
         .trim()
         .replace(/\s+/g, ' ')  // Normalize spaces
         .replace(/[-–—]/g, '-'); // Normalize different types of dashes
+    console.log('normalizeInput result:', result);
+    return result;
 }
 
 // Normalize model names for comparison
 function normalizeModelName(model: string, make?: string): string {
+    console.log('normalizeModelName input:', { model, make });
     const normalized = normalizeInput(model);
+    console.log('After normalizeInput:', normalized);
+    
+    // Special handling for e-tron models
+    if (normalized.includes('e-tron')) {
+        console.log('Found e-tron model, keeping as is:', normalized);
+        // Keep e-tron as is, just normalize spaces and case
+        return normalized;
+    }
     
     // Special handling for BMW models
     if (make?.toUpperCase() === 'BMW') {
@@ -497,16 +520,26 @@ function normalizeModelName(model: string, make?: string): string {
         }
     }
     
+    console.log('normalizeModelName result:', normalized);
     return normalized;
 }
 
 // Check if two models match
 function modelsMatch(inputModel: string, dbModel: string, make?: string): boolean {
+    console.log('\nComparing models:', { inputModel, dbModel, make });
     const normalizedInput = normalizeModelName(inputModel, make);
     const normalizedDb = normalizeModelName(dbModel, make);
     
+    console.log('After normalization:', {
+        normalizedInput,
+        normalizedDb
+    });
+    
     // Exact match after normalization
-    if (normalizedInput === normalizedDb) return true;
+    if (normalizedInput === normalizedDb) {
+        console.log('Exact match after normalization');
+        return true;
+    }
     
     // For Audi A-series models, require exact matches
     if (make?.toUpperCase() === 'AUDI') {
@@ -514,7 +547,30 @@ function modelsMatch(inputModel: string, dbModel: string, make?: string): boolea
         const isDbASeries = /^A\d+$/i.test(normalizedDb);
         
         if (isInputASeries || isDbASeries) {
-            return normalizedInput === normalizedDb;
+            const matches = normalizedInput === normalizedDb;
+            console.log('A-series comparison:', { matches });
+            return matches;
+        }
+        
+        // For e-tron models
+        if (normalizedInput.includes('e-tron') || normalizedDb.includes('e-tron')) {
+            console.log('E-tron comparison:', {
+                input: normalizedInput,
+                db: normalizedDb,
+                isBaseModel: normalizedInput === 'e-tron'
+            });
+            
+            // If input is just "e-tron", only match with base e-tron model
+            if (normalizedInput === 'e-tron') {
+                const matches = normalizedDb === 'e-tron';
+                console.log('Base e-tron match:', matches);
+                return matches;
+            }
+            
+            // For specific variants, require exact match
+            const matches = normalizedInput === normalizedDb;
+            console.log('E-tron variant match:', matches);
+            return matches;
         }
     }
     
@@ -525,24 +581,6 @@ function modelsMatch(inputModel: string, dbModel: string, make?: string): boolea
         const dbSeries = normalizedDb.match(/^(\d+)-series/i)?.[1];
         
         if (inputSeries && dbSeries && inputSeries === dbSeries) {
-            return true;
-        }
-    }
-    
-    // For e-tron style matching (base model matching)
-    if (inputModel.toLowerCase().includes('e-tron') || dbModel.toLowerCase().includes('e-tron')) {
-        const inputParts = normalizedInput.split(/\s+/);
-        const dbParts = normalizedDb.split(/\s+/);
-        
-        // If the first parts match (e.g., "e-tron" is the base model)
-        if (inputParts[0] === dbParts[0]) {
-            // If only base model was provided, only match base models
-            return inputParts.length === 1 ? dbParts.length === 1 : true;
-        }
-        
-        // Also match if one is a complete substring of the other
-        if (dbModel.toLowerCase().includes(inputModel.toLowerCase()) ||
-            inputModel.toLowerCase().includes(dbModel.toLowerCase())) {
             return true;
         }
     }
@@ -579,11 +617,30 @@ export async function GET({ url }) {
         // Get all records and filter with our string similarity
         let { data: matches, error: dbError } = await supabase
             .from('car_fits')
-            .select('*');
+            .select('*')
+            .eq('Car Make', make)  // First try exact make match
+            .eq('Car Model', model);  // And exact model match
 
         if (dbError) {
             console.error('Database error:', dbError);
             throw error(500, 'Failed to process request');
+        }
+
+        // If no exact matches, try fuzzy matching
+        if (!matches || matches.length === 0) {
+            console.log('No exact matches, trying fuzzy matching');
+            let { data: fuzzyMatches, error: fuzzyError } = await supabase
+                .from('car_fits')
+                .select('*');
+
+            if (fuzzyError) {
+                console.error('Database error:', fuzzyError);
+                throw error(500, 'Failed to process request');
+            }
+
+            matches = fuzzyMatches;
+        } else {
+            console.log('Found exact matches:', matches.length);
         }
 
         // Log all unique manufacturer names for debugging
@@ -593,12 +650,30 @@ export async function GET({ url }) {
         // First filter by make only to get potential suggestions
         const makeMatches = matches?.filter(match => {
             const makeSimilarity = stringSimilarity(match['Car Make'], make);
-            console.log(`Make similarity for ${match['Car Make']}: ${makeSimilarity}`);
+            console.log(`Make similarity for ${match['Car Make']} vs ${make}: ${makeSimilarity}`);
             return makeSimilarity >= 0.7;
         }) || [];
         
+        console.log('Make matches:', makeMatches.map(m => ({
+            make: m['Car Make'],
+            model: m['Car Model'],
+            year: { start: m['Car Start Year'], end: m['Car Stop Year'] },
+            variation: m['Car Variation']
+        })));
+        
         // Then try to find exact matches with both make and model
-        matches = makeMatches.filter(match => modelsMatch(model, match['Car Model'], make));
+        matches = makeMatches.filter(match => {
+            const isMatch = modelsMatch(model, match['Car Model'], make);
+            console.log(`Model match for ${match['Car Model']} vs ${model}: ${isMatch}`);
+            return isMatch;
+        });
+
+        console.log('Model matches:', matches.map(m => ({
+            make: m['Car Make'],
+            model: m['Car Model'],
+            year: { start: m['Car Start Year'], end: m['Car Stop Year'] },
+            variation: m['Car Variation']
+        })));
 
         // Filter matches by year range
         matches = matches?.filter(match => {
