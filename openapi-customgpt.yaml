@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   version: 1.0.0
   title: Bilxtra Product APIs
@@ -73,7 +73,9 @@ paths:
                         - name
                         - image
                         - price
+                        - priceExVat
                         - stock
+                        - totalStock
                       properties:
                         sku:
                           type: string
@@ -99,12 +101,20 @@ paths:
                               example: "bilxtra-prod/24/10/16/1/pac-11009663-packline-ladekabelbag-01.jpg"
                         price:
                           type: number
-                          description: The default price of the product variant in NOK
-                          example: 119.20
+                          description: The price of the product variant in NOK, including 25% VAT
+                          example: 199.00
+                        priceExVat:
+                          type: number
+                          description: The price of the product variant in NOK, excluding VAT
+                          example: 159.20
                         stock:
                           type: number
                           description: The current stock level of the product variant (always >= 3)
-                          example: 298
+                          example: 15
+                        totalStock:
+                          type: number
+                          description: Total stock across all locations
+                          example: 42
         '400':
           description: Bad request - missing search term
           content:
@@ -305,7 +315,7 @@ paths:
                     description: Confidence level of the match based on string similarity and inference
                     example: "high"
         '400':
-          description: Bad request - missing or invalid parameters, or no exact match found
+          description: Bad request - missing or invalid parameters
           content:
             application/json:
               schema:
@@ -321,12 +331,10 @@ paths:
                     example: false
                   productGroups:
                     type: array
-                    items:
-                      type: object
-                      additionalProperties: true
+                    items: {}
                   message:
                     type: string
-                    example: "No exact match found for the specified car"
+                    example: "Missing required parameters"
                   query:
                     type: object
                     properties:
@@ -342,52 +350,6 @@ paths:
                       variation:
                         type: string
                         nullable: true
-                  suggestions:
-                    type: object
-                    description: Present when a manufacturer is found but no exact model match
-                    properties:
-                      make:
-                        type: string
-                        description: The matched manufacturer name from the database
-                        example: "MERCEDES BENZ"
-                      models:
-                        type: array
-                        description: List of available models for this manufacturer
-                        items:
-                          type: object
-                          required:
-                            - model
-                            - yearRange
-                            - variations
-                          properties:
-                            model:
-                              type: string
-                              description: Model name
-                              example: "E-Class"
-                            yearRange:
-                              type: object
-                              required:
-                                - start
-                                - end
-                              properties:
-                                start:
-                                  type: integer
-                                  description: Start year of model availability
-                                  example: 2003
-                                end:
-                                  type: integer
-                                  description: End year of model availability
-                                  example: 2008
-                            variations:
-                              type: array
-                              description: Available roof rail variations for this model
-                              items:
-                                type: string
-                              example: ["med takskinner", "med faste punkter"]
-                      message:
-                        type: string
-                        description: User-friendly message explaining the suggestions
-                        example: 'We found "MERCEDES BENZ" but couldn\'t match "E 220 CDI". Did you mean one of these models?'
         '500':
           description: Server error
           content:
@@ -421,17 +383,10 @@ paths:
                         example: ""
                   productGroups:
                     type: array
-                    items:
-                      type: object
-                      additionalProperties: true
+                    items: {}
                   k_type:
                     type: array
-                    items:
-                      type: string
-                  debug:
-                    type: object
-                    description: Additional error details (only in development)
-                    additionalProperties: true
+                    items: {}
 
   /api/vehicle-lookup:
     get:

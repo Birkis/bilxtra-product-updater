@@ -69,6 +69,7 @@ interface ProcessedResult {
         name: string;
         image: ProductImage;
         price: number;
+        priceExVat: number;
         stock: number;
         totalStock: number;
     };
@@ -330,11 +331,15 @@ export const GET: RequestHandler = async ({ url }) => {
                     .reduce((sum, location) => sum + (location.stock || 0), 0);
 
                 // Create a consistent variant structure before scoring
+                const priceExVat = hit.defaultVariant?.defaultPrice || 0;
+                const priceWithVat = Number((priceExVat * 1.25).toFixed(2));
+
                 const variant = {
                     sku: hit.defaultVariant?.sku || '',
                     name: hit.defaultVariant?.name || '',
                     image: firstImage,
-                    price: hit.defaultVariant?.defaultPrice || 0,
+                    price: priceWithVat,
+                    priceExVat: priceExVat,
                     stock: hit.defaultVariant?.defaultStock || 0,
                     totalStock
                 };
