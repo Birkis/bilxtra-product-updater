@@ -22,26 +22,67 @@ servers:
   - url: https://bilxtra-product-updater.vercel.app
     description: Production API server
 
+components:
+  schemas:
+    CarInfo:
+      type: object
+      required:
+        - make
+        - model
+        - variation
+        - yearRange
+      properties:
+        make:
+          type: string
+          description: Car manufacturer name
+          example: "BMW"
+        model:
+          type: string
+          description: Car model name
+          example: "3-Series"
+        variation:
+          type: string
+          description: Roof rail type/configuration
+          example: "med takskinner"
+        yearRange:
+          type: object
+          required:
+            - start
+            - end
+          properties:
+            start:
+              type: integer
+              description: Start year of the model range
+              example: 2005
+            end:
+              type: integer
+              description: End year of the model range (9999 for current models)
+              example: 2011
+
 paths:
   /api/product-search:
     get:
       operationId: searchProducts
       summary: Search for products in the Crystallize catalog
       description: |
-        Returns a list of products matching the search term, with cleaned URLs for Bilxtra.no.
-        Products with stock less than 3 are filtered out to ensure availability.
-        Results are limited to top 5 matches.
+        Returns products matching search term with cleaned Bilxtra.no URLs.
+        Search matches against product name, SKU (with/without THU- prefix), and description.
+        Products with stock < 3 are filtered out. Results sorted by relevance score based on exact matches, word boundaries, and product quality signals.
       parameters:
         - name: q
           in: query
           required: true
-          description: The search term to find products (matches against product name or SKU)
+          description: |
+            The search term to find products. Matches against:
+            - Product name
+            - SKU (with or without THU- prefix)
+            - Product description
           schema:
             type: string
-            example: "ladekabel til etron"
+            example: "721420"
       responses:
         '200':
-          description: A list of products matching the search criteria (max 5 results, stock >= 3)
+          description: A list of products matching the search criteria (stock >= 3)
           content:
             application/json:
               schema:
@@ -52,20 +93,29 @@ paths:
                     - name
                     - itemId
                     - url
+                    - score
                     - variant
                   properties:
                     name:
                       type: string
                       description: The name of the product
-                      example: "BAG TIL LADEKABEL PACKLINE"
+                      example: "WINGBAR EDGE 95 BLACK 1-PK"
                     itemId:
                       type: string
                       description: Unique identifier for the product in Crystallize
-                      example: "670e7081b31888406ab9c536"
+                      example: "66d19ef57a3c149f55b373ee"
                     url:
                       type: string
                       description: Clean URL to the product page on Bilxtra.no
-                      example: "https://bilxtra.no/utstyr/elbil-og-hybrid/tilbehor/bag-til-ladekabel-packline"
+                      example: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/wingbar-edge-95-black-1-pk"
+                    score:
+                      type: number
+                      description: |
+                        Relevance score (0-50):
+                        - Higher scores indicate better matches
+                        - Based on match location and quality
+                        - Includes product quality signals
+                      example: 45
                     variant:
                       type: object
                       required:
@@ -80,11 +130,11 @@ paths:
                         sku:
                           type: string
                           description: Product SKU (Stock Keeping Unit)
-                          example: "LAD-11009663"
+                          example: "THU-721420"
                         name:
                           type: string
                           description: Variant name/description
-                          example: "BAG TIL LADEKABEL PACKLINE"
+                          example: "WINGBAR EDGE 95 BLACK 1-PK"
                         image:
                           type: object
                           required:
@@ -94,27 +144,29 @@ paths:
                             url:
                               type: string
                               description: URL to the product image
-                              example: "https://media.crystallize.com/bilxtra-prod/24/10/16/1/pac-11009663-packline-ladekabelbag-01.jpg"
+                              example: "https://media.crystallize.com/bilxtra-prod/24/8/30/23/399084-thule-edge-rails-thu-720400.jpg"
                             key:
                               type: string
                               description: Crystallize media key for the image
-                              example: "bilxtra-prod/24/10/16/1/pac-11009663-packline-ladekabelbag-01.jpg"
+                              example: "bilxtra-prod/24/8/30/23/399084-thule-edge-rails-thu-720400.jpg"
                         price:
                           type: number
-                          description: The price of the product variant in NOK, including 25% VAT
-                          example: 199.00
+                          description: The price including 25% VAT
+                          example: 2639.00
                         priceExVat:
                           type: number
-                          description: The price of the product variant in NOK, excluding VAT
-                          example: 159.20
+                          description: The price excluding VAT
+                          example: 2111.20
                         stock:
-                          type: number
-                          description: The current stock level of the product variant (always >= 3)
-                          example: 15
+                          type: integer
+                          description: Current stock at default location
+                          minimum: 3
+                          example: 106
                         totalStock:
-                          type: number
+                          type: integer
                           description: Total stock across all locations
-                          example: 42
+                          minimum: 3
+                          example: 196
         '400':
           description: Bad request - missing search term
           content:
@@ -157,7 +209,10 @@ paths:
       operationId: lookupThuleProducts
       summary: Find compatible Thule products for a specific car
       description: |
-        Returns Thule products for car specs. Uses fuzzy matching for manufacturer names (e.g., "mercedes" matches "MERCEDES BENZ") and Levenshtein distance for model matching. Scoring: complete sets (8 pts), single racks (3 pts), components (1 pt).
+        Returns Thule products for car specs using manufacturer matching with string similarity.
+        Special handling for BMW (series matching), Audi (A-series), and E-tron models.
+        Includes year validation and variation inference with confidence levels.
+        Products scored by type: complete sets (8), single racks (3), components (1).
       parameters:
         - name: make
           in: query
@@ -169,7 +224,11 @@ paths:
         - name: model
           in: query
           required: true
-          description: Car model
+          description: |
+            Car model. Special handling for:
+            - BMW models (e.g., "320" matches "3-series")
+            - Audi A-series (exact matches required)
+            - E-tron variants (base model matching)
           schema:
             type: string
           example: e-tron
@@ -187,6 +246,10 @@ paths:
           required: false
           description: |
             Roof rail type. Auto-detects if not provided.
+            Confidence levels:
+            - high: Exact match with provided variation
+            - medium: Match with common variation
+            - low: Match with any available variation
           schema:
             type: string
             enum:
@@ -207,151 +270,73 @@ paths:
           example: med integrerte relinger
       responses:
         '200':
-          description: Successful response with product matches
+          description: Successful lookup with matching products
           content:
             application/json:
               schema:
                 type: object
                 required:
                   - success
-                  - productGroups
                   - car
+                  - productGroups
                   - k_type
-                  - matchConfidence
                 properties:
                   success:
                     type: boolean
-                    description: Whether the lookup was successful
+                    example: true
+                  car:
+                    $ref: '#/components/schemas/CarInfo'
                   productGroups:
                     type: array
-                    description: Groups of compatible Thule products (complete racks or individual components)
                     items:
                       type: object
                       required:
                         - type
-                        - isPreferred
                         - products
                       properties:
                         type:
                           type: string
                           enum: [complete_rack, individual_components]
-                          description: Type of product group
-                        isPreferred:
-                          type: boolean
-                          description: Whether this group is the preferred solution
+                          example: "complete_rack"
                         products:
                           type: array
-                          description: List of compatible products in this group
                           items:
                             type: object
                             required:
-                              - sku
-                              - type
-                              - url
                               - name
+                              - url
+                              - position
                             properties:
-                              sku:
-                                type: string
-                                description: Product SKU
-                                example: "721420"
-                              type:
-                                type: string
-                                enum: [bar, foot, kit, complete_rack]
-                                description: Product component type
-                              url:
-                                type: string
-                                description: URL to product page
-                                example: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/wingbar-edge-95-black-1-pk"
                               name:
                                 type: string
-                                description: Product name
-                                example: "WINGBAR EDGE 95 BLACK 1-PK"
+                                example: "Thule WingBar Edge"
+                              url:
+                                type: string
+                                example: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/wingbar-edge-95-black-1-pk"
                               position:
                                 type: string
                                 enum: [front, rear]
-                                description: Position for complete racks (optional)
+                                example: "front"
                   k_type:
                     type: array
-                    description: K-type specifications
                     items:
                       type: string
-                    example: ["138779", "134328"]
-                  car:
-                    $ref: '#/components/schemas/CarInfo'
-                  inferred:
-                    type: object
-                    description: Present when rail type was automatically detected
-                    required:
-                      - message
-                      - detected
-                      - original
-                    properties:
-                      message:
-                        type: string
-                        description: User-friendly message about what was automatically detected
-                        example: "Rail type was automatically detected"
-                      detected:
-                        type: object
-                        required:
-                          - variation
-                        properties:
-                          variation:
-                            type: string
-                            description: The rail type that was automatically detected
-                            example: "med normalt tak"
-                      original:
-                        type: object
-                        required:
-                          - variation
-                        properties:
-                          variation:
-                            type: string
-                            nullable: true
-                            description: The original rail type that was provided (if any)
-                            example: null
+                    example: ["123456", "123457"]
                   matchConfidence:
                     type: string
                     enum: [high, medium, low]
-                    description: Confidence level of the match based on string similarity and inference
                     example: "high"
-        '400':
-          description: Bad request - missing or invalid parameters
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - success
-                  - productGroups
-                  - message
-                  - query
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  productGroups:
-                    type: array
-                    items: {}
-                  message:
+                  inferredMessage:
                     type: string
-                    example: "Missing required parameters"
-                  query:
-                    type: object
-                    properties:
-                      make:
-                        type: string
-                        nullable: true
-                      model:
-                        type: string
-                        nullable: true
-                      year:
-                        type: integer
-                        nullable: true
-                      variation:
-                        type: string
-                        nullable: true
-        '500':
-          description: Server error
+                    example: "Rail type was automatically detected with high confidence"
+                  detectedVariation:
+                    type: string
+                    example: "med takskinner"
+                  originalVariation:
+                    type: string
+                    example: "med integrerte relinger"
+        '404':
+          description: No matching products found
           content:
             application/json:
               schema:
@@ -359,34 +344,49 @@ paths:
                 required:
                   - success
                   - error
-                  - car
-                  - productGroups
-                  - k_type
                 properties:
                   success:
                     type: boolean
                     example: false
                   error:
                     type: string
-                    example: "Failed to process request"
-                  car:
+                    example: "No matching products found"
+                  query:
                     type: object
                     properties:
                       make:
                         type: string
-                        example: ""
+                        example: "AUDI"
                       model:
                         type: string
-                        example: ""
+                        example: "e-tron"
+                      year:
+                        type: integer
+                        example: 2020
                       variation:
                         type: string
-                        example: ""
-                  productGroups:
-                    type: array
-                    items: {}
-                  k_type:
-                    type: array
-                    items: {}
+                        example: "med integrerte relinger"
+                  suggestions:
+                    type: object
+                    description: Present when similar models are found
+                    required:
+                      - make
+                      - models
+                      - message
+                    properties:
+                      make:
+                        type: string
+                        description: The matched manufacturer name
+                        example: "AUDI"
+                      models:
+                        type: array
+                        description: List of suggested models
+                        items:
+                          $ref: '#/components/schemas/CarInfo'
+                      message:
+                        type: string
+                        description: User-friendly message suggesting alternative models
+                        example: 'Did you mean one of these models?'
 
   /api/vehicle-lookup:
     get:

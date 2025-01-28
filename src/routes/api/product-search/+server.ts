@@ -9,10 +9,11 @@ interface ProductImage {
 interface ProductVariant {
     sku: string;
     name: string;
-    images: ProductImage[];
-    defaultPrice: number;
-    defaultStock: number;
-    stockLocations: Record<string, { stock: number }>;
+    image: ProductImage;
+    price: number;
+    priceExVat: number;
+    stock: number;
+    totalStock: number;
 }
 
 interface ProductInfo {
@@ -49,13 +50,27 @@ interface ProductHit {
 interface SearchResponse {
     browse: {
         generiskProdukt: {
-            hits: ProductHit[];
+            hits: Array<{
+                name: string;
+                score: number;
+                shortcuts: string[];
+                itemId: string;
+                defaultVariant: {
+                    sku: string;
+                    name: string;
+                    firstImage: ProductImage;
+                    defaultPrice: number;
+                    defaultStock: number;
+                    stockLocations: Record<string, { stock: number }>;
+                };
+                paginationToken: string;
+            }>;
             summary: {
                 totalHits: number;
                 hasMoreHits: boolean;
                 hasPreviousHits: boolean;
-            }
-        }
+            };
+        };
     };
 }
 
@@ -64,61 +79,60 @@ interface ProcessedResult {
     itemId: string;
     url: string;
     score: number;
-    variant: {
-        sku: string;
-        name: string;
-        image: ProductImage;
-        price: number;
-        priceExVat: number;
-        stock: number;
-        totalStock: number;
-    };
+    variant: ProductVariant;
 }
 
 // Function to fetch all results using pagination
-async function fetchAllResults(query: string, searchTerm: string): Promise<ProductHit[]> {
-    let allHits: ProductHit[] = [];
+async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
+    let allResults: ProcessedResult[] = [];
     let paginationToken: string | null = null;
     let hasMore = true;
 
     while (hasMore) {
-        const paginationQuery: string = `
-            query FIND_PRODUCTS_BROWSE_REGEX($search_term: String!, $path_term: String!${paginationToken ? ', $after: String' : ''}) {
+        const query: string = `
+            query FIND_PRODUCTS_BROWSE_REGEX($search_term: String!${paginationToken ? ', $paginationToken: String' : ''}) {
                 browse {
                     generiskProdukt(
                         pagination: {
                             limit: 100
-                            ${paginationToken ? 'after: $after' : ''}
+                            ${paginationToken ? 'after: $paginationToken' : ''}
                         }
                         filters: {
                             OR: [
-                                { shortcuts_path: { regex: $path_term }},
-                                { topics: { contains: $search_term }}
-                                { name: { contains: $search_term }},
+                                { shortcuts_path: { regex: $search_term }},
+                                { topics: { regex: $search_term }},
+                                { sku: { regex: $search_term }},
+                                { name: { regex: $search_term }},
+                                { productInfo_description_body_plainText: { regex: $search_term }}
                             ]
+                        }
+                        options: {
+                            fuzzy: {
+                                fuzziness: DOUBLE,
+                                maxExpensions: 5
+                            }
+                        }
+                        sorting: {
+                            score: desc
                         }
                     ) {
                         hits {
-                            ... on Product {
-                                publicationState
-                                topics
-                                score
+                            name
+                            score
+                            shortcuts
+                            itemId
+                            defaultVariant {
+                                sku
                                 name
-                                itemId
-                                shortcuts
-                                defaultVariant {
-                                    sku
-                                    name
-                                    images {
-                                        url
-                                        key
-                                    }
-                                    defaultPrice
-                                    defaultStock
-                                    stockLocations
+                                firstImage {
+                                    url
+                                    key
                                 }
-                                paginationToken
+                                defaultPrice
+                                defaultStock
+                                stockLocations
                             }
+                            paginationToken
                         }
                         summary {
                             totalHits
@@ -130,31 +144,70 @@ async function fetchAllResults(query: string, searchTerm: string): Promise<Produ
             }
         `;
 
-        const variables: { search_term: string; path_term: string; after?: string } = {
-            search_term: searchTerm,
-            path_term: searchTerm.replace(/ø/g, 'o').toLowerCase(),
-            ...(paginationToken && { after: paginationToken })
+        const variables: { search_term: string; paginationToken?: string } = {
+            search_term: `.*${searchTerm}.*`,
+            ...(paginationToken && { paginationToken })
         };
 
-        console.log('Fetching page with token:', paginationToken);
-        const data = await discoveryApi<SearchResponse>(paginationQuery, variables);
-        
+        const data = await discoveryApi<SearchResponse>(query, variables);
         const hits = data.browse.generiskProdukt.hits;
-        allHits = [...allHits, ...hits];
+        
+        // Process hits into our response format
+        const processedHits = hits.map(hit => {
+            // Get the first valid shortcut or use a default path
+            const validShortcut = hit.shortcuts?.find((s: string) => s.startsWith('/categories')) || '/ukategorisert';
+            const cleanPath = validShortcut.replace(/^\/categories/, '');
+            
+            // Calculate total stock across locations
+            const totalStock = Object.values(hit.defaultVariant?.stockLocations || {})
+                .reduce((sum: number, location: { stock: number }) => sum + (location.stock || 0), 0);
+
+            const priceExVat = hit.defaultVariant?.defaultPrice || 0;
+            const priceWithVat = Number((priceExVat * 1.25).toFixed(2));
+
+            return {
+                name: hit.name,
+                itemId: hit.itemId,
+                url: `https://bilxtra.no${cleanPath}`,
+                score: hit.score,
+                variant: {
+                    sku: hit.defaultVariant?.sku || '',
+                    name: hit.defaultVariant?.name || '',
+                    image: hit.defaultVariant?.firstImage || {
+                        url: 'https://bilxtra.no/images/no-image.jpg',
+                        key: 'default/no-image'
+                    },
+                    price: priceWithVat,
+                    priceExVat: priceExVat,
+                    stock: hit.defaultVariant?.defaultStock || 0,
+                    totalStock
+                }
+            };
+        });
+
+        allResults = [...allResults, ...processedHits];
         
         hasMore = data.browse.generiskProdukt.summary.hasMoreHits;
         if (hasMore && hits.length > 0) {
             paginationToken = hits[hits.length - 1].paginationToken;
         }
-
-        console.log(`Fetched ${hits.length} results. Total so far: ${allHits.length}. Has more: ${hasMore}`);
     }
 
-    return allHits;
+    return allResults;
 }
 
 // Function to create smart regex patterns for search
 function createSmartRegexPattern(searchTerm: string): { searchPattern: string; pathPattern: string } {
+    // Check if this is a SKU search
+    if (searchTerm.match(/^(THU-)?[\d]+$/)) {
+        // For SKUs, try to match with or without THU- prefix
+        const numericPart = searchTerm.replace('THU-', '');
+        return {
+            searchPattern: `(THU-)?${numericPart}`,  // Match with or without prefix
+            pathPattern: searchTerm.toLowerCase()
+        };
+    }
+
     // Normalize the search term by handling Norwegian characters for path search
     const normalizedTerm = searchTerm
         .replace(/ø/g, 'o')
@@ -300,86 +353,19 @@ export const GET: RequestHandler = async ({ url }) => {
         });
     }
 
-    // Create smart regex patterns for search
-    const { searchPattern, pathPattern } = createSmartRegexPattern(searchTerm);
-
     try {
-        console.log('Executing search query with patterns:', { searchPattern, pathPattern });
-        const allHits = await fetchAllResults(searchPattern, pathPattern);
+        const results = await fetchAllResults(searchTerm);
         
-        console.log('Total hits fetched:', allHits.length);
-        
-        // Process and sort the results
-        console.log('Raw results count:', allHits.length);
-        const processedResults = allHits
-            .map(hit => {
-                // Find the first shortcut that starts with '/categories' or use a default path
-                let cleanPath = '/ukategorisert';
-                const validShortcut = hit.shortcuts.find(s => s.startsWith('/categories'));
-                if (validShortcut) {
-                    cleanPath = validShortcut.replace(/^\/categories/, '');
-                }
+        // Filter results to ensure minimum stock and sort by score
+        const filteredResults = results
+            .filter(result => result.variant.totalStock >= 3)
+            .sort((a, b) => b.score - a.score);
 
-                // Get the first image if available
-                const firstImage = hit.defaultVariant?.images?.[0] || {
-                    url: 'https://bilxtra.no/images/no-image.jpg',
-                    key: 'default/no-image'
-                };
-
-                // Calculate total stock across all locations
-                const totalStock = Object.values(hit.defaultVariant?.stockLocations || {})
-                    .reduce((sum, location) => sum + (location.stock || 0), 0);
-
-                // Create a consistent variant structure before scoring
-                const priceExVat = hit.defaultVariant?.defaultPrice || 0;
-                const priceWithVat = Number((priceExVat * 1.25).toFixed(2));
-
-                const variant = {
-                    sku: hit.defaultVariant?.sku || '',
-                    name: hit.defaultVariant?.name || '',
-                    image: firstImage,
-                    price: priceWithVat,
-                    priceExVat: priceExVat,
-                    stock: hit.defaultVariant?.defaultStock || 0,
-                    totalStock
-                };
-
-                // Set the URL and variant before scoring
-                hit.url = `https://bilxtra.no${cleanPath}`;
-                hit.variant = variant;
-
-                const score = calculateScore(hit, searchTerm);
-                console.log(`Score for ${hit.name}:`, score);
-
-                return {
-                    name: hit.name,
-                    itemId: hit.itemId,
-                    url: hit.url,
-                    score,
-                    variant
-                };
-            })
-            .sort((a, b) => b.score - a.score)
-            .filter(result => {
-                const filtered = result.score > 0 && result.variant.totalStock >= 3;
-                if (!filtered) {
-                    console.log(`Filtered out ${result.name} - score: ${result.score}, totalStock: ${result.variant.totalStock}`);
-                }
-                return filtered;
-            });
-
-        console.log('Final processed results:', processedResults);
-        return new Response(JSON.stringify(processedResults), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        return new Response(JSON.stringify(filteredResults), {
+            headers: { 'Content-Type': 'application/json' }
         });
     } catch (error) {
-        console.error('Search error details:', {
-            error,
-            searchTerm,
-            stack: error instanceof Error ? error.stack : undefined
-        });
+        console.error('Search error:', error);
         return new Response(JSON.stringify({ 
             error: 'Failed to perform search',
             details: error instanceof Error ? error.message : 'Unknown error',

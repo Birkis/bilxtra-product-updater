@@ -23,29 +23,38 @@ async function getProductUrl(sku: string, requestUrl: URL): Promise<string | nul
     try {
         // Extract just the number if it's a kit ID (format: "Thule Kit 145219")
         const cleanSku = sku.includes('Kit') ? sku.split(' ').pop() || sku : sku;
-        const searchSku = `THU-${cleanSku}`;
-        console.log('Searching for product URL with SKU:', searchSku, '(original:', sku, ')');
         
-        // Use the same origin as the current request
-        const productSearchUrl = new URL('/api/product-search', requestUrl.origin);
-        productSearchUrl.searchParams.set('q', searchSku);
+        // Try both with and without THU- prefix since products might be stored either way
+        const searchSkus = [
+            cleanSku,
+            `THU-${cleanSku}`
+        ];
         
-        console.log('Making request to:', productSearchUrl.toString());
-        const response = await fetch(productSearchUrl);
-        if (!response.ok) {
-            console.warn(`Failed to fetch product URL for SKU ${searchSku}:`, response.statusText);
-            return null;
+        for (const searchSku of searchSkus) {
+            console.log('Searching for product URL with SKU:', searchSku, '(original:', sku, ')');
+            
+            // Use the same origin as the current request
+            const productSearchUrl = new URL('/api/product-search', requestUrl.origin);
+            productSearchUrl.searchParams.set('q', searchSku);
+            
+            console.log('Making request to:', productSearchUrl.toString());
+            const response = await fetch(productSearchUrl);
+            if (!response.ok) {
+                console.warn(`Failed to fetch product URL for SKU ${searchSku}:`, response.statusText);
+                continue;
+            }
+            
+            const results = await response.json();
+            console.log('Product search results:', results);
+            
+            // Check if we have results and get the URL from the correct location
+            if (results && results.length > 0 && results[0].url) {
+                console.log('Found product URL:', results[0].url);
+                return results[0].url;
+            }
         }
         
-        const results = await response.json();
-        console.log('Product search results:', JSON.stringify(results, null, 2));
-        
-        if (results && results.length > 0) {
-            console.log('Found product URL:', results[0].url);
-            return results[0].url;
-        }
-        
-        console.warn('No product URL found for SKU:', searchSku);
+        console.warn('No product URL found for any SKU variation:', searchSkus);
         return null;
     } catch (err) {
         console.error('Error fetching product URL:', err);
@@ -300,33 +309,46 @@ async function createProductGroup(match: any, requestUrl: URL): Promise<ProductG
 
 // Helper function to normalize strings for comparison
 function normalizeString(str: string): string {
+    console.log('Normalizing string:', str);
+    
     // First normalize manufacturer names
     const normalized = str
         .toUpperCase()
-        // Convert common separators to spaces
-        .replace(/[-_./\\]/g, ' ')
+        // Convert common separators to spaces, but preserve hyphens in e-tron, Q4-etron etc
+        .replace(/(?<!E|Q[0-9]?)[-_./\\]/g, ' ')
         // Normalize multiple spaces to single space
         .replace(/\s+/g, ' ')
         // Trim spaces
         .trim();
     
+    console.log('After initial normalization:', normalized);
+    
     // Extract model series for common manufacturers
     const modelSeriesMatch = normalized.match(/^([A-Z])\s*(?:CLASS|KLASSE|SERIES|CLASSE)/i);
     if (modelSeriesMatch) {
-        return modelSeriesMatch[1].toLowerCase() + 'class';
+        const result = modelSeriesMatch[1].toLowerCase() + 'class';
+        console.log('Matched class series:', result);
+        return result;
     }
     
     // Extract Mercedes model series from specific variants (e.g., "E 220 CDI" -> "eclass")
     const mercedesMatch = normalized.match(/^([A-Z])\s*\d+/);
     if (mercedesMatch) {
-        return mercedesMatch[1].toLowerCase() + 'class';
+        const result = mercedesMatch[1].toLowerCase() + 'class';
+        console.log('Matched Mercedes series:', result);
+        return result;
     }
     
     // Then do general normalization
-    return normalized
+    const result = normalized
         .toLowerCase()
-        // Now remove all spaces and special chars for comparison
-        .replace(/[^\w\d]/g, '');
+        // Now remove all spaces but preserve hyphens in e-tron
+        .replace(/\s+/g, '')
+        // Remove any remaining special chars except hyphens
+        .replace(/[^\w\d-]/g, '');
+    
+    console.log('Final normalized result:', result);
+    return result;
 }
 
 // Calculate similarity between two strings (0-1)
@@ -438,6 +460,98 @@ const COMMON_VARIATIONS = [
     'med takrenner'
 ];
 
+// Clean and normalize input for matching
+function normalizeInput(input: string): string {
+    return input.toLowerCase()
+        .trim()
+        .replace(/\s+/g, ' ')  // Normalize spaces
+        .replace(/[-–—]/g, '-'); // Normalize different types of dashes
+}
+
+// Normalize model names for comparison
+function normalizeModelName(model: string, make?: string): string {
+    const normalized = normalizeInput(model);
+    
+    // Special handling for BMW models
+    if (make?.toUpperCase() === 'BMW') {
+        // Convert specific model numbers to series (e.g., "320" -> "3-series")
+        if (/^\d{3}[a-z]?i?$/i.test(normalized)) {
+            const series = normalized.charAt(0);
+            return `${series}-series`;
+        }
+        
+        // Convert M models to series (e.g., "M4" -> "4-series")
+        if (/^m\d{1,2}$/i.test(normalized)) {
+            const series = normalized.match(/\d+/)?.[0];
+            return `${series}-series`;
+        }
+        
+        // If already in series format, standardize it
+        if (normalized.includes('series') || normalized.includes('-series')) {
+            return normalized.replace(/(\d+)(?:\s*-?\s*series|er)/i, '$1-series');
+        }
+        
+        // If just a number is provided, assume it's a series
+        if (/^\d+$/.test(normalized)) {
+            return `${normalized}-series`;
+        }
+    }
+    
+    return normalized;
+}
+
+// Check if two models match
+function modelsMatch(inputModel: string, dbModel: string, make?: string): boolean {
+    const normalizedInput = normalizeModelName(inputModel, make);
+    const normalizedDb = normalizeModelName(dbModel, make);
+    
+    // Exact match after normalization
+    if (normalizedInput === normalizedDb) return true;
+    
+    // For Audi A-series models, require exact matches
+    if (make?.toUpperCase() === 'AUDI') {
+        const isInputASeries = /^A\d+$/i.test(normalizedInput);
+        const isDbASeries = /^A\d+$/i.test(normalizedDb);
+        
+        if (isInputASeries || isDbASeries) {
+            return normalizedInput === normalizedDb;
+        }
+    }
+    
+    // For BMW and similar manufacturers with series numbers
+    if (make?.toUpperCase() === 'BMW') {
+        // Extract series numbers for comparison
+        const inputSeries = normalizedInput.match(/^(\d+)-series/i)?.[1];
+        const dbSeries = normalizedDb.match(/^(\d+)-series/i)?.[1];
+        
+        if (inputSeries && dbSeries && inputSeries === dbSeries) {
+            return true;
+        }
+    }
+    
+    // For e-tron style matching (base model matching)
+    if (inputModel.toLowerCase().includes('e-tron') || dbModel.toLowerCase().includes('e-tron')) {
+        const inputParts = normalizedInput.split(/\s+/);
+        const dbParts = normalizedDb.split(/\s+/);
+        
+        // If the first parts match (e.g., "e-tron" is the base model)
+        if (inputParts[0] === dbParts[0]) {
+            // If only base model was provided, only match base models
+            return inputParts.length === 1 ? dbParts.length === 1 : true;
+        }
+        
+        // Also match if one is a complete substring of the other
+        if (dbModel.toLowerCase().includes(inputModel.toLowerCase()) ||
+            inputModel.toLowerCase().includes(dbModel.toLowerCase())) {
+            return true;
+        }
+    }
+    
+    // Fall back to string similarity for backward compatibility
+    const similarity = stringSimilarity(inputModel, dbModel);
+    return similarity >= 0.7;
+}
+
 export async function GET({ url }) {
     try {
         console.log('=== Starting car lookup ===');
@@ -484,11 +598,7 @@ export async function GET({ url }) {
         }) || [];
         
         // Then try to find exact matches with both make and model
-        matches = makeMatches.filter(match => {
-            const modelSimilarity = stringSimilarity(match['Car Model'], model);
-            console.log(`Model similarity for ${match['Car Model']}: ${modelSimilarity}`);
-            return modelSimilarity >= 0.7;
-        });
+        matches = makeMatches.filter(match => modelsMatch(model, match['Car Model'], make));
 
         // Filter matches by year range
         matches = matches?.filter(match => {
