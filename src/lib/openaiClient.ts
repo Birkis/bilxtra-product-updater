@@ -9,7 +9,7 @@ function getOpenAIClient(): OpenAI {
     }
 
     if (!OPENAI_API_KEY) {
-        throw new Error('OPENAI_API_KEY environment variable is not set');
+        throw new Error('OPENAI_API_KEY environment variable is NOT set');
     }
 
     // Validate API key format

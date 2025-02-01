@@ -129,7 +129,7 @@ export async function POST({ request }: RequestEvent) {
             .join(', ');
 
         console.log('\n=== Query Formation ===');
-        console.log('Formatted search query:', searchQuery);
+        console.log('Formatted search Query:', searchQuery);
         console.log('Query components:', {
             make: searchParams.make,
             model: searchParams.model,
