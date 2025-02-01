@@ -204,190 +204,6 @@ paths:
                     description: The search term that caused the error
                     example: "kjetting"
 
-  /api/thule/lookup:
-    get:
-      operationId: lookupThuleProducts
-      summary: Find compatible Thule products for a specific car
-      description: |
-        Returns Thule products for car specs using manufacturer matching with string similarity.
-        Special handling for BMW (series matching), Audi (A-series), and E-tron models.
-        Includes year validation and variation inference with confidence levels.
-        Products scored by type: complete sets (8), single racks (3), components (1).
-      parameters:
-        - name: make
-          in: query
-          required: true
-          description: Car manufacturer (flexible matching, e.g., "mercedes", "MERCEDES-BENZ", "Mercedes Benz" all work)
-          schema:
-            type: string
-          example: MERCEDES-BENZ
-        - name: model
-          in: query
-          required: true
-          description: |
-            Car model. Special handling for:
-            - BMW models (e.g., "320" matches "3-series")
-            - Audi A-series (exact matches required)
-            - E-tron variants (base model matching)
-          schema:
-            type: string
-          example: e-tron
-        - name: year
-          in: query
-          required: true
-          description: Car model year
-          schema:
-            type: integer
-            minimum: 1900
-            maximum: 2100
-          example: 2019
-        - name: variation
-          in: query
-          required: false
-          description: |
-            Roof rail type. Auto-detects if not provided.
-            Confidence levels:
-            - high: Exact match with provided variation
-            - medium: Match with common variation
-            - low: Match with any available variation
-          schema:
-            type: string
-            enum:
-              - med integrerte relinger
-              - med takrenner, med høyt tak
-              - med takrenner
-              - med normalt tak
-              - med integrerte relinger og klemfot
-              - med normalt tak uten glasstak
-              - med T-profil
-              - Integrerte relinger og festepunktfot
-              - med faste punkter
-              - med takskinner
-              - med hevede skinner
-              - med faste punkter, uten glasstak
-              - med faste punkter, med høyt tak
-              - med fabrikkinstallert tverrstang
-          example: med integrerte relinger
-      responses:
-        '200':
-          description: Successful lookup with matching products
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - success
-                  - car
-                  - productGroups
-                  - k_type
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  car:
-                    $ref: '#/components/schemas/CarInfo'
-                  productGroups:
-                    type: array
-                    items:
-                      type: object
-                      required:
-                        - type
-                        - products
-                      properties:
-                        type:
-                          type: string
-                          enum: [complete_rack, individual_components]
-                          example: "complete_rack"
-                        products:
-                          type: array
-                          items:
-                            type: object
-                            required:
-                              - name
-                              - url
-                              - position
-                            properties:
-                              name:
-                                type: string
-                                example: "Thule WingBar Edge"
-                              url:
-                                type: string
-                                example: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/wingbar-edge-95-black-1-pk"
-                              position:
-                                type: string
-                                enum: [front, rear]
-                                example: "front"
-                  k_type:
-                    type: array
-                    items:
-                      type: string
-                    example: ["123456", "123457"]
-                  matchConfidence:
-                    type: string
-                    enum: [high, medium, low]
-                    example: "high"
-                  inferredMessage:
-                    type: string
-                    example: "Rail type was automatically detected with high confidence"
-                  detectedVariation:
-                    type: string
-                    example: "med takskinner"
-                  originalVariation:
-                    type: string
-                    example: "med integrerte relinger"
-        '404':
-          description: No matching products found
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - success
-                  - error
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  error:
-                    type: string
-                    example: "No matching products found"
-                  query:
-                    type: object
-                    properties:
-                      make:
-                        type: string
-                        example: "AUDI"
-                      model:
-                        type: string
-                        example: "e-tron"
-                      year:
-                        type: integer
-                        example: 2020
-                      variation:
-                        type: string
-                        example: "med integrerte relinger"
-                  suggestions:
-                    type: object
-                    description: Present when similar models are found
-                    required:
-                      - make
-                      - models
-                      - message
-                    properties:
-                      make:
-                        type: string
-                        description: The matched manufacturer name
-                        example: "AUDI"
-                      models:
-                        type: array
-                        description: List of suggested models
-                        items:
-                          $ref: '#/components/schemas/CarInfo'
-                      message:
-                        type: string
-                        description: User-friendly message suggesting alternative models
-                        example: 'Did you mean one of these models?'
-
   /api/vehicle-lookup:
     get:
       operationId: lookupVehicle
@@ -632,4 +448,224 @@ paths:
                     example: "Failed to fetch vehicle data"
                   debug:
                     type: object
-                    description: Additional error details (only in development) 
+                    description: Additional error details (only in development)
+
+  /api/car-search:
+    post:
+      operationId: searchCarProducts
+      summary: Find compatible Thule products using vector similarity search
+      description: |
+        Returns matching cars and their compatible Thule products using vector similarity search.
+        Includes product URLs from Crystallize, match confidence scores, and detailed product groupings.
+        Results are sorted by combined similarity and product scores.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                make:
+                  type: string
+                  description: Car manufacturer name
+                  example: "WEY"
+                model:
+                  type: string
+                  description: Car model name
+                  example: "Coffee"
+                numberOfDoors:
+                  type: string
+                  description: Number of doors (e.g., "5-dr")
+                  example: "5-dr"
+                carVariation:
+                  type: string
+                  description: Roof rail type/configuration
+                  example: "med integrerte reling"
+                productionYear:
+                  type: integer
+                  description: Car production year
+                  example: 2022
+                carType:
+                  type: string
+                  description: Type of car (e.g., "SUV")
+                  example: "SUV"
+      responses:
+        '200':
+          description: Successful search with matching cars and products
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - results
+                  - totalMatches
+                  - searchMetadata
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - similarity
+                        - carInfo
+                        - productGroups
+                        - matchConfidence
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier for the car details vector
+                          example: 9
+                        similarity:
+                          type: number
+                          description: Vector similarity score (0-1)
+                          example: 0.650785914714657
+                        product_score:
+                          type: number
+                          description: Score based on product compatibility
+                          example: 0.25
+                        combined_score:
+                          type: number
+                          description: Combined similarity and product score
+                          example: 0.490471548828794
+                        carInfo:
+                          type: object
+                          required:
+                            - make
+                            - model
+                            - variation
+                            - yearRange
+                          properties:
+                            make:
+                              type: string
+                              example: "WEY"
+                            model:
+                              type: string
+                              example: "Coffee 02"
+                            variation:
+                              type: string
+                              example: "med integrerte relinger"
+                            yearRange:
+                              type: object
+                              properties:
+                                start:
+                                  type: integer
+                                  example: 2022
+                                end:
+                                  type: integer
+                                  nullable: true
+                                  example: null
+                        productGroups:
+                          type: array
+                          items:
+                            type: object
+                            required:
+                              - type
+                              - isPreferred
+                              - products
+                            properties:
+                              type:
+                                type: string
+                                enum: [complete_rack, individual_components]
+                                example: "individual_components"
+                              isPreferred:
+                                type: boolean
+                                example: false
+                              products:
+                                type: array
+                                items:
+                                  type: object
+                                  required:
+                                    - sku
+                                    - type
+                                    - name
+                                  properties:
+                                    sku:
+                                      type: string
+                                      description: Product SKU with THU- prefix
+                                      example: "THU-711320"
+                                    type:
+                                      type: string
+                                      enum: [bar, foot, kit, complete_rack]
+                                      example: "bar"
+                                    name:
+                                      type: string
+                                      example: "Thule WingBar Evo"
+                                    url:
+                                      type: string
+                                      nullable: true
+                                      description: URL to product page on Bilxtra.no
+                                      example: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/wingbar-edge-95-black-1-pk"
+                                    position:
+                                      type: string
+                                      enum: [front, rear]
+                                      description: Position for complete racks
+                                      example: "front"
+                        matchConfidence:
+                          type: string
+                          enum: [high, medium, low]
+                          description: Confidence level of the match
+                          example: "medium"
+                  totalMatches:
+                    type: integer
+                    description: Total number of matches found
+                    example: 4
+                  searchMetadata:
+                    type: object
+                    required:
+                      - query
+                      - embeddingLength
+                      - matchThreshold
+                    properties:
+                      query:
+                        type: string
+                        description: Formatted search query used
+                        example: "WEY, Coffee, 5-dr, med integrerte reling"
+                      embeddingLength:
+                        type: integer
+                        description: Length of the embedding vector
+                        example: 1536
+                      matchThreshold:
+                        type: number
+                        description: Minimum similarity threshold used
+                        example: 0
+        '400':
+          description: Bad request - missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - error
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Missing required parameters"
+        '500':
+          description: Server error during search
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - error
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Failed to perform search"
+                  details:
+                    type: string
+                    description: Detailed error information
+                    example: "Error generating embeddings" 
