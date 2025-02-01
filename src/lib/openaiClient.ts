@@ -1,7 +1,5 @@
 import OpenAI from 'openai';
-import { env } from '$env/dynamic/private';
-
-const OPENAI_API_KEY = env.OPENAI_API_KEY;
+import { OPENAI_API_KEY } from '$env/static/private';
 
 if (!OPENAI_API_KEY) {
     throw new Error('OPENAI_API_KEY environment variable is not set');
