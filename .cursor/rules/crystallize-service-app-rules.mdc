@@ -1,0 +1,28 @@
+---
+description: Knowing and understanding the overarching goal of this project 
+globs: 
+---
+# A toolbox for the e-commerce manager of BilXtra.no
+This project is a collection of APIs and dashboards to help the e-commerce manager for Bilxtra.no. They are using a plattform called Crystallize. 
+
+The toolbox contains pages including, but not contained to:
+- a page to help find and filter orders
+- a page to search, filter and sort products
+- API endpoints to help find roof racks from Thule
+
+There are several more, and this list should expand over time
+
+# Crystallize APIs
+
+- We use a headless e-commerce platform called 'Crystallize'
+- The Crystallize platform exposes a range of GraphQL apis to us for us to get data such as orders, customers, product information and so on.
+- There are several APIs that are accessed mainly in two ways:
+1. The crystallize client [crystallizeClient.ts](mdc:src/lib/crystallizeClient.ts)
+2. endpoints like the Discovery API 
+
+- The APIs are somewhat rigid and we have to follow the documentation like [GET_PRODUCTS_WITH_REGEX.md](mdc:GET_PRODUCTS_WITH_REGEX.md)
+
+
+
+# learnings
+As we progress we should maintain a list of learnings here [learnings.md](mdc:learnings.md) - Any time we make new discoveries we should note them here. 
