@@ -129,7 +129,7 @@ export async function POST({ request }: RequestEvent) {
             .join(', ');
 
         console.log('\n=== Query Formation ===');
-        console.log('Formatted search query:', searchQuery);
+        console.log('Formatted search Query:', searchQuery);
         console.log('Query components:', {
             make: searchParams.make,
             model: searchParams.model,
@@ -142,11 +142,32 @@ export async function POST({ request }: RequestEvent) {
             // Generate embedding for search query
             console.log('\n=== Embedding Generation ===');
             console.log('Generating embedding for query:', searchQuery);
-            const embeddingResponse = await openai.embeddings.create({
-                model: "text-embedding-3-small",
-                input: searchQuery,
-                encoding_format: "float"
-            });
+            
+            let embeddingResponse;
+            try {
+                embeddingResponse = await openai.embeddings.create({
+                    model: "text-embedding-3-small",
+                    input: searchQuery,
+                    encoding_format: "float"
+                });
+            } catch (embeddingError) {
+                console.error('OpenAI embedding error:', embeddingError);
+                return json({
+                    success: false,
+                    error: 'Failed to generate search embedding',
+                    details: embeddingError instanceof Error ? embeddingError.message : 'Unknown error'
+                }, { status: 500 });
+            }
+
+            if (!embeddingResponse?.data?.[0]?.embedding) {
+                console.error('Invalid embedding response:', embeddingResponse);
+                return json({
+                    success: false,
+                    error: 'Invalid embedding response from OpenAI',
+                    details: 'Embedding data is missing or malformed'
+                }, { status: 500 });
+            }
+
             console.log('Embedding vector length:', embeddingResponse.data[0].embedding.length);
             console.log('First 5 embedding values:', embeddingResponse.data[0].embedding.slice(0, 5));
 
