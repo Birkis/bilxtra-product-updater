@@ -129,7 +129,7 @@
                     rows="3"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     placeholder="Describe what you're looking for..."
-                />
+                ></textarea>
             </div>
 
             <div>

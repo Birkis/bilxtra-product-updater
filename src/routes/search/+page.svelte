@@ -8,11 +8,12 @@
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import { searchStore } from '$lib/stores/searchStore';
+    import { onMount } from 'svelte';
 
-    let { data }: { data: PageData } = $props();
-    let searchInput = $state($page.url.searchParams.get('q') || '');
-    let isSearching = $state(false);
-    let selectedProducts = $state(new Set<string>());
+    export let data: PageData;
+    let searchInput = $page.url.searchParams.get('q') || '';
+    let isSearching = false;
+    let selectedProducts = new Set<string>();
 
     function toggleProductSelection(productId: string) {
         if (selectedProducts.has(productId)) {
@@ -32,7 +33,7 @@
     }
 
     // Initialize store with server-side data
-    $effect(() => {
+    onMount(() => {
         if (data) {
             searchStore.setRawResults(data.products, data.totalBeforeFilter || 0);
             searchStore.setSearchTerm(data.searchTerm || '');
@@ -43,14 +44,14 @@
     });
 
     // Filter states
-    let hasGeneralImage = $state($page.url.searchParams.get('hasGeneralImage') || '');
-    let hasShortcuts = $state($page.url.searchParams.get('hasShortcuts') || '');
-    let isPublished = $state($page.url.searchParams.get('isPublished') || '');
-    let isDraft = $state($page.url.searchParams.get('isDraft') || '');
-    let hasVariantImage = $state($page.url.searchParams.get('hasVariantImage') || '');
+    let hasGeneralImage = $page.url.searchParams.get('hasGeneralImage') || '';
+    let hasShortcuts = $page.url.searchParams.get('hasShortcuts') || '';
+    let isPublished = $page.url.searchParams.get('isPublished') || '';
+    let isDraft = $page.url.searchParams.get('isDraft') || '';
+    let hasVariantImage = $page.url.searchParams.get('hasVariantImage') || '';
 
     // Update store filters when URL parameters change
-    $effect(() => {
+    $: {
         const filters = {
             hasGeneralImage: hasGeneralImage === 'true' ? true : 
                            hasGeneralImage === 'false' ? false : 
@@ -69,7 +70,7 @@
                             undefined
         };
         searchStore.setFilters(filters);
-    });
+    }
 
     // Subscribe to store for filtered results
     const searchResults = searchStore;
@@ -120,7 +121,7 @@
      * Handles the search form submission
      * Updates the URL with the search query and filters
      */
-    async function handleSearch(event: SubmitEvent) {
+    async function handleSearch(event: Event) {
         event.preventDefault();
         isSearching = true;
         searchStore.setLoading(true);
@@ -150,7 +151,7 @@
 </script>
 
 <div class="search-container">
-    <form on:submit={handleSearch} class="search-form">
+    <form on:submit|preventDefault={handleSearch} class="search-form">
         <div class="search-row">
             <input
                 type="search"
@@ -234,101 +235,101 @@
                 </select>
             </div>
         </div>
-    </form>
 
-    {#if $searchResults.error}
-        <div class="error-message">
-            {$searchResults.error}
-        </div>
-    {/if}
-
-    {#if $searchResults.products.length > 0}
-        <div class="results-container">
-            <div class="results-header">
-                <div class="results-title">
-                    <div class="results-title-row">
-                        {#if $searchResults.products.length > 0}
-                            <input 
-                                type="checkbox"
-                                class="checkbox"
-                                checked={selectedProducts.size === $searchResults.products.length}
-                                indeterminate={selectedProducts.size > 0 && selectedProducts.size < $searchResults.products.length}
-                                on:change={selectAllProducts}
-                            />
-                        {/if}
-                        <h2>Search Results</h2>
-                    </div>
-                    <span class="results-count">
-                        {$searchResults.totalCount} products found
-                        {#if $searchResults.totalBeforeFilter !== $searchResults.totalCount}
-                            (filtered from {$searchResults.totalBeforeFilter})
-                        {/if}
-                        {#if selectedProducts.size > 0}
-                            <span class="selected-count">
-                                ({selectedProducts.size} selected)
-                            </span>
-                        {/if}
-                    </span>
-                </div>
-                <button 
-                    class="export-button"
-                    on:click={exportToCsv}
-                    title="Export results to CSV"
-                >
-                    Export to CSV
-                </button>
+        {#if $searchResults.error}
+            <div class="error-message">
+                {$searchResults.error}
             </div>
-            <ul class="product-list">
-                {#each $searchResults.products as product}
-                    <li class="product-item">
-                        <div class="product-header">
-                            <input 
-                                type="checkbox"
-                                class="checkbox"
-                                checked={selectedProducts.has(product.itemId)}
-                                on:change={() => toggleProductSelection(product.itemId)}
-                            />
-                            {#if product.variants[0]?.images?.[0]?.url}
-                                <img 
-                                    src={product.variants[0].images[0].url} 
-                                    alt={product.name}
-                                    class="product-thumbnail"
+        {/if}
+
+        {#if $searchResults.products.length > 0}
+            <div class="results-container">
+                <div class="results-header">
+                    <div class="results-title">
+                        <div class="results-title-row">
+                            {#if $searchResults.products.length > 0}
+                                <input
+                                    type="checkbox"
+                                    class="checkbox"
+                                    checked={selectedProducts.size === $searchResults.products.length}
+                                    indeterminate={selectedProducts.size > 0 && selectedProducts.size < $searchResults.products.length}
+                                    on:change={selectAllProducts}
                                 />
                             {/if}
-                            <div class="product-info">
-                                <h3>{product.name}</h3>
-                                <div class="product-badges">
-                                    <span class="badge badge-{product.publicationState === 'published' ? 'green' : 'yellow'}">
-                                        {product.publicationState}
-                                    </span>
-                                    {#if product.productInfo?.generalProductImages}
-                                        <span class="badge badge-blue">Has General Image</span>
-                                    {/if}
-                                    {#if product.shortcuts?.length > 0}
-                                        <span class="badge badge-green">Has Shortcuts</span>
-                                    {/if}
+                            <h2>Search Results</h2>
+                        </div>
+                        <span class="results-count">
+                            {$searchResults.totalCount} products found
+                            {#if $searchResults.totalBeforeFilter !== $searchResults.totalCount}
+                                (filtered from {$searchResults.totalBeforeFilter})
+                            {/if}
+                            {#if selectedProducts.size > 0}
+                                <span class="selected-count">
+                                    ({selectedProducts.size} selected)
+                                </span>
+                            {/if}
+                        </span>
+                    </div>
+                    <button 
+                        class="export-button"
+                        on:click={exportToCsv}
+                        title="Export results to CSV"
+                    >
+                        Export to CSV
+                    </button>
+                </div>
+                <ul class="product-list">
+                    {#each $searchResults.products as product}
+                        <li class="product-item">
+                            <div class="product-header">
+                                <input 
+                                    type="checkbox"
+                                    class="checkbox"
+                                    checked={selectedProducts.has(product.itemId)}
+                                    on:change={() => toggleProductSelection(product.itemId)}
+                                />
+                                {#if product.variants[0]?.images?.[0]?.url}
+                                    <img 
+                                        src={product.variants[0].images[0].url} 
+                                        alt={product.name}
+                                        class="product-thumbnail"
+                                    />
+                                {/if}
+                                <div class="product-info">
+                                    <h3>{product.name}</h3>
+                                    <div class="product-badges">
+                                        <span class="badge badge-{product.publicationState === 'published' ? 'green' : 'yellow'}">
+                                            {product.publicationState}
+                                        </span>
+                                        {#if product.productInfo?.generalProductImages}
+                                            <span class="badge badge-blue">Has General Image</span>
+                                        {/if}
+                                        {#if product.shortcuts?.length > 0}
+                                            <span class="badge badge-green">Has Shortcuts</span>
+                                        {/if}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="sku-list">
-                            {#each product.variants as variant}
-                                <span class="sku-tag">{variant.sku}</span>
-                            {/each}
-                        </div>
-                    </li>
-                {/each}
-            </ul>
-        </div>
-    {:else if $searchResults.searchTerm && !$searchResults.isLoading}
-        <p class="no-results">No products found for "{$searchResults.searchTerm}"</p>
-    {/if}
+                            <div class="sku-list">
+                                {#each product.variants as variant}
+                                    <span class="sku-tag">{variant.sku}</span>
+                                {/each}
+                            </div>
+                        </li>
+                    {/each}
+                </ul>
+            </div>
+        {:else if $searchResults.searchTerm && !$searchResults.isLoading}
+            <p class="no-results">No products found for "{$searchResults.searchTerm}"</p>
+        {/if}
 
-    {#if $searchResults.isLoading}
-        <div class="loading-container">
-            <div class="loading-spinner"></div>
-            <p>Fetching all results...</p>
-        </div>
-    {/if}
+        {#if $searchResults.isLoading}
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Fetching all results...</p>
+            </div>
+        {/if}
+    </form>
 </div>
 
 <style>
