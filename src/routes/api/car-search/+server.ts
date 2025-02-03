@@ -338,13 +338,22 @@ async function fetchProductDetails(productIds: string[]): Promise<Map<string, { 
 
     // Create a regex pattern that matches any of the SKUs
     const skuPattern = productIds.map(id => {
-        // Special case for 711x00 SKUs - try both full and shortened versions
-        if (id.match(/^711\d00$/)) {
+        // Special case for bar SKUs (711x00 and 711x20)
+        if (id.match(/^711\d(00|20)$/)) {
             const shortened = id.slice(0, 4);  // Get 711x part
+            return `(THU-${id}|THU-${shortened})`;
+        }
+        // Special case for foot SKUs (710x00 and 720x00)
+        if (id.match(/^7[12]0\d00$/)) {
+            const shortened = id.slice(0, 4);  // Get 710x/720x part
             return `(THU-${id}|THU-${shortened})`;
         }
         return `THU-${id}`;
     }).join('|');
+    
+    console.log('\n=== Product Lookup ===');
+    console.log('Product IDs:', productIds);
+    console.log('SKU Pattern:', skuPattern);
     
     const query = `
         query FIND_PRODUCTS($sku_pattern: String!) {
@@ -376,6 +385,11 @@ async function fetchProductDetails(productIds: string[]): Promise<Map<string, { 
             sku_pattern: skuPattern
         });
 
+        console.log('\n=== Discovery API Response ===');
+        console.log('Query:', query);
+        console.log('SKU Pattern:', skuPattern);
+        console.log('Response:', JSON.stringify(data, null, 2));
+
         // Process each hit and store in the map
         data.browse.generiskProdukt.hits.forEach(hit => {
             const sku = hit.defaultVariant.sku;
@@ -383,16 +397,37 @@ async function fetchProductDetails(productIds: string[]): Promise<Map<string, { 
             const validShortcut = hit.shortcuts?.find(s => s.startsWith('/categories')) || '/ukategorisert';
             const cleanPath = validShortcut.replace(/^\/categories/, '');
             
-            productMap.set(id, {
+            console.log('\n=== Processing Hit ===');
+            console.log('SKU:', sku);
+            console.log('ID:', id);
+            console.log('Shortcuts:', hit.shortcuts);
+            console.log('Valid Shortcut:', validShortcut);
+            console.log('Clean Path:', cleanPath);
+            
+            // Store both the full and shortened versions in the map
+            const fullId = id;
+            const shortId = id.length === 6 && (id.startsWith('711') || id.startsWith('710') || id.startsWith('720')) 
+                ? id.slice(0, 4) 
+                : id;
+            
+            const productInfo = {
                 url: `https://bilxtra.no${cleanPath}`,
                 name: hit.defaultVariant.name
-            });
+            };
+            
+            productMap.set(fullId, productInfo);
+            productMap.set(shortId, productInfo);
         });
 
     } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error('\n=== Discovery API Error ===');
+        console.error('Error:', error);
+        console.error('Query:', query);
+        console.error('SKU Pattern:', skuPattern);
     }
 
+    console.log('\n=== Final Product Map ===');
+    console.log(Object.fromEntries(productMap));
     return productMap;
 }
 
@@ -473,33 +508,39 @@ async function createProductGroups(match: {
     const componentProducts: Product[] = [];
     if (safeMatch.bar_id) {
         const barId = safeMatch.bar_id.toString();
-        const details = productDetails.get(barId);
-        componentProducts.push({
-            sku: `THU-${barId}`,
-            type: 'bar',
-            url: details?.url || null,
-            name: details?.name || safeMatch.bar_name || `Bar ${safeMatch.bar_id}`
-        });
+        const details = productDetails.get(barId) || productDetails.get(barId.slice(0, 4));
+        if (details) {  // Only add if we found the product
+            componentProducts.push({
+                sku: `THU-${barId}`,
+                type: 'bar',
+                url: details.url,
+                name: details.name || safeMatch.bar_name || `Bar ${safeMatch.bar_id}`
+            });
+        }
     }
     if (safeMatch.foot_id) {
         const footId = safeMatch.foot_id.toString();
-        const details = productDetails.get(footId);
-        componentProducts.push({
-            sku: `THU-${footId}`,
-            type: 'foot',
-            url: details?.url || null,
-            name: details?.name || safeMatch.foot_name || `Foot ${safeMatch.foot_id}`
-        });
+        const details = productDetails.get(footId) || productDetails.get(footId.slice(0, 4));
+        if (details) {  // Only add if we found the product
+            componentProducts.push({
+                sku: `THU-${footId}`,
+                type: 'foot',
+                url: details.url,
+                name: details.name || safeMatch.foot_name || `Foot ${safeMatch.foot_id}`
+            });
+        }
     }
     if (safeMatch.kit_id) {
         const kitId = safeMatch.kit_id.toString();
-        const details = productDetails.get(kitId);
-        componentProducts.push({
-            sku: `THU-${kitId}`,
-            type: 'kit',
-            url: details?.url || null,
-            name: details?.name || safeMatch.kit_name || `Kit ${safeMatch.kit_id}`
-        });
+        const details = productDetails.get(kitId) || productDetails.get(kitId.slice(0, 4));
+        if (details) {  // Only add if we found the product
+            componentProducts.push({
+                sku: `THU-${kitId}`,
+                type: 'kit',
+                url: details.url,
+                name: details.name || safeMatch.kit_name || `Kit ${safeMatch.kit_id}`
+            });
+        }
     }
 
     if (componentProducts.length > 0) {
