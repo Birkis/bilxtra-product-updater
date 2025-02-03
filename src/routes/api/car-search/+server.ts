@@ -337,7 +337,14 @@ async function fetchProductDetails(productIds: string[]): Promise<Map<string, { 
     if (productIds.length === 0) return productMap;
 
     // Create a regex pattern that matches any of the SKUs
-    const skuPattern = productIds.map(id => `THU-${id}`).join('|');
+    const skuPattern = productIds.map(id => {
+        // Special case for 711x00 SKUs - try both full and shortened versions
+        if (id.match(/^711\d00$/)) {
+            const shortened = id.slice(0, 4);  // Get 711x part
+            return `(THU-${id}|THU-${shortened})`;
+        }
+        return `THU-${id}`;
+    }).join('|');
     
     const query = `
         query FIND_PRODUCTS($sku_pattern: String!) {
