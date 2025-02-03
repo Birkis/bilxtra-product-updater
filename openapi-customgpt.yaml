@@ -485,10 +485,7 @@ paths:
                   type: integer
                   description: Car production year
                   example: 2022
-                carType:
-                  type: string
-                  description: Type of car (e.g., "SUV")
-                  example: "SUV"
+
       responses:
         '200':
           description: Successful search with matching cars and products
@@ -586,7 +583,7 @@ paths:
                                   properties:
                                     sku:
                                       type: string
-                                      description: Product SKU with THU- prefix
+                                      description: "Product SKU with THU- prefix. For bars (711x) and feet (710x/720x), both full (e.g., THU-711320) and shortened (e.g., THU-7113) formats are supported."
                                       example: "THU-711320"
                                     type:
                                       type: string
@@ -597,8 +594,7 @@ paths:
                                       example: "Thule WingBar Evo"
                                     url:
                                       type: string
-                                      nullable: true
-                                      description: URL to product page on Bilxtra.no
+                                      description: "URL to product page on Bilxtra.no. Always populated with a valid URL from Crystallize."
                                       example: "https://bilxtra.no/lasteutstyr/tak/takstativ/rails/wingbar-edge-95-black-1-pk"
                                     position:
                                       type: string

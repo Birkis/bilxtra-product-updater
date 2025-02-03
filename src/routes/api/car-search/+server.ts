@@ -123,12 +123,11 @@ export async function POST({ request }: RequestEvent) {
         const searchQuery = searchParams.description || 
             [
                 searchParams.make,
-                searchParams.model?.replace('etron', 'e-tron'),  // Normalize e-tron format
-                searchParams.carType,
-                searchParams.numberOfDoors?.replace('4-dr', '5-dr'),  // Try with 5-dr since that's what we have
-                searchParams.carVariation ? `med ${searchParams.carVariation}` : undefined,  // Add 'med' prefix if missing
-                searchParams.productionYear ? `${searchParams.productionYear}` : undefined,
-                searchParams.productionYear ? 'onwards' : undefined
+                searchParams.model?.replace('etron', 'e-tron')?.replace(/\s+\d+$/, ''),  // Normalize e-tron format and remove model variants
+                searchParams.numberOfDoors,
+                searchParams.carVariation?.toLowerCase().startsWith('med') 
+                    ? searchParams.carVariation  // Don't add 'med' if it's already there
+                    : searchParams.carVariation ? `med ${searchParams.carVariation}` : undefined
             ]
             .filter(Boolean)
             .join(', ');
