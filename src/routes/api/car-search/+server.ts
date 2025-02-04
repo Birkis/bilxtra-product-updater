@@ -14,6 +14,32 @@ interface SearchQuery {
     carType?: string;
 }
 
+interface ModelMatch {
+    model: string;
+}
+
+function normalizeModel(model: string): { normalized: string; base: string } {
+    // Convert to uppercase for consistency
+    const upperModel = model.toUpperCase();
+    
+    // Remove common suffixes and clean up
+    const normalized = upperModel
+        .replace(/[-\s]?(SERIES|KLASSE|CLASS|SERIE)$/i, '')
+        .replace(/[-\s]?(TOURING|GRAN COUPE|GRAN COUPÉ|ACTIVE TOURER|GRAN TURISMO|COMPACT)$/i, '')
+        .trim();
+    
+    // Get base model:
+    // 1. For i-series (i4, i5, etc), use the full model
+    // 2. For X-series (X1, X2, etc), use the full model
+    // 3. For regular series (1-series, 2-series, etc), extract the number
+    const base = normalized.match(/^I\d+|^IX\d*|^X\d+|^\d+/)?.[0] || normalized;
+    
+    return { 
+        normalized,
+        base
+    };
+}
+
 interface SearchResult {
     car_details_vector_id: number;
     car_data_id: number;
@@ -119,142 +145,107 @@ export async function POST({ request }: RequestEvent) {
         console.log('\n=== Search Request ===');
         console.log('Raw search params:', searchParams);
 
-        // Format the search query to match the database format
-        const searchQuery = searchParams.description || 
-            [
+        // Step 1: Find potential model matches if we have a make and model
+        let modelMatches: string[] = [];
+        if (searchParams.make && searchParams.model) {
+            console.log('\n=== Model Matching Step ===');
+            const { normalized, base } = normalizeModel(searchParams.model);
+            
+            console.log('Normalized model:', normalized);
+            console.log('Base model:', base);
+            console.log('Original model:', searchParams.model);
+            
+            // First, let's see what models exist for this make
+            const { data: allModels } = await supabase
+                .from('car_data')
+                .select('model')
+                .eq('make', searchParams.make.toUpperCase())
+                .limit(20);
+            
+            console.log('All models for make:', allModels);
+            
+            // Then try our specific match
+            const { data: matches, error: matchError } = await supabase
+                .from('car_data')
+                .select('model')
+                .eq('make', searchParams.make.toUpperCase())
+                .or(`model.ilike.${base}-%,model.ilike.${normalized}%,model.eq.${searchParams.model}`)
+                .limit(10);
+
+            console.log('Raw matches:', matches);
+            console.log('Match error:', matchError);
+
+            if (matchError) {
+                console.error('Error finding model matches:', matchError);
+            } else if (matches && matches.length > 0) {
+                // Remove duplicates and sort
+                modelMatches = [...new Set(matches.map((m: ModelMatch) => m.model))].sort();
+                console.log('Found model matches:', modelMatches);
+            }
+        }
+
+        // If no model matches found, use the original model
+        if (modelMatches.length === 0 && searchParams.model) {
+            modelMatches = [searchParams.model];
+        }
+
+        // Format and execute search queries for each model match
+        const searchQueries = modelMatches.map(model => {
+            return [
                 searchParams.make,
-                searchParams.model?.replace('etron', 'e-tron')?.replace(/\s+\d+$/, ''),  // Normalize e-tron format and remove model variants
+                model?.replace('etron', 'e-tron')?.replace(/\s+\d+$/, ''),  // Normalize e-tron format and remove model variants
                 searchParams.numberOfDoors,
                 searchParams.carVariation?.toLowerCase().startsWith('med') 
-                    ? searchParams.carVariation  // Don't add 'med' if it's already there
+                    ? searchParams.carVariation 
                     : searchParams.carVariation ? `med ${searchParams.carVariation}` : undefined
             ]
             .filter(Boolean)
             .join(', ');
-
-        console.log('\n=== Query Formation ===');
-        console.log('Formatted search Query:', searchQuery);
-        console.log('Query components:', {
-            make: searchParams.make,
-            model: searchParams.model,
-            year: searchParams.productionYear,
-            doors: searchParams.numberOfDoors,
-            variation: searchParams.carVariation
         });
 
-        // Generate embedding for search query
-        console.log('\n=== Embedding Generation ===');
-        console.log('Generating embedding for query:', searchQuery);
-        
-        let embeddingResponse;
-        try {
-            embeddingResponse = await openai.embeddings.create({
+        console.log('\n=== Search Queries ===');
+        console.log('Generated queries:', searchQueries);
+
+        // Generate embeddings for all queries
+        const embeddings = await Promise.all(searchQueries.map(async query => {
+            console.log('Generating embedding for query:', query);
+            const embeddingResponse = await openai.embeddings.create({
                 model: "text-embedding-3-small",
-                input: searchQuery,
+                input: query,
                 encoding_format: "float"
             });
-        } catch (embeddingError) {
-            console.error('OpenAI embedding error:', embeddingError);
-            return json({
-                success: false,
-                error: 'Failed to generate search embedding',
-                details: embeddingError instanceof Error ? embeddingError.message : 'Unknown error'
-            }, { status: 500 });
-        }
+            return embeddingResponse.data[0].embedding;
+        }));
 
-        if (!embeddingResponse?.data?.[0]?.embedding) {
-            console.error('Invalid embedding response:', embeddingResponse);
-            return json({
-                success: false,
-                error: 'Invalid embedding response from OpenAI',
-                details: 'Embedding data is missing or malformed'
-            }, { status: 500 });
-        }
+        // Execute vector searches for all embeddings
+        const searchResults = await Promise.all(embeddings.map(async (embedding, index) => {
+            const { data: matches, error } = await supabase
+                .rpc('match_car_details', {
+                    query_embedding: embedding,
+                    match_threshold: 0.05,
+                    match_count: 50,
+                    car_production_year: searchParams.productionYear || null
+                });
 
-        console.log('Embedding vector length:', embeddingResponse.data[0].embedding.length);
-        console.log('First 5 embedding values:', embeddingResponse.data[0].embedding.slice(0, 5));
+            if (error) {
+                console.error(`Error in vector search for query ${index}:`, error);
+                return [];
+            }
 
-        const queryEmbedding = embeddingResponse.data[0].embedding;
+            return matches || [];
+        }));
 
-        // Check if we have any data in the tables
-        console.log('\n=== Database Check ===');
-        const { count: carDataCount, error: countError } = await supabase
-            .from('car_data')
-            .select('*', { count: 'exact', head: true });
+        // Merge and deduplicate results
+        const allResults = searchResults.flat();
+        const uniqueResults = Array.from(new Map(allResults.map(item => [item.car_details_vector_id, item])).values());
+        
+        // Sort by similarity
+        uniqueResults.sort((a, b) => b.similarity - a.similarity);
 
-        if (countError) {
-            console.error('Error checking car_data table:', countError);
-            throw new Error(`Database error: ${countError.message}`);
-        }
-
-        console.log('Number of records in car_data:', carDataCount);
-
-        if (carDataCount === 0) {
-            return json({
-                success: true,
-                results: [],
-                message: 'No records found in database'
-            });
-        }
-
-        // Search using both original and HNSW functions
-        console.log('\n=== Vector Search Comparison ===');
-        console.log('Executing both vector search functions with params:', {
-            make: searchParams.make || 'null',
-            model: searchParams.model || 'null',
-            production_year: searchParams.productionYear || 'null',
-            match_threshold: 0.05,  // Very low threshold to get more matches
-            match_count: 50
-        });
-
-        const startOriginal = performance.now();
-        const { data: originalMatches, error: originalError } = await supabase
-            .rpc('match_car_details', {
-                query_embedding: queryEmbedding,
-                match_threshold: 0.05,  // Very low threshold to get more matches
-                match_count: 50,
-                car_production_year: searchParams.productionYear || null
-            });
-        const endOriginal = performance.now();
-
-        const startHnsw = performance.now();
-        const { data: hnswMatches, error: hnswError } = await supabase
-            .rpc('match_car_details_hnsw', {
-                query_embedding: queryEmbedding,
-                car_make: searchParams.make || null,
-                car_model: searchParams.model?.replace('etron', 'e-tron') || null,  // Normalize e-tron format
-                car_production_year: searchParams.productionYear || null,
-                match_threshold: 0.05,  // Very low threshold to get more matches
-                match_count: 50
-            });
-        const endHnsw = performance.now();
-
-        // Log performance comparison
-        console.log('\n=== Search Performance ===');
-        console.log('Original function time:', endOriginal - startOriginal, 'ms');
-        console.log('HNSW function time:', endHnsw - startHnsw, 'ms');
-        console.log('Speed improvement:', ((endOriginal - startOriginal) / (endHnsw - startHnsw)).toFixed(2) + 'x');
-
-        // Compare results
-        console.log('\n=== Results Comparison ===');
-        console.log('Original matches:', originalMatches?.length || 0);
-        console.log('HNSW matches:', hnswMatches?.length || 0);
-
-        if (originalError || hnswError) {
-            console.error('Vector search errors:', {
-                original: originalError,
-                hnsw: hnswError
-            });
-            throw new Error(`Search error: ${originalError?.message || hnswError?.message}`);
-        }
-
-        // Use HNSW results if available, fall back to original
-        const matches = hnswMatches || originalMatches;
-
-        console.log('\n=== Search Results ===');
-        console.log('Total matches found:', matches?.length || 0);
-        if (matches?.length > 0) {
-            console.log('Top 3 matches:', matches.slice(0, 3).map((m: SearchResult) => ({
+        console.log('\n=== Combined Results ===');
+        console.log('Total unique matches:', uniqueResults.length);
+        if (uniqueResults.length > 0) {
+            console.log('Top 3 matches:', uniqueResults.slice(0, 3).map(m => ({
                 description: m.car_details,
                 similarity: m.similarity,
                 product_score: m.product_score,
@@ -263,8 +254,7 @@ export async function POST({ request }: RequestEvent) {
         }
 
         // Process matches and enhance with product groups
-        console.log('\n=== Result Processing ===');
-        const enhancedResults = await Promise.all(matches.map(async (match: SearchResult) => {
+        const enhancedResults = await Promise.all(uniqueResults.map(async (match: SearchResult) => {
             const productGroups = await createProductGroups(match);
             const carInfo: CarInfo = {
                 make: match.car_make,
@@ -308,14 +298,10 @@ export async function POST({ request }: RequestEvent) {
             results: enhancedResults,
             totalMatches: enhancedResults.length,
             searchMetadata: {
-                query: searchQuery,
-                embeddingLength: queryEmbedding.length,
+                queries: searchQueries,
+                embeddingLength: embeddings[0]?.length || 0,
                 matchThreshold: 0.05,
-                performance: {
-                    originalSearchTime: endOriginal - startOriginal,
-                    hnswSearchTime: endHnsw - startHnsw,
-                    speedImprovement: ((endOriginal - startOriginal) / (endHnsw - startHnsw)).toFixed(2)
-                }
+                modelMatches: modelMatches
             }
         });
 
