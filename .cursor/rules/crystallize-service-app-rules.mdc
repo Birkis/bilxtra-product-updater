@@ -1,5 +1,5 @@
 ---
-description: Knowing and understanding the overarching goal of this project 
+description: Knowing and understanding the overarching goal of this project
 globs: 
 ---
 # A toolbox for the e-commerce manager of BilXtra.no
@@ -19,8 +19,9 @@ There are several more, and this list should expand over time
 - There are several APIs that are accessed mainly in two ways:
 1. The crystallize client [crystallizeClient.ts](mdc:src/lib/crystallizeClient.ts)
 2. endpoints like the Discovery API 
+- The APIs are somewhat rigid and we must always follow the documentation like [GET_PRODUCTS_WITH_REGEX.md](mdc:GET_PRODUCTS_WITH_REGEX.md) 
+- We may not introduce parameters and arguments that are not in the stated examples. If unsure, you must ask
 
-- The APIs are somewhat rigid and we have to follow the documentation like [GET_PRODUCTS_WITH_REGEX.md](mdc:GET_PRODUCTS_WITH_REGEX.md)
 
 
 

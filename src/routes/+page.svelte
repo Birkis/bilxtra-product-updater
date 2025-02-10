@@ -1,56 +1,13 @@
 <script lang="ts">
-	const tools = [
-		{
-			title: 'Product Image Update',
-			description: 'Update product images in bulk',
-			href: '/product-image-update',
-			icon: '🖼️'
-		},
-		{
-			title: 'SKU Management',
-			description: 'Manage and update SKUs',
-			href: '/skus',
-			icon: '🏷️'
-		},
-		{
-			title: 'Orders',
-			description: 'View and manage orders',
-			href: '/orders_v3',
-			icon: '📦'
-		},
-		{
-			title: 'Products',
-			description: 'Product management tools',
-			href: '/products',
-			icon: '🛍️'
-		},
-		{
-			title: 'Search',
-			description: 'Search functionality',
-			href: '/search',
-			icon: '🔍'
-		},
-		{
-			title: 'Thule Data',
-			description: 'Download latest Thule master data',
-			href: '/thule-data',
-			icon: '📥'
-		}
-	];
+	export let data;
+	import Menu from '$lib/components/Menu.svelte';
+	import Dashboard from '$lib/components/Dashboard.svelte';
 </script>
 
-<div class="container">
-	<h1>Webshop Utilities</h1>
-	<div class="tools-grid">
-		{#each tools as tool}
-			<a href={tool.href} class="tool-card">
-				<span class="icon">{tool.icon}</span>
-				<h2>{tool.title}</h2>
-				<p>{tool.description}</p>
-			</a>
-		{/each}
-	</div>
-</div>
+<main>
+	<Menu />
+	<Dashboard data={data} />
+</main>
 
 <style>
 	.container {
