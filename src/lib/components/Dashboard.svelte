@@ -1,9 +1,8 @@
 <script lang="ts">
-    import type { PageData } from './$types';
+    import type { DashboardData, ProductStats, SalesStats, InventoryHealth, ReorderItem } from '$lib/types/dashboard';
     import { goto } from '$app/navigation';
-    import type { ProductStats, SalesStats, InventoryHealth, ReorderItem } from '$lib/types/dashboard';
     
-    export let data: PageData;
+    export let data: DashboardData & { error?: string };
     
     // Time period selection
     const periods = {
@@ -45,18 +44,18 @@
         totalStock: 0,
         reorderNeeded: []
     } as InventoryHealth);
-
+    
     function formatCurrency(amount: number): string {
         return new Intl.NumberFormat('nb-NO', {
             style: 'currency',
             currency: 'NOK'
         }).format(amount);
     }
-
+    
     function formatNumber(num: number): string {
         return new Intl.NumberFormat('nb-NO').format(num);
     }
-
+    
     function formatPercentage(value: number): string {
         const formatted = new Intl.NumberFormat('nb-NO', {
             style: 'percent',
@@ -66,11 +65,11 @@
         }).format(value / 100);
         return formatted;
     }
-
+    
     function navigateToDetail(section: string) {
         goto(`/dashboard/${section}`);
     }
-
+    
     function selectPeriod(key: string): void {
         selectedPeriod = key as '7d' | '30d' | '1y';
     }

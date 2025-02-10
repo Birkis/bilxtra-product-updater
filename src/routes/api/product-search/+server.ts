@@ -25,15 +25,21 @@ interface ProductInfo {
 }
 
 interface ProductHit {
-    shortcuts: string[];
     name: string;
     itemId: string;
     score: number;
     topics: Record<string, unknown>;
+    shortcuts: string[];
     paginationToken: string;
-    defaultVariant: ProductVariant;
+    defaultVariant: {
+        sku: string;
+        name: string;
+        firstImage: ProductImage;
+        defaultPrice: number;
+        defaultStock: number;
+        stockLocations: Record<string, { stock: number }>;
+    };
     description?: string;
-    url: string;
     variant?: {
         sku: string;
         name: string;
@@ -54,6 +60,7 @@ interface SearchResponse {
                 name: string;
                 score: number;
                 shortcuts: string[];
+                topics: Record<string, unknown>;
                 itemId: string;
                 defaultVariant: {
                     sku: string;
@@ -97,19 +104,11 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
                             limit: 100
                             ${paginationToken ? 'after: $paginationToken' : ''}
                         }
-                        filters: {
-                            OR: [
-                                { shortcuts_path: { regex: $search_term }},
-                                { topics: { regex: $search_term }},
-                                { sku: { regex: $search_term }},
-                                { name: { regex: $search_term }},
-                                { productInfo_description_body_plainText: { regex: $search_term }}
-                            ]
-                        }
+                        term: $search_term
                         options: {
                             fuzzy: {
-                                fuzziness: DOUBLE,
-                                maxExpensions: 5
+                                fuzziness: SINGLE,
+                                maxExpensions: 2
                             }
                         }
                         sorting: {
@@ -120,6 +119,7 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
                             name
                             score
                             shortcuts
+                            topics
                             itemId
                             defaultVariant {
                                 sku
@@ -169,7 +169,9 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
                 name: hit.name,
                 itemId: hit.itemId,
                 url: `https://bilxtra.no${cleanPath}`,
-                score: hit.score,
+                score: calculateScore(hit, searchTerm),
+                shortcuts: hit.shortcuts || [],
+                topics: hit.topics || {},
                 variant: {
                     sku: hit.defaultVariant?.sku || '',
                     name: hit.defaultVariant?.name || '',
@@ -246,41 +248,23 @@ function calculateScore(hit: ProductHit, searchTerm: string): number {
     const lowerName = hit.name.toLowerCase();
     const words = lowerSearchTerm.split(/\s+/);
 
-    // Check if this is a pressure cleaner
-    const skuPrefix = hit.variant?.sku?.substring(0, 4) || '';
-    const isAvaPressureCleaner = skuPrefix === 'AVA-' && hit.variant?.sku?.startsWith('AVA-10-');
-    const isKranzlePressureCleaner = skuPrefix === 'ACN-' && hit.variant?.sku?.startsWith('ACN-KR');
-    const isCarwisePressureCleaner = hit.name.toLowerCase().includes('carwise') && hit.name.toLowerCase().includes('høytrykk');
-    const isPressureCleaner = (isAvaPressureCleaner || isKranzlePressureCleaner || isCarwisePressureCleaner) &&
-        !hit.name.toLowerCase().includes('tilbehør') &&
-        !hit.name.toLowerCase().includes('service') &&
-        !hit.name.toLowerCase().includes('kit') &&
-        !hit.name.toLowerCase().includes('børste') &&
-        !hit.name.toLowerCase().includes('slange') &&
-        !hit.name.toLowerCase().includes('adapter') &&
-        !hit.name.toLowerCase().includes('dyse') &&
-        !hit.name.toLowerCase().includes('lanse');
-
     let score = 0;
 
-    // Boost for pressure cleaners when searching for related terms
-    if (isPressureCleaner && 
-        (lowerSearchTerm.includes('høytrykk') || 
-         lowerSearchTerm.includes('spyler') || 
-         lowerSearchTerm.includes('vasker'))) {
-        score += 40.0;
-    }
-
-    // Full phrase match
+    // Base scoring from name matches
     if (lowerName.includes(lowerSearchTerm)) {
         score += 15.0;
         // Extra boost if it's at the start
         if (lowerName.startsWith(lowerSearchTerm)) {
             score += 10.0;
         }
+        
+        // Penalty for accessories (products with "FOR HØYTRYKKSPYLER" in name)
+        if (lowerName.includes('for høytrykkspyler')) {
+            score -= 20.0;
+        }
     }
 
-    // Individual word matches
+    // Individual word matches in name
     let exactWordMatches = 0;
     words.forEach(word => {
         const wordBoundaryRegex = new RegExp(`\\b${word}\\b`, 'i');
@@ -300,7 +284,7 @@ function calculateScore(hit: ProductHit, searchTerm: string): number {
         }
     });
 
-    // Bonus if all search words are found
+    // Bonus if all search words are found in name
     if (exactWordMatches === words.length) {
         score += 6.0;
         // Extra bonus if they appear in the same order
@@ -310,18 +294,44 @@ function calculateScore(hit: ProductHit, searchTerm: string): number {
         }
     }
 
-    // URL/category matches
-    const url = hit.url?.toLowerCase() || '';
-    if (url.includes('hoytrykkspyler')) {
-        score += isPressureCleaner ? 5.0 : 1.0;
-    }
-
-    // Topic matches
-    if (hit.topics) {
+    // Topic matching boost
+    if (hit.topics && Object.keys(hit.topics).length > 0) {
+        // Base boost for having topics
+        score += 5.0;
+        
+        // Additional boost if topics contain search terms
         Object.values(hit.topics).forEach((value: any) => {
             if (typeof value === 'string' && value.toLowerCase().includes(lowerSearchTerm)) {
-                score += isPressureCleaner ? 4.0 : 1.0;
+                score += 8.0;
             }
+        });
+    }
+
+    // Shortcut path matching boost with increased category relevance
+    if (hit.shortcuts && hit.shortcuts.length > 0) {
+        // Base boost for having shortcuts
+        score += 3.0;
+
+        // Check each shortcut path for matches
+        hit.shortcuts.forEach(shortcut => {
+            const lowerShortcut = shortcut.toLowerCase();
+            
+            // Significant boost for products in the høytrykkspyler category
+            if (lowerShortcut.includes('/hoytrykkspyler/') && !lowerShortcut.includes('/tilbehor/')) {
+                score += 25.0;
+            }
+            
+            // Direct match in path
+            if (lowerShortcut.includes(lowerSearchTerm)) {
+                score += 10.0;
+            }
+
+            // Check individual words in the path
+            words.forEach(word => {
+                if (lowerShortcut.includes(word)) {
+                    score += 2.0;
+                }
+            });
         });
     }
 
@@ -333,14 +343,39 @@ function calculateScore(hit: ProductHit, searchTerm: string): number {
         score += 1.0;
     }
 
-    // Price-based boost for actual machines
+    // Price-based scoring to identify main products vs accessories
     const price = hit.variant?.price ?? 0;
-    if (price >= 3000) {
-        score += 5.0;
+    if (price >= 2000) {  // Likely a main unit
+        score += 15.0;
+    } else if (price <= 500 && lowerSearchTerm.includes('høytrykkspyler')) {  // Likely an accessory
+        score -= 10.0;
     }
 
-    // Normalize to a max of 50
-    return Math.min(Math.max(score, 0), 50);
+    // Check if this is a pressure cleaner
+    const skuPrefix = hit.variant?.sku?.substring(0, 4) || '';
+    const isAvaPressureCleaner = skuPrefix === 'AVA-' && hit.variant?.sku?.startsWith('AVA-10-');
+    const isKranzlePressureCleaner = skuPrefix === 'ACN-' && hit.variant?.sku?.startsWith('ACN-KR');
+    const isCarwisePressureCleaner = hit.name.toLowerCase().includes('carwise') && hit.name.toLowerCase().includes('høytrykk');
+    const isPressureCleaner = (isAvaPressureCleaner || isKranzlePressureCleaner || isCarwisePressureCleaner) &&
+        !hit.name.toLowerCase().includes('tilbehør') &&
+        !hit.name.toLowerCase().includes('service') &&
+        !hit.name.toLowerCase().includes('kit') &&
+        !hit.name.toLowerCase().includes('børste') &&
+        !hit.name.toLowerCase().includes('slange') &&
+        !hit.name.toLowerCase().includes('adapter') &&
+        !hit.name.toLowerCase().includes('dyse') &&
+        !hit.name.toLowerCase().includes('lanse');
+
+    // Boost for pressure cleaners when searching for related terms
+    if (isPressureCleaner && 
+        (lowerSearchTerm.includes('høytrykk') || 
+         lowerSearchTerm.includes('spyler') || 
+         lowerSearchTerm.includes('vasker'))) {
+        score += 40.0;
+    }
+
+    // Normalize to a reasonable maximum
+    return Math.min(Math.max(score, 0), 100);
 }
 
 export const GET: RequestHandler = async ({ url }) => {

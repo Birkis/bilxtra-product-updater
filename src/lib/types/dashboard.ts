@@ -17,16 +17,34 @@ export interface CategoryStat {
     count: number;
 }
 
-export interface DashboardData {
-    productStats: ProductStats;
-    salesStats: {
-    total: number;
-        average: number;
-    period: string;
+export interface SalesStats {
+    today: number;
+    thisWeek: number;
+    thisMonth: number;
+    averageOrder: number;
+    topProducts: { name: string, sales: number, revenue: number }[];
+    orders: { id: number, total: number }[];
+    changes: {
+        weekly: number;
+        monthly: number;
     };
-    inventoryHealth: {
+}
+
+export interface InventoryHealth {
     lowStock: number;
     outOfStock: number;
-    overstock: number;
-    };
+    totalStock: number;
+    reorderNeeded: ReorderItem[];
+}
+
+export interface DashboardData {
+    productStats: ProductStats;
+    salesStats: SalesStats;
+    inventoryHealth: InventoryHealth;
+}
+
+export interface ReorderItem {
+    name: string;
+    current: number;
+    minimum: number;
 } 
