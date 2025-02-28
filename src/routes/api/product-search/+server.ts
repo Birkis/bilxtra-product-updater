@@ -24,34 +24,6 @@ interface ProductInfo {
     };
 }
 
-interface ProductHit {
-    name: string;
-    itemId: string;
-    score: number;
-    topics: Record<string, unknown>;
-    shortcuts: string[];
-    paginationToken: string;
-    defaultVariant: {
-        sku: string;
-        name: string;
-        firstImage: ProductImage;
-        defaultPrice: number;
-        defaultStock: number;
-        stockLocations: Record<string, { stock: number }>;
-    };
-    description?: string;
-    variant?: {
-        sku: string;
-        name: string;
-        image?: {
-            url: string;
-            key: string;
-        };
-        price: number;
-        stock: number;
-        totalStock: number;
-    };
-}
 
 interface SearchResponse {
     browse: {
@@ -107,8 +79,10 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
                         term: $search_term
                         options: {
                             fuzzy: {
-                                fuzziness: SINGLE,
-                                maxExpensions: 2
+
+                                fuzziness: DOUBLE,
+                                maxExpensions: 50
+
                             }
                         }
                         sorting: {
@@ -145,7 +119,7 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
         `;
 
         const variables: { search_term: string; paginationToken?: string } = {
-            search_term: `.*${searchTerm}.*`,
+            search_term: searchTerm,
             ...(paginationToken && { paginationToken })
         };
 
@@ -196,186 +170,6 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
     }
 
     return allResults;
-}
-
-// Function to create smart regex patterns for search
-function createSmartRegexPattern(searchTerm: string): { searchPattern: string; pathPattern: string } {
-    // Check if this is a SKU search
-    if (searchTerm.match(/^(THU-)?[\d]+$/)) {
-        // For SKUs, try to match with or without THU- prefix
-        const numericPart = searchTerm.replace('THU-', '');
-        return {
-            searchPattern: `(THU-)?${numericPart}`,  // Match with or without prefix
-            pathPattern: searchTerm.toLowerCase()
-        };
-    }
-
-    // Normalize the search term by handling Norwegian characters for path search
-    const normalizedTerm = searchTerm
-        .replace(/ø/g, 'o')
-        .replace(/æ/g, 'ae')
-        .replace(/å/g, 'a');
-
-    // Split into words and create pattern that matches each word
-    const words = searchTerm.trim().split(/\s+/);
-    
-    // Create a pattern that matches any of the words
-    const wordPatterns = words.map(word => {
-        // Escape special regex characters
-        const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // Match the word with optional word boundaries
-        return `(${escaped})`; 
-    });
-
-    // Same for normalized path search
-    const normalizedWords = normalizedTerm.split(/\s+/);
-    const normalizedPatterns = normalizedWords.map(word => {
-        const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        return `(${escaped})`;
-    });
-
-    // Combine patterns - require at least one word to match
-    const searchPattern = `.*${wordPatterns.join('|')}.*`;
-    const pathPattern = `.*${normalizedPatterns.join('|')}.*`;
-
-    console.log('Generated patterns:', { searchPattern, pathPattern });
-    return { searchPattern, pathPattern };
-}
-
-// Function to calculate relevance score based on match location
-function calculateScore(hit: ProductHit, searchTerm: string): number {
-    const lowerSearchTerm = searchTerm.toLowerCase();
-    const lowerName = hit.name.toLowerCase();
-    const words = lowerSearchTerm.split(/\s+/);
-
-    let score = 0;
-
-    // Base scoring from name matches
-    if (lowerName.includes(lowerSearchTerm)) {
-        score += 15.0;
-        // Extra boost if it's at the start
-        if (lowerName.startsWith(lowerSearchTerm)) {
-            score += 10.0;
-        }
-        
-        // Penalty for accessories (products with "FOR HØYTRYKKSPYLER" in name)
-        if (lowerName.includes('for høytrykkspyler')) {
-            score -= 20.0;
-        }
-    }
-
-    // Individual word matches in name
-    let exactWordMatches = 0;
-    words.forEach(word => {
-        const wordBoundaryRegex = new RegExp(`\\b${word}\\b`, 'i');
-        if (wordBoundaryRegex.test(lowerName)) {
-            score += 3.0;
-            exactWordMatches++;
-            
-            // Extra points for matches at the start of words
-            if (new RegExp(`\\b${word}`, 'i').test(lowerName)) {
-                score += 2.0;
-            }
-        } else if (lowerName.includes(word)) {
-            // Partial match (part of another word)
-            score += 1.0;
-            // Penalty if it's part of a longer word
-            score -= 3.0;
-        }
-    });
-
-    // Bonus if all search words are found in name
-    if (exactWordMatches === words.length) {
-        score += 6.0;
-        // Extra bonus if they appear in the same order
-        const orderedRegex = new RegExp(words.join('.*'), 'i');
-        if (orderedRegex.test(lowerName)) {
-            score += 4.0;
-        }
-    }
-
-    // Topic matching boost
-    if (hit.topics && Object.keys(hit.topics).length > 0) {
-        // Base boost for having topics
-        score += 5.0;
-        
-        // Additional boost if topics contain search terms
-        Object.values(hit.topics).forEach((value: any) => {
-            if (typeof value === 'string' && value.toLowerCase().includes(lowerSearchTerm)) {
-                score += 8.0;
-            }
-        });
-    }
-
-    // Shortcut path matching boost with increased category relevance
-    if (hit.shortcuts && hit.shortcuts.length > 0) {
-        // Base boost for having shortcuts
-        score += 3.0;
-
-        // Check each shortcut path for matches
-        hit.shortcuts.forEach(shortcut => {
-            const lowerShortcut = shortcut.toLowerCase();
-            
-            // Significant boost for products in the høytrykkspyler category
-            if (lowerShortcut.includes('/hoytrykkspyler/') && !lowerShortcut.includes('/tilbehor/')) {
-                score += 25.0;
-            }
-            
-            // Direct match in path
-            if (lowerShortcut.includes(lowerSearchTerm)) {
-                score += 10.0;
-            }
-
-            // Check individual words in the path
-            words.forEach(word => {
-                if (lowerShortcut.includes(word)) {
-                    score += 2.0;
-                }
-            });
-        });
-    }
-
-    // Quality signals
-    if (hit.variant?.image?.url && !hit.variant.image.url.includes('no-image')) {
-        score += 1.0;
-    }
-    if (hit.variant?.totalStock && hit.variant.totalStock > 10) {
-        score += 1.0;
-    }
-
-    // Price-based scoring to identify main products vs accessories
-    const price = hit.variant?.price ?? 0;
-    if (price >= 2000) {  // Likely a main unit
-        score += 15.0;
-    } else if (price <= 500 && lowerSearchTerm.includes('høytrykkspyler')) {  // Likely an accessory
-        score -= 10.0;
-    }
-
-    // Check if this is a pressure cleaner
-    const skuPrefix = hit.variant?.sku?.substring(0, 4) || '';
-    const isAvaPressureCleaner = skuPrefix === 'AVA-' && hit.variant?.sku?.startsWith('AVA-10-');
-    const isKranzlePressureCleaner = skuPrefix === 'ACN-' && hit.variant?.sku?.startsWith('ACN-KR');
-    const isCarwisePressureCleaner = hit.name.toLowerCase().includes('carwise') && hit.name.toLowerCase().includes('høytrykk');
-    const isPressureCleaner = (isAvaPressureCleaner || isKranzlePressureCleaner || isCarwisePressureCleaner) &&
-        !hit.name.toLowerCase().includes('tilbehør') &&
-        !hit.name.toLowerCase().includes('service') &&
-        !hit.name.toLowerCase().includes('kit') &&
-        !hit.name.toLowerCase().includes('børste') &&
-        !hit.name.toLowerCase().includes('slange') &&
-        !hit.name.toLowerCase().includes('adapter') &&
-        !hit.name.toLowerCase().includes('dyse') &&
-        !hit.name.toLowerCase().includes('lanse');
-
-    // Boost for pressure cleaners when searching for related terms
-    if (isPressureCleaner && 
-        (lowerSearchTerm.includes('høytrykk') || 
-         lowerSearchTerm.includes('spyler') || 
-         lowerSearchTerm.includes('vasker'))) {
-        score += 40.0;
-    }
-
-    // Normalize to a reasonable maximum
-    return Math.min(Math.max(score, 0), 100);
 }
 
 export const GET: RequestHandler = async ({ url }) => {
