@@ -24,6 +24,7 @@ interface ProductInfo {
     };
 }
 
+
 interface SearchResponse {
     browse: {
         generiskProdukt: {
@@ -78,8 +79,10 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
                         term: $search_term
                         options: {
                             fuzzy: {
+
                                 fuzziness: DOUBLE,
                                 maxExpensions: 50
+
                             }
                         }
                         sorting: {
@@ -140,7 +143,9 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
                 name: hit.name,
                 itemId: hit.itemId,
                 url: `https://bilxtra.no${cleanPath}`,
-                score: hit.score,
+                score: calculateScore(hit, searchTerm),
+                shortcuts: hit.shortcuts || [],
+                topics: hit.topics || {},
                 variant: {
                     sku: hit.defaultVariant?.sku || '',
                     name: hit.defaultVariant?.name || '',
