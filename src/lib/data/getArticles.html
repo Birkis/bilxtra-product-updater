@@ -1,0 +1,986 @@
+<li xmlns="http://www.w3.org/1999/xhtml" class="operation"><big><b><a name="op.id16"
+                id="op.id16">getArticles</a></b></big>
+    <div class="value">
+        <a class="local" href="#src.id16">Source code</a>
+    </div>
+    <div class="label">Operation type:</div>
+    <div class="value"><i>Request-response.</i> The endpoint receives a message, and sends a correlated message.</div>
+    <div class="label">Input:</div>
+    <div class="value">getArticles (soap:body, use = literal)<a class="local" href="#src.id835">Source code</a></div>
+    <div class="value box" style="margin-bottom: 3px"><b>getArticles</b><small style="color:blue"> type
+            <big><i>getArticles</i></big></small>
+        <ul type="square"></ul>
+        <ul type="square"></ul>
+        <ul type="square">
+            <li>articleCountry<small style="color:blue"> type <big><i>string</i></big></small></li>
+            <li>provider<small style="color:blue"> type <big><i>int</i></big></small>
+                <div style="color:green">Your assigned TecDoc Provider Id</div>
+            </li>
+            <li>searchQuery<small style="color:blue"> - optional; type <big><i>string</i></big></small></li>
+            <li>searchType<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                <div style="color:green">0: Article Number (DEFAULT), 1: OE Number, 2: Trade Number, 3: Comparable
+                    Number, 4: Replacement Number, 5: Replaced Number, 6: EAN Number, 7: Criteria Number, 8: Parts List
+                    Child Article Number, 9: Accessory List Child Article Number, 10: Any Number, 99: Free Text</div>
+            </li>
+            <li>searchMatchType<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">exact: Exact Match (DEFAULT), prefix: Prefix Match, suffix: Suffix Match,
+                    prefix_or_suffix: Prefix or Suffix Matching</div>
+            </li>
+            <li>legacyArticleIds<small style="color:blue"> - optional, unbounded; type <big><i>long</i></big></small>
+                <div style="color:green">Only return parts matching these legacy article ids</div>
+            </li>
+            <li>dataSupplierIds<small style="color:blue"> - optional, unbounded; type <big><i>int</i></big></small>
+                <div style="color:green">Only return parts that belong to these data supplier ids</div>
+            </li>
+            <li>genericArticleIds<small style="color:blue"> - optional, unbounded; type <big><i>int</i></big></small>
+                <div style="color:green">Only return parts that belong to these generic article</div>
+            </li>
+            <li>assemblyGroupNodeIds<small style="color:blue"> - optional, unbounded; type
+                    <big><i>long</i></big></small>
+                <div style="color:green">Only return parts that belong to these assembly group nodes</div>
+            </li>
+            <li>criteriaFilters<small style="color:blue"> - optional, unbounded; type
+                    <big><i>CriteriaFilter</i></big></small>
+                <ul type="square">
+                    <li>criteriaId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                    <li>rawValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                </ul>
+            </li>
+            <li>linkageTargetId<small style="color:blue"> - optional; type <big><i>long</i></big></small>
+                <div style="color:green">Filter to parts that are linked to this target id (also requires the
+                    linkingTargetType)</div>
+            </li>
+            <li>linkageTargetType<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">'P': Vehicle Type (Passenger + Motorcycle + LCV), 'V': Passenger Car, 'L': LCV,
+                    'B': Motorcycle, 'O': CV Type (Commercial Vehicle + Tractor), 'C': Commercial Vehicle, 'T': Tractor,
+                    'M': Engine, 'A': Axle, 'K': CV Body Type, 'H': HMD Vehicle, 'S': Vehicle Model Series</div>
+            </li>
+            <li>newArticlesDateFrom<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">Only include articles added since this date (YYYY-MM-DD).</div>
+            </li>
+            <li>newArticlesDateTo<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">Only include articles added up until this date (YYYY-MM-DD).</div>
+            </li>
+            <li>newLinkagesDateFrom<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">Only include articles with linkages added since this date (YYYY-MM-DD). Note:
+                    This is only accurate with a limited number of other filters.</div>
+            </li>
+            <li>newLinkagesDateTo<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">Only include articles with linkages added up until this date (YYYY-MM-DD).
+                    Note: This is only accurate with a limited number of other filters.</div>
+            </li>
+            <li>newLinkagesMfrId<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                <div style="color:green">Only include new linkages with this mfr id. Only valid if using the
+                    newLinkagesDateFrom or newLinkagesDateTo field.</div>
+            </li>
+            <li>lang<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">The TecDoc Language Code. Defaults to 'en'</div>
+            </li>
+            <li>perPage<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                <div style="color:green">How many article results per page you want. Defaults to 10. Note: Increasing
+                    this value will decrease the 'maxAllowedPage' in the response.</div>
+            </li>
+            <li>page<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                <div style="color:green">Which page of article results to show. Defaults to 1. You can only page through
+                    the first ~10,000 (exact limit subject to change) results using this method. The 'maxAllowedPage' in
+                    the response will tell you what the current limit is. </div>
+            </li>
+            <li>linkagesPerPage<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                <div style="color:green">How many linkage results per page you want. Defaults to 10 (subject to change).
+                    Only applicable if includeLinkages is true.</div>
+            </li>
+            <li>linkagesPage<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                <div style="color:green">Which page of linkage results to show. Only applicable if includeLinkages is
+                    true.</div>
+            </li>
+            <li>sort<small style="color:blue"> - optional, unbounded; type <big><i>Sort</i></big></small>
+                <ul type="square">
+                    <li>field<small style="color:blue"> type <big><i>string</i></big></small>
+                        <div style="color:green">Valid Values for getArticles: score, mfrName, articleNumber,
+                            articleCreatedOn, linkageCreatedOn, linkageSortNum; Valid Values for getOEArticlesByVIN:
+                            mfrName, articleNumber, genericArticleName</div>
+                    </li>
+                    <li>direction<small style="color:blue"> type <big><i>string</i></big></small>
+                        <div style="color:green">Valid Values: asc (for ascending), desc (for descending)</div>
+                    </li>
+                </ul>
+            </li>
+            <li>includeAll<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include ALL Data in the response. Defaults to false.</div>
+            </li>
+            <li>includeMisc<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include Misc Article Data. Defaults to false.</div>
+            </li>
+            <li>includeGenericArticles<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include Generic Article Information in the response. Defaults to false.</div>
+            </li>
+            <li>includeArticleText<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include the Article Text in the response. Defaults to false.</div>
+            </li>
+            <li>includeGTINs<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include Global Trade Identification Numbers (GTINs) associated with the part in
+                    the response. Note: This includes EANs. Defaults to false.</div>
+            </li>
+            <li>includeTradeNumbers<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include Trade Numbers in the response. Defaults to false.</div>
+            </li>
+            <li>includeOEMNumbers<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include OEM Numbers in the response. Defaults to false.</div>
+            </li>
+            <li>includeReplacesArticles<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include information about articles replaced by this part in the response.
+                    Defaults to false.</div>
+            </li>
+            <li>includeReplacedByArticles<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include information about articles that replace this part in the response.
+                    Defaults to false.</div>
+            </li>
+            <li>includeArticleCriteria<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include Article Criteria (TAF Table #210) in the response. Defaults to false.
+                </div>
+            </li>
+            <li>includeLinkages<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include Linkage and Linkage Criteria information in the response (only valid if
+                    filtering by linkage id). Defaults to false.</div>
+            </li>
+            <li>includeAccessoryArticles<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include articles that can be ordered in addition to another article (e.g. oils,
+                    screws).</div>
+            </li>
+            <li>includePartsListArticles<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include articles that consists of several other articles. The article itself
+                    can not be ordered. Only the articles from the related part list.</div>
+            </li>
+            <li>includePDFs<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include PDFs in the response. Defaults to false.</div>
+            </li>
+            <li>includeImages<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include Images in the response. Defaults to false.</div>
+            </li>
+            <li>includeDataSupplierFacets<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Defaults to false</div>
+            </li>
+            <li>includeGenericArticleFacets<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Defaults to false</div>
+            </li>
+            <li>assemblyGroupFacetOptions<small style="color:blue"> - optional; type
+                    <big><i>AssemblyGroupFacetOptions</i></big></small>
+                <ul type="square">
+                    <li>enabled<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                        <div style="color:green">Include Assembly Group Facets in response. Defaults to false.</div>
+                    </li>
+                    <li>assemblyGroupType<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                        <div style="color:green">'U': Universal, 'P': Passenger Car/LCV (w/o Motorcycle), 'B':
+                            Motorcycle, 'O': Commercial Vehicle, 'M': Engine, 'A': Axle. If linkageTargetType is
+                            specified, it will automatically default to the matching assemblyGroupType, otherwise
+                            default is 'U'. Multiple tree types can be combined (e.g. 'PU' will return back both
+                            Passenger Car and Universal Assembly Group Types). </div>
+                    </li>
+                    <li>includeCompleteTree<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                        <div style="color:green">Always return the complete tree back, even if other assemblyGroupsIds
+                            are being filtered. Default false.</div>
+                    </li>
+                    <li>maxDepth<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                        <div style="color:green">Specify a limit to the number of edges from either a filtered
+                            'assemblyGroupNodeIds' or assembly group root node in the facet response. Defaults to 1 (no
+                            limit, full tree).</div>
+                    </li>
+                </ul>
+                <div style="color:green">Options for returning assembly group facets. Defaults to false.</div>
+            </li>
+            <li>includeCriteriaFacets<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include the facet counts for article and linkage (only included if filtering by
+                    linkage id) criteria. Defaults to false</div>
+            </li>
+            <li>includeCriteriaFacetsSorting<small style="color:blue"> - optional; type
+                    <big><i>boolean</i></big></small>
+                <div style="color:green">Include the recommended sorting of the criteria facets. Requires filtering by
+                    linkageTargetId and a single genericArticleId. Defaults to false</div>
+            </li>
+            <li>includeArticleStatusFacets<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Defaults to false</div>
+            </li>
+            <li>includeComparableNumbers<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include Comparable Numbers in the response (Note: Right now only comparable
+                    numbers that match the search query are included). Defaults to false.</div>
+            </li>
+            <li>includeLinks<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include the Links in the response. Defaults to false.</div>
+            </li>
+            <li>includePrices<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Include the Prices in the response. Defaults to false.</div>
+            </li>
+            <li>priceDate<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">Only include prices active on this date (YYYY-MM-DD).</div>
+            </li>
+            <li>includeArticleLogisticsCriteria<small style="color:blue"> - optional; type
+                    <big><i>boolean</i></big></small>
+                <div style="color:green">Include Article Logistics Criteria (TAF 2.5 Table #213) in the response.
+                    Defaults to false.</div>
+            </li>
+            <li>articleStatusIds<small style="color:blue"> - optional, unbounded; type <big><i>int</i></big></small>
+                <div style="color:green">Filter on Article Status (Key Table 73)</div>
+            </li>
+            <li>articleStatusDateFrom<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">Only include articles since this date (YYYY-MM-DD). Requires articleStatusIds
+                    field.</div>
+            </li>
+            <li>articleStatusDateTo<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                <div style="color:green">Only include articles up until this date (YYYY-MM-DD). Requires articleStatusId
+                    field.</div>
+            </li>
+            <li>applyDqmRules<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                <div style="color:green">Apply DQM rules (e.g. only permissible key values in key-table criteria
+                    facets). Requires filtering by a single genericArticleId.</div>
+            </li>
+        </ul>
+    </div>
+    <div class="label">Output:</div>
+    <div class="value">getArticlesResponse (soap:body, use = literal)<a class="local" href="#src.id836">Source code</a>
+    </div>
+    <div class="value box" style="margin-bottom: 3px"><b>getArticlesResponse</b><small style="color:blue"> type
+            <big><i>getArticlesResponse</i></big></small>
+        <ul type="square"></ul>
+        <ul type="square"></ul>
+        <ul type="square">
+            <li>totalMatchingArticles<small style="color:blue"> type <big><i>long</i></big></small>
+                <div style="color:green">The total number of parts that match this query</div>
+            </li>
+            <li>maxAllowedPage<small style="color:blue"> type <big><i>int</i></big></small>
+                <div style="color:green">The maximum allowed page that can be passed in for the 'page' parameter based
+                    on the number of results and the value of the 'perPage' parameter.</div>
+            </li>
+            <li>articles<small style="color:blue"> - optional, unbounded; type <big><i>ArticleRecord</i></big></small>
+                <ul type="square">
+                    <li>dataSupplierId<small style="color:blue"> type <big><i>long</i></big></small></li>
+                    <li>articleNumber<small style="color:blue"> type <big><i>string</i></big></small></li>
+                    <li>mfrId<small style="color:blue"> type <big><i>long</i></big></small></li>
+                    <li>mfrName<small style="color:blue"> type <big><i>string</i></big></small></li>
+                    <li>misc<small style="color:blue"> - optional; type <big><i>MiscArticleDataRecord</i></big></small>
+                        <ul type="square">
+                            <li>additionalDescriptionId<small style="color:blue"> - optional; type
+                                    <big><i>int</i></big></small></li>
+                            <li>additionalDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>articleStatusId<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                            </li>
+                            <li>articleStatusDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>articleStatusValidFromDate<small style="color:blue"> - optional; type
+                                    <big><i>int</i></big></small></li>
+                            <li>quantityPerPackage<small style="color:blue"> - optional; type
+                                    <big><i>int</i></big></small></li>
+                            <li>quantityPerPartPerPackage<small style="color:blue"> - optional; type
+                                    <big><i>int</i></big></small></li>
+                            <li>isSelfServicePacking<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>hasMandatoryMaterialCertification<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>isRemanufacturedPart<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>isAccessory<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                            </li>
+                            <li>batchSize1<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                            <li>batchSize2<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                        </ul>
+                    </li>
+                    <li>genericArticles<small style="color:blue"> - optional, unbounded; type
+                            <big><i>GenericArticleRecord</i></big></small>
+                        <ul type="square">
+                            <li>genericArticleId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>genericArticleDescription<small style="color:blue"> type
+                                    <big><i>string</i></big></small></li>
+                            <li>assemblyGroupNodeId<small style="color:blue"> type <big><i>long</i></big></small></li>
+                            <li>assemblyGroupName<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>legacyArticleId<small style="color:blue"> type <big><i>int</i></big></small>
+                                <div style="color:green">Legacy Pegasus V3, Article Id for the parent Article Record and
+                                    this Generic Article combination</div>
+                            </li>
+                            <li>linkageTargetTypes<small style="color:blue"> - optional, unbounded; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">Allowed linkageTargetTypes search: 'P': Vehicle Type (Passenger
+                                    + Motorcycle + LCV), 'O': CV Type (Commercial Vehicle + Tractor), 'M': Engine, 'A':
+                                    Axle, 'U': Universal</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>articleText<small style="color:blue"> - optional, unbounded; type
+                            <big><i>ArticleTextRecord</i></big></small>
+                        <ul type="square">
+                            <li>informationTypeKey<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>informationTypeDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>isImmediateDisplay<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                            <li>text<small style="color:blue"> - optional, unbounded; type
+                                    <big><i>string</i></big></small></li>
+                        </ul>
+                    </li>
+                    <li>gtins<small style="color:blue"> - optional, unbounded; type <big><i>string</i></big></small>
+                        <div style="color:green">Any Global Trade Identification Numbers (GTINs) associated with this
+                            part. (Note: this includes EANs)</div>
+                    </li>
+                    <li>tradeNumbers<small style="color:blue"> - optional, unbounded; type
+                            <big><i>string</i></big></small>
+                        <div style="color:green">DEPRECATED. Use tradeNumbersDetails instead.</div>
+                    </li>
+                    <li>tradeNumbersDetails<small style="color:blue"> - optional, unbounded; type
+                            <big><i>TradeNumberDetailsRecord</i></big></small>
+                        <ul type="square">
+                            <li>tradeNumber<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>isImmediateDisplay<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                        </ul>
+                    </li>
+                    <li>oemNumbers<small style="color:blue"> - optional, unbounded; type
+                            <big><i>ArticleRefRecord</i></big></small>
+                        <ul type="square">
+                            <li>articleNumber<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>dataSupplierId<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                            </li>
+                            <li>mfrId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>mfrName<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>referenceTypeKey<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">(Optional) Key table value of 'Reference Info' that qualifies
+                                    how the part is interchangeable. (e.g. 1 - Interchangeable; 2 - Interchangeable, but
+                                    different scope of supply; 3 - Not directly interchangeable because it is part of a
+                                    kit; 4 - Not directly interchangeable because it's a kit for the part; 5 -
+                                    Conditionally interchangeable, may require adjustments; 6 - Supply contains more
+                                    parts than the OE set; 7 - Supply contains fewer parts than the OE set)</div>
+                            </li>
+                            <li>referenceTypeDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">(Optional) Description of 'Reference Info' that qualifies how
+                                    the part is interchangeable. (e.g. 1 - Interchangeable; 2 - Interchangeable, but
+                                    different scope of supply; 3 - Not directly interchangeable because it is part of a
+                                    kit; 4 - Not directly interchangeable because it's a kit for the part; 5 -
+                                    Conditionally interchangeable, may require adjustments; 6 - Supply contains more
+                                    parts than the OE set; 7 - Supply contains fewer parts than the OE set)</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>replacesArticles<small style="color:blue"> - optional, unbounded; type
+                            <big><i>ArticleRefRecord</i></big></small>
+                        <ul type="square">
+                            <li>articleNumber<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>dataSupplierId<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                            </li>
+                            <li>mfrId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>mfrName<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>referenceTypeKey<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">(Optional) Key table value of 'Reference Info' that qualifies
+                                    how the part is interchangeable. (e.g. 1 - Interchangeable; 2 - Interchangeable, but
+                                    different scope of supply; 3 - Not directly interchangeable because it is part of a
+                                    kit; 4 - Not directly interchangeable because it's a kit for the part; 5 -
+                                    Conditionally interchangeable, may require adjustments; 6 - Supply contains more
+                                    parts than the OE set; 7 - Supply contains fewer parts than the OE set)</div>
+                            </li>
+                            <li>referenceTypeDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">(Optional) Description of 'Reference Info' that qualifies how
+                                    the part is interchangeable. (e.g. 1 - Interchangeable; 2 - Interchangeable, but
+                                    different scope of supply; 3 - Not directly interchangeable because it is part of a
+                                    kit; 4 - Not directly interchangeable because it's a kit for the part; 5 -
+                                    Conditionally interchangeable, may require adjustments; 6 - Supply contains more
+                                    parts than the OE set; 7 - Supply contains fewer parts than the OE set)</div>
+                            </li>
+                        </ul>
+                        <div style="color:green">This Article replaces these articles</div>
+                    </li>
+                    <li>replacedByArticles<small style="color:blue"> - optional, unbounded; type
+                            <big><i>ArticleRefRecord</i></big></small>
+                        <ul type="square">
+                            <li>articleNumber<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>dataSupplierId<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                            </li>
+                            <li>mfrId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>mfrName<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>referenceTypeKey<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">(Optional) Key table value of 'Reference Info' that qualifies
+                                    how the part is interchangeable. (e.g. 1 - Interchangeable; 2 - Interchangeable, but
+                                    different scope of supply; 3 - Not directly interchangeable because it is part of a
+                                    kit; 4 - Not directly interchangeable because it's a kit for the part; 5 -
+                                    Conditionally interchangeable, may require adjustments; 6 - Supply contains more
+                                    parts than the OE set; 7 - Supply contains fewer parts than the OE set)</div>
+                            </li>
+                            <li>referenceTypeDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">(Optional) Description of 'Reference Info' that qualifies how
+                                    the part is interchangeable. (e.g. 1 - Interchangeable; 2 - Interchangeable, but
+                                    different scope of supply; 3 - Not directly interchangeable because it is part of a
+                                    kit; 4 - Not directly interchangeable because it's a kit for the part; 5 -
+                                    Conditionally interchangeable, may require adjustments; 6 - Supply contains more
+                                    parts than the OE set; 7 - Supply contains fewer parts than the OE set)</div>
+                            </li>
+                        </ul>
+                        <div style="color:green">This article has been replaced by these articles</div>
+                    </li>
+                    <li>articleCriteria<small style="color:blue"> - optional, unbounded; type
+                            <big><i>CriteriaRecord</i></big></small>
+                        <ul type="square">
+                            <li>criteriaId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>criteriaDescription<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>criteriaAbbrDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>criteriaUnitDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>criteriaType<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>keyTableType<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                            </li>
+                            <li>keyTableNum<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                            </li>
+                            <li>successorCriteriaId<small style="color:blue"> - optional; type
+                                    <big><i>int</i></big></small></li>
+                            <li>rawValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>formattedValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>immediateDisplay<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>isMandatory<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                            <li>isInterval<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                            <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                        </ul>
+                        <div style="color:green">Article Criteria (TAF Table #210)</div>
+                    </li>
+                    <li>linkages<small style="color:blue"> - optional, unbounded; type
+                            <big><i>ArticleLinkageRecord</i></big></small>
+                        <div style="color:green">Matching Linkages (only populated if a linkage filter was passed in as
+                            part of the request)</div>
+                        <ul type="square">
+                            <li>linkageTargetTypeId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>linkageTargetId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>legacyArticleLinkId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>genericArticleId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>genericArticleDescription<small style="color:blue"> type
+                                    <big><i>string</i></big></small></li>
+                            <li>linkageCriteria<small style="color:blue"> - optional, unbounded; type
+                                    <big><i>CriteriaRecord</i></big></small>
+                                <ul type="square">
+                                    <li>criteriaId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                                    <li>criteriaDescription<small style="color:blue"> type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaAbbrDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaUnitDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaType<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>keyTableType<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>keyTableNum<small style="color:blue"> - optional; type
+                                            <big><i>int</i></big></small></li>
+                                    <li>successorCriteriaId<small style="color:blue"> - optional; type
+                                            <big><i>int</i></big></small></li>
+                                    <li>rawValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                                    <li>formattedValue<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>immediateDisplay<small style="color:blue"> - optional; type
+                                            <big><i>boolean</i></big></small></li>
+                                    <li>isMandatory<small style="color:blue"> type <big><i>boolean</i></big></small>
+                                    </li>
+                                    <li>isInterval<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                                    <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                            <big><i>boolean</i></big></small></li>
+                                </ul>
+                            </li>
+                            <li>linkageText<small style="color:blue"> - optional, unbounded; type
+                                    <big><i>LinkageTextRecord</i></big></small>
+                                <ul type="square">
+                                    <li>informationTypeKey<small style="color:blue"> type <big><i>int</i></big></small>
+                                    </li>
+                                    <li>informationTypeDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>isImmediateDisplay<small style="color:blue"> type
+                                            <big><i>boolean</i></big></small></li>
+                                    <li>text<small style="color:blue"> - optional, unbounded; type
+                                            <big><i>string</i></big></small></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>partsList<small style="color:blue"> - optional, unbounded; type
+                            <big><i>PartsListRecord</i></big></small>
+                        <div style="color:green">Articles that consists of several other articles. The article itself
+                            can not be ordered. Only the articles from the related part list. </div>
+                        <ul type="square">
+                            <li>articleNumber<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>genericArticleId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>genericArticleDescription<small style="color:blue"> type
+                                    <big><i>string</i></big></small></li>
+                            <li>quantity<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>criteria<small style="color:blue"> - optional, unbounded; type
+                                    <big><i>CriteriaRecord</i></big></small>
+                                <ul type="square">
+                                    <li>criteriaId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                                    <li>criteriaDescription<small style="color:blue"> type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaAbbrDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaUnitDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaType<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>keyTableType<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>keyTableNum<small style="color:blue"> - optional; type
+                                            <big><i>int</i></big></small></li>
+                                    <li>successorCriteriaId<small style="color:blue"> - optional; type
+                                            <big><i>int</i></big></small></li>
+                                    <li>rawValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                                    <li>formattedValue<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>immediateDisplay<small style="color:blue"> - optional; type
+                                            <big><i>boolean</i></big></small></li>
+                                    <li>isMandatory<small style="color:blue"> type <big><i>boolean</i></big></small>
+                                    </li>
+                                    <li>isInterval<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                                    <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                            <big><i>boolean</i></big></small></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>hasPartsListParent<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                        <div style="color:green">Does this article belong to a parts list?</div>
+                    </li>
+                    <li>accessoryList<small style="color:blue"> - optional, unbounded; type
+                            <big><i>AccessoryListRecord</i></big></small>
+                        <div style="color:green">Articles that can be ordered in addition to another article (e.g. oils,
+                            screws).</div>
+                        <ul type="square">
+                            <li>articleNumber<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>genericArticleId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>genericArticleDescription<small style="color:blue"> type
+                                    <big><i>string</i></big></small></li>
+                            <li>quantity<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>criteria<small style="color:blue"> - optional, unbounded; type
+                                    <big><i>CriteriaRecord</i></big></small>
+                                <ul type="square">
+                                    <li>criteriaId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                                    <li>criteriaDescription<small style="color:blue"> type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaAbbrDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaUnitDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaType<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>keyTableType<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>keyTableNum<small style="color:blue"> - optional; type
+                                            <big><i>int</i></big></small></li>
+                                    <li>successorCriteriaId<small style="color:blue"> - optional; type
+                                            <big><i>int</i></big></small></li>
+                                    <li>rawValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                                    <li>formattedValue<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>immediateDisplay<small style="color:blue"> - optional; type
+                                            <big><i>boolean</i></big></small></li>
+                                    <li>isMandatory<small style="color:blue"> type <big><i>boolean</i></big></small>
+                                    </li>
+                                    <li>isInterval<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                                    <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                            <big><i>boolean</i></big></small></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>hasAccessoryListParent<small style="color:blue"> - optional; type
+                            <big><i>boolean</i></big></small>
+                        <div style="color:green">Does this article belong to an accessory list?</div>
+                    </li>
+                    <li>pdfs<small style="color:blue"> - optional, unbounded; type <big><i>PDFRecord</i></big> -
+                            extension of abstract type <big><i>AssetRecord</i></big></small>
+                        <div style="color:green">PDF Documents Associated with the Article</div>
+                        <ul type="square">
+                            <li>fileName<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                            </li>
+                            <li>typeDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>typeKey<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                            <li>headerDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>headerKey<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                            <li>sortNumber<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                                <div style="color:green">Identify the absolute order of all assets sorted by SortNr in
+                                    the TAF table #232 and #432 (Order has the next priority: 1. Article Assets, 2. 360
+                                    images, 3. Linkage Assets)</div>
+                            </li>
+                            <li>assetSource<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                                <div style="color:green">Determine if the asset belongs to 'article' or 'linkage' source
+                                </div>
+                            </li>
+                        </ul>
+                        <ul type="square">
+                            <li>url<small style="color:blue"> type <big><i>string</i></big></small></li>
+                        </ul>
+                    </li>
+                    <li>images<small style="color:blue"> - optional, unbounded; type <big><i>ImageRecord</i></big> -
+                            extension of abstract type <big><i>AssetRecord</i></big></small>
+                        <div style="color:green">Images Associated with the Article</div>
+                        <ul type="square">
+                            <li>fileName<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                            </li>
+                            <li>typeDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>typeKey<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                            <li>headerDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>headerKey<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                            <li>sortNumber<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                                <div style="color:green">Identify the absolute order of all assets sorted by SortNr in
+                                    the TAF table #232 and #432 (Order has the next priority: 1. Article Assets, 2. 360
+                                    images, 3. Linkage Assets)</div>
+                            </li>
+                            <li>assetSource<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                                <div style="color:green">Determine if the asset belongs to 'article' or 'linkage' source
+                                </div>
+                            </li>
+                        </ul>
+                        <ul type="square">
+                            <li>imageURL50<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">Image URL for the 50x50 Version of the Image</div>
+                            </li>
+                            <li>imageURL100<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">Image URL for the 100x100 Version of the Image</div>
+                            </li>
+                            <li>imageURL200<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">Image URL for the 200x200 Version of the Image</div>
+                            </li>
+                            <li>imageURL400<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">Image URL for the 400x400 Version of the Image</div>
+                            </li>
+                            <li>imageURL800<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">Image URL for the 800x800 Version of the Image</div>
+                            </li>
+                            <li>imageURL1600<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">Image URL for the 1600x1600 Version of the Image. If not
+                                    available then the largest available size will be returned.</div>
+                            </li>
+                            <li>imageURL3200<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">Image URL for the 3200x3200 Version of the Image. If not
+                                    available then the largest available size will be returned.</div>
+                            </li>
+                            <li>frame<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                                <div style="color:green">The number of the image frame of the TecDoc 360º Image Asset.
+                                </div>
+                            </li>
+                            <li>totalFrames<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                                <div style="color:green">Total number of frames within the TecDoc 360º Image Asset.
+                                </div>
+                            </li>
+                            <li>contextSensitiveGraphics<small style="color:blue"> - optional, unbounded; type
+                                    <big><i>ContextSensitiveGraphicsRecord</i></big></small>
+                                <ul type="square">
+                                    <li>articleNumber<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>genericArticleId<small style="color:blue"> type <big><i>int</i></big></small>
+                                    </li>
+                                    <li>genericArticleDescription<small style="color:blue"> type
+                                            <big><i>string</i></big></small></li>
+                                    <li>shape<small style="color:blue"> type <big><i>string</i></big></small>
+                                        <div style="color:green">This matches the HTML area tag. Possible values are:
+                                            'rect' or 'circle'. 'poly' is not currently supported.</div>
+                                    </li>
+                                    <li>coords<small style="color:blue"> type <big><i>string</i></big></small>
+                                        <div style="color:green">This matches the HTML area tag. The meaning depends on
+                                            the value of the 'shape' field: rect: 'x1,y1,x2,y2', circle: 'x,y,radius',
+                                            poly (not currently supported): 'x1,y1,x2,y2,..,xn,yn'</div>
+                                    </li>
+                                    <li>x1<small style="color:blue"> type <big><i>int</i></big></small>
+                                        <div style="color:green">For 'rect': The x coordinate of the top-left corner.
+                                            For 'circle': The x coordinate of the center.</div>
+                                    </li>
+                                    <li>y1<small style="color:blue"> type <big><i>int</i></big></small>
+                                        <div style="color:green">For 'rect:' The y coordinate of the top-left corner.
+                                            For 'circle': The y coordinate of the center.</div>
+                                    </li>
+                                    <li>x2<small style="color:blue"> type <big><i>int</i></big></small>
+                                        <div style="color:green">For 'rect': The x coordinate of the bottom-right
+                                            corner. For 'circle': The radius of the circle.</div>
+                                    </li>
+                                    <li>y2<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                                        <div style="color:green">For 'rect': The y coordinate of the bottom-right
+                                            corner. For 'circle': Not populated.</div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>comparableNumbers<small style="color:blue"> - optional, unbounded; type
+                            <big><i>ArticleRefRecord</i></big></small>
+                        <ul type="square">
+                            <li>articleNumber<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>dataSupplierId<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                            </li>
+                            <li>mfrId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>mfrName<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>referenceTypeKey<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">(Optional) Key table value of 'Reference Info' that qualifies
+                                    how the part is interchangeable. (e.g. 1 - Interchangeable; 2 - Interchangeable, but
+                                    different scope of supply; 3 - Not directly interchangeable because it is part of a
+                                    kit; 4 - Not directly interchangeable because it's a kit for the part; 5 -
+                                    Conditionally interchangeable, may require adjustments; 6 - Supply contains more
+                                    parts than the OE set; 7 - Supply contains fewer parts than the OE set)</div>
+                            </li>
+                            <li>referenceTypeDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small>
+                                <div style="color:green">(Optional) Description of 'Reference Info' that qualifies how
+                                    the part is interchangeable. (e.g. 1 - Interchangeable; 2 - Interchangeable, but
+                                    different scope of supply; 3 - Not directly interchangeable because it is part of a
+                                    kit; 4 - Not directly interchangeable because it's a kit for the part; 5 -
+                                    Conditionally interchangeable, may require adjustments; 6 - Supply contains more
+                                    parts than the OE set; 7 - Supply contains fewer parts than the OE set)</div>
+                            </li>
+                        </ul>
+                        <div style="color:green">Comparable numbers associated with this part (Note: Right now this is
+                            only populated if the comparable numbers match the search query).</div>
+                    </li>
+                    <li>searchQueryMatches<small style="color:blue"> - optional, unbounded; type
+                            <big><i>SearchQueryMatch</i></big></small>
+                        <ul type="square">
+                            <li>matchType<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">ArticleNumber, OENumber, TradeNumber, ComparableNumber,
+                                    ReplacesNumber, ReplacedByNumber, EANNumber, CriteriaNumber</div>
+                            </li>
+                            <li>description<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>match<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>mfrId<small style="color:blue"> - optional; type <big><i>long</i></big></small></li>
+                            <li>mfrName<small style="color:blue"> - optional; type <big><i>string</i></big></small></li>
+                        </ul>
+                    </li>
+                    <li>links<small style="color:blue"> - optional, unbounded; type <big><i>LinkRecord</i></big> -
+                            extension of abstract type <big><i>AssetRecord</i></big></small>
+                        <div style="color:green">Links Associated with the Article</div>
+                        <ul type="square">
+                            <li>fileName<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                            </li>
+                            <li>typeDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>typeKey<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                            <li>headerDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>headerKey<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                            <li>sortNumber<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                                <div style="color:green">Identify the absolute order of all assets sorted by SortNr in
+                                    the TAF table #232 and #432 (Order has the next priority: 1. Article Assets, 2. 360
+                                    images, 3. Linkage Assets)</div>
+                            </li>
+                            <li>assetSource<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                                <div style="color:green">Determine if the asset belongs to 'article' or 'linkage' source
+                                </div>
+                            </li>
+                        </ul>
+                        <ul type="square">
+                            <li>url<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">URL</div>
+                            </li>
+                            <li>description<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">Link description</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>totalLinkages<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                        <div style="color:green">The total number of matching linkages for this request.</div>
+                    </li>
+                    <li>prices<small style="color:blue"> - optional, unbounded; type
+                            <big><i>PriceRecord</i></big></small>
+                        <div style="color:green">Prices Associated with the Article</div>
+                        <ul type="square">
+                            <li>currencyCode<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                            </li>
+                            <li>discountGroup<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>isDiscount<small style="color:blue"> - optional; type <big><i>boolean</i></big></small>
+                            </li>
+                            <li>price<small style="color:blue"> - optional; type <big><i>decimal</i></big></small></li>
+                            <li>priceCents<small style="color:blue"> - optional; type <big><i>int</i></big></small></li>
+                            <li>kindOfPriceKey<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>kindOfPriceDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>priceUnitKey<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>priceUnitDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>quantityUnitKey<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>quantityUnitDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>validDateFrom<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>validDateTo<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>articleLogisticsCriteria<small style="color:blue"> - optional, unbounded; type
+                            <big><i>CriteriaRecord</i></big></small>
+                        <ul type="square">
+                            <li>criteriaId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>criteriaDescription<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>criteriaAbbrDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>criteriaUnitDescription<small style="color:blue"> - optional; type
+                                    <big><i>string</i></big></small></li>
+                            <li>criteriaType<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>keyTableType<small style="color:blue"> - optional; type <big><i>string</i></big></small>
+                            </li>
+                            <li>keyTableNum<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                            </li>
+                            <li>successorCriteriaId<small style="color:blue"> - optional; type
+                                    <big><i>int</i></big></small></li>
+                            <li>rawValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>formattedValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>immediateDisplay<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                            <li>isMandatory<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                            <li>isInterval<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                            <li>matchesSearchQuery<small style="color:blue"> - optional; type
+                                    <big><i>boolean</i></big></small></li>
+                        </ul>
+                        <div style="color:green">Article Logistics Criteria (TAF 2.5 Table #213)</div>
+                    </li>
+                </ul>
+            </li>
+            <li>dataSupplierFacets<small style="color:blue"> - optional; type
+                    <big><i>DataSupplierFacetCounts</i></big></small>
+                <ul type="square">
+                    <li>total<small style="color:blue"> type <big><i>int</i></big></small>
+                        <div style="color:green">The total number of facet counts available</div>
+                    </li>
+                    <li>counts<small style="color:blue"> - optional, unbounded; type
+                            <big><i>DataSupplierFacetCount</i></big></small>
+                        <ul type="square">
+                            <li>dataSupplierId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>mfrId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>mfrName<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>count<small style="color:blue"> type <big><i>long</i></big></small></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>genericArticleFacets<small style="color:blue"> - optional; type
+                    <big><i>GenericArticleFacetCounts</i></big></small>
+                <ul type="square">
+                    <li>total<small style="color:blue"> type <big><i>int</i></big></small>
+                        <div style="color:green">The total number of facet counts available</div>
+                    </li>
+                    <li>counts<small style="color:blue"> - optional, unbounded; type
+                            <big><i>GenericArticleFacetCount</i></big></small>
+                        <ul type="square">
+                            <li>genericArticleId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>genericArticleDescription<small style="color:blue"> type
+                                    <big><i>string</i></big></small></li>
+                            <li>count<small style="color:blue"> type <big><i>long</i></big></small></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>criteriaFacets<small style="color:blue"> - optional; type <big><i>CriteriaFacetCounts</i></big></small>
+                <ul type="square">
+                    <li>total<small style="color:blue"> type <big><i>int</i></big></small>
+                        <div style="color:green">The total number of facet counts available</div>
+                    </li>
+                    <li>counts<small style="color:blue"> - optional, unbounded; type
+                            <big><i>CriteriaFacetCount</i></big></small>
+                        <ul type="square">
+                            <li>criteria<small style="color:blue"> type <big><i>CriteriaInfo</i></big></small>
+                                <ul type="square">
+                                    <li>criteriaId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                                    <li>criteriaDescription<small style="color:blue"> type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaAbbrDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaUnitDescription<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>criteriaType<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>keyTableType<small style="color:blue"> - optional; type
+                                            <big><i>string</i></big></small></li>
+                                    <li>keyTableNum<small style="color:blue"> - optional; type
+                                            <big><i>int</i></big></small></li>
+                                    <li>successorCriteriaId<small style="color:blue"> - optional; type
+                                            <big><i>int</i></big></small></li>
+                                    <li>isMandatory<small style="color:blue"> type <big><i>boolean</i></big></small>
+                                    </li>
+                                    <li>isInterval<small style="color:blue"> type <big><i>boolean</i></big></small></li>
+                                </ul>
+                            </li>
+                            <li>criteriaValueCounts<small style="color:blue"> - optional, unbounded; type
+                                    <big><i>CriteriaValueCounts</i></big></small>
+                                <ul type="square">
+                                    <li>rawValue<small style="color:blue"> type <big><i>string</i></big></small></li>
+                                    <li>formattedValue<small style="color:blue"> type <big><i>string</i></big></small>
+                                    </li>
+                                    <li>permittedKeyValue<small style="color:blue"> - optional; type
+                                            <big><i>boolean</i></big></small>
+                                        <div style="color:green">For criteriaType 'K', defines whether this value is
+                                            permitted for a given genericArticle and criteria. Available when filtering
+                                            by a single genericArticleId and 'applyDqmRules' request param / attribute
+                                            is set to true.</div>
+                                    </li>
+                                    <li>count<small style="color:blue"> type <big><i>long</i></big></small></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>status<small style="color:blue"> type <big><i>int</i></big></small></li>
+            <li>statusText<small style="color:blue"> - optional; type <big><i>string</i></big></small></li>
+            <li>assemblyGroupFacets<small style="color:blue"> - optional; type
+                    <big><i>AssemblyGroupFacetCounts</i></big></small>
+                <ul type="square">
+                    <li>total<small style="color:blue"> type <big><i>int</i></big></small>
+                        <div style="color:green">The total number of facet counts available</div>
+                    </li>
+                    <li>counts<small style="color:blue"> - optional, unbounded; type
+                            <big><i>AssemblyGroupFacetCount</i></big></small>
+                        <ul type="square">
+                            <li>assemblyGroupNodeId<small style="color:blue"> type <big><i>long</i></big></small></li>
+                            <li>assemblyGroupName<small style="color:blue"> type <big><i>string</i></big></small></li>
+                            <li>assemblyGroupType<small style="color:blue"> type <big><i>string</i></big></small>
+                                <div style="color:green">'P': Passenger Car/LCV, 'B': Motorcycle, 'O': Commercial
+                                    Vehicle, 'M': Engine, 'A': Axle, 'U': Universal.</div>
+                            </li>
+                            <li>parentNodeId<small style="color:blue"> - optional; type <big><i>long</i></big></small>
+                            </li>
+                            <li>children<small style="color:blue"> - optional; type <big><i>int</i></big></small>
+                                <div style="color:green">The number of available child assemblyGroupNodes for this node.
+                                </div>
+                            </li>
+                            <li>count<small style="color:blue"> - optional; type <big><i>long</i></big></small>
+                                <div style="color:green">The count of articles that are in this assembly group. Note:
+                                    counts are only populated for a linkage filter's assembly group type.</div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>articleStatusFacets<small style="color:blue"> - optional; type
+                    <big><i>ArticleStatusFacetCounts</i></big></small>
+                <ul type="square">
+                    <li>total<small style="color:blue"> type <big><i>int</i></big></small>
+                        <div style="color:green">The total number of facet counts available</div>
+                    </li>
+                    <li>counts<small style="color:blue"> - optional, unbounded; type
+                            <big><i>ArticleStatusFacetCount</i></big></small>
+                        <ul type="square">
+                            <li>articleStatusId<small style="color:blue"> type <big><i>int</i></big></small></li>
+                            <li>articleStatusDescription<small style="color:blue"> type <big><i>string</i></big></small>
+                            </li>
+                            <li>count<small style="color:blue"> type <big><i>long</i></big></small></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</li>

@@ -1,0 +1,342 @@
+{
+  "id": 100006,
+  "name": "Bremseanlegg",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100027,
+  "name": "Bremsecaliper",
+  "parentId": 100006,
+  "hasChildren": true
+}
+{
+  "id": 100807,
+  "name": "Bremsecaliper / -holder (bærer)",
+  "parentId": 100027,
+  "hasChildren": false
+}
+{
+  "id": 100025,
+  "name": "Bremseforsterker",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100037,
+  "name": "Bremsekraft regulator",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 102248,
+  "name": "Bremselysbryter",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 706721,
+  "name": "Bremsepedal Feel Simulator",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100035,
+  "name": "Bremseslanger",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 102208,
+  "name": "Bremsevæske",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100029,
+  "name": "Bremsevæske / -tank",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100026,
+  "name": "Hovedbremsesylinder",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 102224,
+  "name": "høyytelse bremse",
+  "parentId": 100006,
+  "hasChildren": true
+}
+{
+  "id": 102231,
+  "name": "Bremseslanger",
+  "parentId": 102224,
+  "hasChildren": false
+}
+{
+  "id": 102227,
+  "name": "høyytelse bremsebelegg",
+  "parentId": 102224,
+  "hasChildren": false
+}
+{
+  "id": 102225,
+  "name": "høyytelsels bremsesett",
+  "parentId": 102224,
+  "hasChildren": false
+}
+{
+  "id": 102226,
+  "name": "høyytelsels bremseskive",
+  "parentId": 102224,
+  "hasChildren": false
+}
+{
+  "id": 102228,
+  "name": "høyytelsels bremsesko",
+  "parentId": 102224,
+  "hasChildren": true
+}
+{
+  "id": 102229,
+  "name": "Bremsecaliper / -holder (bærer)",
+  "parentId": 102228,
+  "hasChildren": false
+}
+{
+  "id": 100034,
+  "name": "Parkeringsbrems",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100626,
+  "name": "Skivebremse",
+  "parentId": 100006,
+  "hasChildren": true
+}
+{
+  "id": 100030,
+  "name": "Bremsebelegg",
+  "parentId": 100626,
+  "hasChildren": false
+}
+{
+  "id": 102244,
+  "name": "bremsesett",
+  "parentId": 100626,
+  "hasChildren": false
+}
+{
+  "id": 100032,
+  "name": "Bremseskive",
+  "parentId": 100626,
+  "hasChildren": false
+}
+{
+  "id": 100627,
+  "name": "Trommelbremse",
+  "parentId": 100006,
+  "hasChildren": true
+}
+{
+  "id": 100031,
+  "name": "Bremsebelegg / -sko",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 102763,
+  "name": "bremsesett",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 100033,
+  "name": "Bremsetrommel",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 102964,
+  "name": "Parkeringsbrems",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 100284,
+  "name": "Bremselys / -enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100460,
+  "name": "Bremselys",
+  "parentId": 100284,
+  "hasChildren": false
+}
+{
+  "id": 100471,
+  "name": "Bremselys enkeltdeler",
+  "parentId": 100284,
+  "hasChildren": false
+}
+{
+  "id": 100496,
+  "name": "Bremselys pære",
+  "parentId": 100284,
+  "hasChildren": false
+}
+{
+  "id": 100867,
+  "name": "Ekstra bremselys",
+  "parentId": 100284,
+  "hasChildren": false
+}
+{
+  "id": 102215,
+  "name": "bremsebånd",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 101722,
+  "name": "Bremselys / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101724,
+  "name": "Bremselys",
+  "parentId": 101722,
+  "hasChildren": false
+}
+{
+  "id": 101725,
+  "name": "Bremselys enkeltdeler",
+  "parentId": 101722,
+  "hasChildren": false
+}
+{
+  "id": 101726,
+  "name": "Bremselys pære",
+  "parentId": 101722,
+  "hasChildren": false
+}
+{
+  "id": 101723,
+  "name": "Ekstra bremselys",
+  "parentId": 101722,
+  "hasChildren": false
+}
+{
+  "id": 101415,
+  "name": "Bremselys / -enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101417,
+  "name": "Bremselys",
+  "parentId": 101415,
+  "hasChildren": false
+}
+{
+  "id": 101418,
+  "name": "Bremselys enkeltdeler",
+  "parentId": 101415,
+  "hasChildren": false
+}
+{
+  "id": 101419,
+  "name": "Bremselys pære",
+  "parentId": 101415,
+  "hasChildren": false
+}
+{
+  "id": 101416,
+  "name": "Ekstra bremselys",
+  "parentId": 101415,
+  "hasChildren": false
+}
+{
+  "id": 101699,
+  "name": "Ekstra bremselys",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 103672,
+  "name": "Bremseanlegg",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 104083,
+  "name": "Bremsebelegg / -sko",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104084,
+  "name": "Bremsecaliper/tilbehør",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104082,
+  "name": "Bremseskive/Tilbehør",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104085,
+  "name": "Bremsespak/-trekk",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 706537,
+  "name": "Bremsevæske",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104088,
+  "name": "Bremsevæske / -tank",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104086,
+  "name": "Hånd-/fotbremsesylinder",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 105942,
+  "name": "Bremsespak",
+  "parentId": 103691,
+  "hasChildren": false
+}
+{
+  "id": 103760,
+  "name": "Bremsetrekk",
+  "parentId": 103757,
+  "hasChildren": false
+}
+{
+  "id": 103193,
+  "name": "Bremse- / arbeidssylinder",
+  "parentId": 103168,
+  "hasChildren": true
+}
+{
+  "id": 103195,
+  "name": "Membran bremsesylinder",
+  "parentId": 103193,
+  "hasChildren": false
+}

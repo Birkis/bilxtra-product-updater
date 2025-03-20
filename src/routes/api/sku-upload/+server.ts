@@ -4,13 +4,30 @@ import type { SKUFields } from '$lib/types/sku';
 import type { ComponentMapping } from '$lib/types/componentMapping';
 import { componentMapping } from '$lib/componentMapping';
 import { client } from '$lib/crystallizeClient';
-import { env } from '$env/dynamic/private';
+import { CRYSTALLIZE_TENANT_IDENTIFIER } from '$env/static/private';
 
-async function getItemIdFromSku(sku: string) {
+interface ProcessingResult {
+    updated: number;
+    created: number;
+    errors: string[];
+    skipped: number;
+    details: Array<{
+        sku: string;
+        status: 'updated' | 'created' | 'error';
+        message?: string;
+    }>;
+}
+
+async function getItemIdFromSku(sku: string): Promise<string> {
     const query = `
         query GET_ITEMID($sku: String!) {
             browse {
-                generiskProdukt(filters: { sku: { equals: $sku } }) {
+                generiskProdukt(
+                    publicationState: draft
+                    filters: { 
+                        sku: { equals: $sku }
+                    }
+                ) {
                     hits {
                         itemId
                     }
@@ -23,25 +40,34 @@ async function getItemIdFromSku(sku: string) {
         sku: sku
     };
 
-    const response = await fetch(`https://api.crystallize.com/${env.CRYSTALLIZE_TENANT_IDENTIFIER}/discovery`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            query,
-            variables,
-        }),
-    });
+    try {
+        const response = await fetch(`https://api.crystallize.com/${CRYSTALLIZE_TENANT_IDENTIFIER}/discovery`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                query,
+                variables,
+            }),
+        });
 
-    const jsonResponse = await response.json();
-    const itemId = jsonResponse.data?.browse?.generiskProdukt?.hits?.[0]?.itemId;
-    
-    if (!itemId) {
-        throw new Error(`No item found for SKU: ${sku}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const jsonResponse = await response.json();
+        const itemId = jsonResponse.data?.browse?.generiskProdukt?.hits?.[0]?.itemId;
+        
+        if (!itemId) {
+            throw new Error(`No item found for SKU: ${sku}`);
+        }
+
+        return itemId;
+    } catch (error) {
+        console.error(`Error fetching itemId for SKU ${sku}:`, error);
+        throw error;
     }
-
-    return itemId;
 }
 
 async function copyRemoteImage(url: string, fileName: string, client: any) {
@@ -283,27 +309,49 @@ function buildSkuMutation(itemId: string, data: SKUFields) {
 }
 
 export const POST: RequestHandler = async ({ request }) => {
+    // Add CORS headers
+    const headers = new Headers({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Headers': 'Content-Type'
+    });
+
+    // Handle preflight requests
+    if (request.method === 'OPTIONS') {
+        return new Response(null, { headers });
+    }
+
     try {
         const formData = await request.formData();
-        const mappedDataStr = formData.get('mappedData') as string;
+        const mappedDataStr = formData.get('mappedData');
         
-        if (!mappedDataStr) {
-            return json({ error: 'No data provided' }, { status: 400 });
+        if (!mappedDataStr || typeof mappedDataStr !== 'string') {
+            return json({ error: 'No data provided or invalid data format' }, { 
+                status: 400,
+                headers 
+            });
         }
 
-        const mappedData = JSON.parse(mappedDataStr) as SKUFields[];
-        console.log('Parsed mapped data:', mappedData);
+        let mappedData: SKUFields[];
+        try {
+            mappedData = JSON.parse(mappedDataStr);
+            if (!Array.isArray(mappedData)) {
+                throw new Error('Parsed data is not an array');
+            }
+        } catch (error) {
+            console.error('Error parsing mapped data:', error);
+            return json({ error: 'Invalid JSON data format' }, { 
+                status: 400,
+                headers 
+            });
+        }
 
-        const results = {
+        const results: ProcessingResult = {
             updated: 0,
             created: 0,
-            errors: [] as string[],
+            errors: [],
             skipped: 0,
-            details: [] as Array<{
-                sku: string;
-                status: 'updated' | 'created' | 'error';
-                message?: string;
-            }>
+            details: []
         };
 
         // Process in batches of 5
@@ -362,8 +410,9 @@ export const POST: RequestHandler = async ({ request }) => {
                             });
                             updatePerformed = true;
                         } catch (nameError) {
-                            console.error(`Error updating name for SKU ${row.sku}:`, nameError);
-                            results.errors.push(`Error updating name for SKU ${row.sku}: ${nameError.message}`);
+                            const errorMessage = nameError instanceof Error ? nameError.message : 'Unknown error updating name';
+                            console.error(`Error updating name for SKU ${row.sku}:`, errorMessage);
+                            results.errors.push(`Error updating name for SKU ${row.sku}: ${errorMessage}`);
                         }
                     }
 
@@ -376,8 +425,9 @@ export const POST: RequestHandler = async ({ request }) => {
                                 row.imageKey = imageKey;
                             }
                         } catch (imageError) {
-                            console.error(`Error uploading image for SKU ${row.sku}:`, imageError);
-                            results.errors.push(`Failed to upload image for SKU ${row.sku}: ${imageError.message}`);
+                            const errorMessage = imageError instanceof Error ? imageError.message : 'Unknown error uploading image';
+                            console.error(`Error uploading image for SKU ${row.sku}:`, errorMessage);
+                            results.errors.push(`Failed to upload image for SKU ${row.sku}: ${errorMessage}`);
                         }
                     }
 
@@ -438,12 +488,15 @@ export const POST: RequestHandler = async ({ request }) => {
         }
 
         console.log('Final results:', results);
-        return json(results);
+        return json(results, { headers });
     } catch (error) {
         console.error('Processing error:', error);
         return json({ 
             error: 'Failed to process data',
             details: error instanceof Error ? error.message : 'Unknown error'
-        }, { status: 500 });
+        }, { 
+            status: 500,
+            headers 
+        });
     }
 }; 
