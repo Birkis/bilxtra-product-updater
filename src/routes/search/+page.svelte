@@ -50,28 +50,6 @@
     let isDraft = $page.url.searchParams.get('isDraft') || '';
     let hasVariantImage = $page.url.searchParams.get('hasVariantImage') || '';
 
-    // Update store filters when URL parameters change
-    $: {
-        const filters = {
-            hasGeneralImage: hasGeneralImage === 'true' ? true : 
-                           hasGeneralImage === 'false' ? false : 
-                           undefined,
-            hasShortcuts: hasShortcuts === 'true' ? true :
-                         hasShortcuts === 'false' ? false :
-                         undefined,
-            isPublished: isPublished === 'true' ? true :
-                        isPublished === 'false' ? false :
-                        undefined,
-            isDraft: isDraft === 'true' ? true :
-                    isDraft === 'false' ? false :
-                    undefined,
-            hasVariantImage: hasVariantImage === 'true' ? true :
-                            hasVariantImage === 'false' ? false :
-                            undefined
-        };
-        searchStore.setFilters(filters);
-    }
-
     // Subscribe to store for filtered results
     const searchResults = searchStore;
 

@@ -12,11 +12,18 @@ export interface ProductInfo {
 
 export interface Product {
     name: string;
-    variants: ProductVariant[];
+    variants: Array<{
+        sku: string;
+        images: Array<{ url: string }>;
+    }>;
     shortcuts: string[];
-    productInfo: ProductInfo | null;
+    productInfo: any;
     publicationState: string;
     itemId: string;
+    // Add new fields for search ranking
+    score?: number;
+    topics?: string[];
+    combinedScore?: number;  // Field to store our custom scoring
 }
 
 export interface FilterConfig {
@@ -77,6 +84,33 @@ export function filterProduct(product: Product, filters: FilterConfig): boolean 
 
     return true;
 }
+
+const calculateCombinedScore = (product: Product): number => {
+    const baseScore = product.score || 0;
+    const topicsBonus = product.topics && product.topics.length > 0 ? 0.5 : 0;
+    return baseScore + topicsBonus;
+};
+
+export const processSearchResults = (results: any[]): Product[] => {
+    const products = results.map((result) => ({
+        name: result.name,
+        variants: result.variants,
+        shortcuts: result.shortcuts || [],
+        productInfo: result.productInfo,
+        publicationState: result.publicationState,
+        itemId: result.itemId,
+        score: result._score,
+        topics: result.topics,
+        combinedScore: 0, // Initialize with 0
+    } as Product));
+
+    // Calculate combined scores and sort
+    products.forEach(product => {
+        product.combinedScore = calculateCombinedScore(product);
+    });
+
+    return products.sort((a, b) => (b.combinedScore || 0) - (a.combinedScore || 0));
+};
 
 // Create the store
 function createSearchStore() {
