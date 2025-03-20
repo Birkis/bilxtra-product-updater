@@ -26,3 +26,19 @@ declare namespace svelteHTML {
         'class:text-blue-600'?: boolean;
     }
 }
+
+declare global {
+    namespace App {
+        // interface Error {}
+        // interface Locals {}
+        // interface PageData {}
+        // interface Platform {}
+    }
+}
+
+declare module '$env/static/private' {
+    export const TEC_DOC_API_KEY: string;
+    export const PROVIDER_ID: string;
+}
+
+export {};

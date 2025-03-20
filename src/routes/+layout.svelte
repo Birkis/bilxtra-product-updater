@@ -50,6 +50,13 @@
 				>
 					Thule DB
 				</a>
+				<a 
+					href="/tecdoc-search" 
+					class="hover:text-gray-300"
+					class:text-blue-400={$page?.url?.pathname === '/tecdoc-search'}
+				>
+					TecDoc Search
+				</a>
 			</div>
 		</div>
 	</nav>

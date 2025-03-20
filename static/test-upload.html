@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test SKU Upload</title>
+</head>
+<body>
+    <h1>Test SKU Upload</h1>
+    <button onclick="testUpload()">Run Test</button>
+    <pre id="result"></pre>
+
+    <script>
+        async function testUpload() {
+            const testData = [
+                {
+                    "sku": "TRS-REGST",
+                    "name": "Reglist",
+                    "image": "https://nycdn.nyehandel.se/store_72f4e2a4-e492-4ff0-8f8a-c603645bdb5c/images/pMUctFuOwy0Sjx462Ffo0O9DAwo58vcxSv5utw8L.png"
+                },
+                {
+                    "sku": "TRS-REGSV",
+                    "name": "Regskylt",
+                    "image": "https://nycdn.nyehandel.se/store_72f4e2a4-e492-4ff0-8f8a-c603645bdb5c/images/JPkQYuGNyXWvWQFvh1GOzOGdlcMfIjB0kFTIGJCa.png"
+                }
+            ];
+
+            try {
+                const formData = new FormData();
+                formData.append('mappedData', JSON.stringify(testData));
+
+                const response = await fetch('/api/sku-upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                document.getElementById('result').textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                document.getElementById('result').textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html> 

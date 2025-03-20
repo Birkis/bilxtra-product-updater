@@ -1,0 +1,9552 @@
+{
+  "id": 100400,
+  "name": "Akseldrift",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100768,
+  "name": "bryter/ventil",
+  "parentId": 100400,
+  "hasChildren": false
+}
+{
+  "id": 100415,
+  "name": "Differensial",
+  "parentId": 100400,
+  "hasChildren": false
+}
+{
+  "id": 100416,
+  "name": "Fordelingsgirkasse",
+  "parentId": 100400,
+  "hasChildren": false
+}
+{
+  "id": 706814,
+  "name": "Komplett aksel",
+  "parentId": 100400,
+  "hasChildren": false
+}
+{
+  "id": 103456,
+  "name": "Lamellkobling (firehjulsdrift)",
+  "parentId": 100400,
+  "hasChildren": false
+}
+{
+  "id": 100703,
+  "name": "Leddaksel",
+  "parentId": 100400,
+  "hasChildren": true
+}
+{
+  "id": 100839,
+  "name": "Lager / lagring",
+  "parentId": 100703,
+  "hasChildren": false
+}
+{
+  "id": 100707,
+  "name": "Ledd / -skive",
+  "parentId": 100703,
+  "hasChildren": false
+}
+{
+  "id": 100805,
+  "name": "Leddaksel",
+  "parentId": 100703,
+  "hasChildren": false
+}
+{
+  "id": 101996,
+  "name": "Oljer",
+  "parentId": 100400,
+  "hasChildren": false
+}
+{
+  "id": 706520,
+  "name": "Styreapparat",
+  "parentId": 100400,
+  "hasChildren": false
+}
+{
+  "id": 104405,
+  "name": "Verktøy",
+  "parentId": 100400,
+  "hasChildren": false
+}
+{
+  "id": 100013,
+  "name": "Akseloppheng/styring/hjul",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100212,
+  "name": "Akselbærer / akselskaft / -lagring",
+  "parentId": 100013,
+  "hasChildren": true
+}
+{
+  "id": 100761,
+  "name": "Akselbærer / underramme",
+  "parentId": 100212,
+  "hasChildren": false
+}
+{
+  "id": 100585,
+  "name": "Akselskaft",
+  "parentId": 100212,
+  "hasChildren": false
+}
+{
+  "id": 100586,
+  "name": "Lagring",
+  "parentId": 100212,
+  "hasChildren": false
+}
+{
+  "id": 100834,
+  "name": "Dekktrykk - kontrollsystem",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 100758,
+  "name": "Dor- / tannstang skråstøtte",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 100735,
+  "name": "Fjærbeinfeste/-lagring",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 100213,
+  "name": "Hjul / hjulfeste",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 100206,
+  "name": "Hjulnav / lagring",
+  "parentId": 100013,
+  "hasChildren": true
+}
+{
+  "id": 100803,
+  "name": "Akseltapp",
+  "parentId": 100206,
+  "hasChildren": false
+}
+{
+  "id": 100579,
+  "name": "Hjullager",
+  "parentId": 100206,
+  "hasChildren": false
+}
+{
+  "id": 100578,
+  "name": "Hjulnav",
+  "parentId": 100206,
+  "hasChildren": false
+}
+{
+  "id": 102250,
+  "name": "lager, hjullagerkasse",
+  "parentId": 100206,
+  "hasChildren": false
+}
+{
+  "id": 100580,
+  "name": "Radialaksel tetningsring",
+  "parentId": 100206,
+  "hasChildren": false
+}
+{
+  "id": 706782,
+  "name": "Lagersett, hjuloppheng",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 100211,
+  "name": "Ledd",
+  "parentId": 100013,
+  "hasChildren": true
+}
+{
+  "id": 100581,
+  "name": "Bære- / føringsledd",
+  "parentId": 100211,
+  "hasChildren": false
+}
+{
+  "id": 100583,
+  "name": "Kneledd",
+  "parentId": 100211,
+  "hasChildren": false
+}
+{
+  "id": 100209,
+  "name": "Skråstøtter / stenger",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 102733,
+  "name": "sporutvidelse",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 100210,
+  "name": "Stabilisator- / festedeler",
+  "parentId": 100013,
+  "hasChildren": true
+}
+{
+  "id": 100596,
+  "name": "Festedeler",
+  "parentId": 100210,
+  "hasChildren": false
+}
+{
+  "id": 100577,
+  "name": "Koplingsstang",
+  "parentId": 100210,
+  "hasChildren": false
+}
+{
+  "id": 100590,
+  "name": "Pendelstøtte",
+  "parentId": 100210,
+  "hasChildren": false
+}
+{
+  "id": 100573,
+  "name": "Stabilisator",
+  "parentId": 100210,
+  "hasChildren": false
+}
+{
+  "id": 100574,
+  "name": "Stabilisator stangsystem",
+  "parentId": 100210,
+  "hasChildren": false
+}
+{
+  "id": 100207,
+  "name": "Styrespindel / -reparasjonssett",
+  "parentId": 100013,
+  "hasChildren": true
+}
+{
+  "id": 102082,
+  "name": "akseltapptetning",
+  "parentId": 100207,
+  "hasChildren": false
+}
+{
+  "id": 100589,
+  "name": "Reparasjonssett",
+  "parentId": 100207,
+  "hasChildren": false
+}
+{
+  "id": 100588,
+  "name": "Styrebolt",
+  "parentId": 100207,
+  "hasChildren": false
+}
+{
+  "id": 100587,
+  "name": "Styrespindel",
+  "parentId": 100207,
+  "hasChildren": false
+}
+{
+  "id": 100208,
+  "name": "Styrestag / styrestaglagring",
+  "parentId": 100013,
+  "hasChildren": true
+}
+{
+  "id": 100572,
+  "name": "lagring/ feste",
+  "parentId": 100208,
+  "hasChildren": false
+}
+{
+  "id": 100571,
+  "name": "Styrestag (tverr, langs, skrå)",
+  "parentId": 100208,
+  "hasChildren": false
+}
+{
+  "id": 101837,
+  "name": "Varesøk via grafikk",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 103159,
+  "name": "Verktøy",
+  "parentId": 100013,
+  "hasChildren": false
+}
+{
+  "id": 100006,
+  "name": "Bremseanlegg",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100027,
+  "name": "Bremsecaliper",
+  "parentId": 100006,
+  "hasChildren": true
+}
+{
+  "id": 100807,
+  "name": "Bremsecaliper / -holder (bærer)",
+  "parentId": 100027,
+  "hasChildren": false
+}
+{
+  "id": 100806,
+  "name": "Enkeltdeler",
+  "parentId": 100027,
+  "hasChildren": false
+}
+{
+  "id": 100025,
+  "name": "Bremseforsterker",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100037,
+  "name": "Bremsekraft regulator",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 102248,
+  "name": "Bremselysbryter",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 706721,
+  "name": "Bremsepedal Feel Simulator",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100035,
+  "name": "Bremseslanger",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 102208,
+  "name": "Bremsevæske",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100029,
+  "name": "Bremsevæske / -tank",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100808,
+  "name": "Filter",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100028,
+  "name": "Hjulsylinder",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100026,
+  "name": "Hovedbremsesylinder",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 102224,
+  "name": "høyytelse bremse",
+  "parentId": 100006,
+  "hasChildren": true
+}
+{
+  "id": 102231,
+  "name": "Bremseslanger",
+  "parentId": 102224,
+  "hasChildren": false
+}
+{
+  "id": 102227,
+  "name": "høyytelse bremsebelegg",
+  "parentId": 102224,
+  "hasChildren": false
+}
+{
+  "id": 102225,
+  "name": "høyytelsels bremsesett",
+  "parentId": 102224,
+  "hasChildren": false
+}
+{
+  "id": 102226,
+  "name": "høyytelsels bremseskive",
+  "parentId": 102224,
+  "hasChildren": false
+}
+{
+  "id": 102228,
+  "name": "høyytelsels bremsesko",
+  "parentId": 102224,
+  "hasChildren": true
+}
+{
+  "id": 102229,
+  "name": "Bremsecaliper / -holder (bærer)",
+  "parentId": 102228,
+  "hasChildren": false
+}
+{
+  "id": 102230,
+  "name": "Montasjesett",
+  "parentId": 102228,
+  "hasChildren": false
+}
+{
+  "id": 100036,
+  "name": "Håndbrekk kabler",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100038,
+  "name": "Kjøredynamikk regulering",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100034,
+  "name": "Parkeringsbrems",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100626,
+  "name": "Skivebremse",
+  "parentId": 100006,
+  "hasChildren": true
+}
+{
+  "id": 100030,
+  "name": "Bremsebelegg",
+  "parentId": 100626,
+  "hasChildren": false
+}
+{
+  "id": 102244,
+  "name": "bremsesett",
+  "parentId": 100626,
+  "hasChildren": false
+}
+{
+  "id": 100032,
+  "name": "Bremseskive",
+  "parentId": 100626,
+  "hasChildren": false
+}
+{
+  "id": 100630,
+  "name": "Tilbehør / enkeltdeler",
+  "parentId": 100626,
+  "hasChildren": false
+}
+{
+  "id": 100631,
+  "name": "Slitasjeindikator",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100635,
+  "name": "Spake / tau / kabler",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100627,
+  "name": "Trommelbremse",
+  "parentId": 100006,
+  "hasChildren": true
+}
+{
+  "id": 100031,
+  "name": "Bremsebelegg / -sko",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 102763,
+  "name": "bremsesett",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 100033,
+  "name": "Bremsetrommel",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 102965,
+  "name": "Hjulsylinder",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 102964,
+  "name": "Parkeringsbrems",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 100633,
+  "name": "Reparasjonssett",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 103210,
+  "name": "Stangsystemaktuator / tilbehør",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 100634,
+  "name": "Tilbehør / enkeltdeler",
+  "parentId": 100627,
+  "hasChildren": false
+}
+{
+  "id": 100382,
+  "name": "Trykkakkumulator / -bryter",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100039,
+  "name": "Vakuumpumpe",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 101924,
+  "name": "Ventiler",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 103154,
+  "name": "Verktøy",
+  "parentId": 100006,
+  "hasChildren": false
+}
+{
+  "id": 100050,
+  "name": "Clutch / -deler",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100832,
+  "name": "Automatikk clutch",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 100079,
+  "name": "Clutchbetjening",
+  "parentId": 100050,
+  "hasChildren": true
+}
+{
+  "id": 706697,
+  "name": "Clutch forsterker",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 100077,
+  "name": "Clutchkabel",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 102754,
+  "name": "clutch-styresystem",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 100060,
+  "name": "Følgesylinder",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 100831,
+  "name": "Giver- / følgesylinder",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 100061,
+  "name": "Giversylinder",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 105589,
+  "name": "Lufting",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 100712,
+  "name": "Pedal",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 706853,
+  "name": "Servomotor",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 101926,
+  "name": "skifteventil",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 100298,
+  "name": "Slanger / ledninger",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 100780,
+  "name": "Spake / overføringsdeler",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 102673,
+  "name": "Trykkakkumulator",
+  "parentId": 100079,
+  "hasChildren": false
+}
+{
+  "id": 100264,
+  "name": "Clutch hydraulikkfilter",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 104718,
+  "name": "Clutchombyggingssett",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 100051,
+  "name": "Clutchsett",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 100053,
+  "name": "Clutchskive",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 100052,
+  "name": "Clutch trykkplate",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 104511,
+  "name": "Dreiemomentbegrenser girkasse",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 100059,
+  "name": "Føringslager / stoppskive",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 102877,
+  "name": "girkasse",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 104813,
+  "name": "Hydraulikkvæske",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 706821,
+  "name": "Koblingsmodul",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 706751,
+  "name": "Pressplate",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 706728,
+  "name": "Reperasjon- / komplettsett",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 100057,
+  "name": "Svingskive",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 102784,
+  "name": "Tetninger/tetningssett",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 102370,
+  "name": "torsjonsdemper",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 100054,
+  "name": "Utløserlager/sentralutløser",
+  "parentId": 100050,
+  "hasChildren": true
+}
+{
+  "id": 100237,
+  "name": "Sentralutrykker",
+  "parentId": 100054,
+  "hasChildren": false
+}
+{
+  "id": 100056,
+  "name": "Skyvehylse",
+  "parentId": 100054,
+  "hasChildren": false
+}
+{
+  "id": 102080,
+  "name": "utløsergaffel",
+  "parentId": 100054,
+  "hasChildren": false
+}
+{
+  "id": 100055,
+  "name": "Utløserlager",
+  "parentId": 100054,
+  "hasChildren": false
+}
+{
+  "id": 103156,
+  "name": "Verktøy",
+  "parentId": 100050,
+  "hasChildren": false
+}
+{
+  "id": 100254,
+  "name": "Drivstoffberedning",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 102793,
+  "name": "Drivstoffberedning",
+  "parentId": 100254,
+  "hasChildren": true
+}
+{
+  "id": 102808,
+  "name": "Bryter / relè",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102803,
+  "name": "Drivstoffinnsprøytningspumpe/høytrykkpumpe",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102804,
+  "name": "Drivstoffledning/-fordeling/-tildeling",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102796,
+  "name": "Drosselklaff / -stuss / vakuumledning",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 103082,
+  "name": "gassanlegg",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102802,
+  "name": "Gasswire / stangsystem",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102798,
+  "name": "Innsprøytningsapparat",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102799,
+  "name": "Innsprøytningsdyse/dysestokk/PDE",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102801,
+  "name": "Kjørepedal / gasspotm.",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102800,
+  "name": "Komponenter dysestamme / dyse",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102806,
+  "name": "luftmengdemålere",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102807,
+  "name": "Reperasjon- / komplettsett",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102809,
+  "name": "Sensor / sonde",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102794,
+  "name": "Stoppeinnretning",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102810,
+  "name": "Styreapparat",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102795,
+  "name": "Tetning",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102805,
+  "name": "Tomgang- / varmløpsregulering",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102797,
+  "name": "Trykkakkumulator",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 104704,
+  "name": "Trykkomformer",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 102811,
+  "name": "Ventiler/Ventilenhet",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 103150,
+  "name": "Verktøy",
+  "parentId": 102793,
+  "hasChildren": false
+}
+{
+  "id": 100790,
+  "name": "Eksosrenser",
+  "parentId": 100254,
+  "hasChildren": true
+}
+{
+  "id": 100791,
+  "name": "Avgassresirkulering",
+  "parentId": 100790,
+  "hasChildren": true
+}
+{
+  "id": 100815,
+  "name": "EGR-eksosstyring",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 100814,
+  "name": "EGR-luftstyring",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 102992,
+  "name": "EGR-modul",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 100811,
+  "name": "EGR-ventil/innsugningsrør",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 103241,
+  "name": "Kjøler",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 706499,
+  "name": "Reparasjonssett",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 103239,
+  "name": "Tetninger",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 100812,
+  "name": "Trykkomformer",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 103240,
+  "name": "Vakuum styreventil",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 100816,
+  "name": "Ventiler, avgassresirkulering",
+  "parentId": 100791,
+  "hasChildren": false
+}
+{
+  "id": 100833,
+  "name": "Euro1-/Euro2-/D3-konvertering",
+  "parentId": 100790,
+  "hasChildren": false
+}
+{
+  "id": 100793,
+  "name": "Lambdaregulering",
+  "parentId": 100790,
+  "hasChildren": false
+}
+{
+  "id": 100792,
+  "name": "Sekundærluft innblåsning",
+  "parentId": 100790,
+  "hasChildren": true
+}
+{
+  "id": 706503,
+  "name": "Kabelreparasjonssett",
+  "parentId": 100792,
+  "hasChildren": false
+}
+{
+  "id": 100820,
+  "name": "Sekundærluft innblåsningssystem",
+  "parentId": 100792,
+  "hasChildren": false
+}
+{
+  "id": 100821,
+  "name": "Sekundærluft innblåsningssystem - ventil",
+  "parentId": 100792,
+  "hasChildren": false
+}
+{
+  "id": 100825,
+  "name": "Sekundærluftpumpe",
+  "parentId": 100792,
+  "hasChildren": false
+}
+{
+  "id": 100824,
+  "name": "Sekundærluft - pumpesystem",
+  "parentId": 100792,
+  "hasChildren": false
+}
+{
+  "id": 100823,
+  "name": "Sekundærluft - sugesystem",
+  "parentId": 100792,
+  "hasChildren": false
+}
+{
+  "id": 100822,
+  "name": "Sekundærluftventil",
+  "parentId": 100792,
+  "hasChildren": false
+}
+{
+  "id": 103445,
+  "name": "Tetninger",
+  "parentId": 100792,
+  "hasChildren": false
+}
+{
+  "id": 103047,
+  "name": "Sensor / sonde",
+  "parentId": 100790,
+  "hasChildren": false
+}
+{
+  "id": 102903,
+  "name": "Forgasseranlegg",
+  "parentId": 100254,
+  "hasChildren": true
+}
+{
+  "id": 102910,
+  "name": "Betjening / demper / bokser",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102911,
+  "name": "Bryter / relè",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102908,
+  "name": "Flens",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102906,
+  "name": "Forgasser - enkeltdeler",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102904,
+  "name": "Forgasser komplett",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102912,
+  "name": "Kabeltre",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102914,
+  "name": "konverteringssett",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102905,
+  "name": "Reparasjonssett",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102913,
+  "name": "Styreapparat",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102907,
+  "name": "Tetning",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 102909,
+  "name": "Ventiler",
+  "parentId": 102903,
+  "hasChildren": false
+}
+{
+  "id": 100214,
+  "name": "Drivstofftilførselssystem",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 706089,
+  "name": "AKF-system",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100253,
+  "name": "drivstoffilter/-kasse",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 102603,
+  "name": "drivstoffkjøler",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 104262,
+  "name": "Drivstoffkran/betjening",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100250,
+  "name": "Drivstofftank / -tilbehør",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100268,
+  "name": "Drivstofftilførselsenhet",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 103086,
+  "name": "forvarmer drivstoff",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100269,
+  "name": "Pulsasjonsdemper",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100251,
+  "name": "Pumpe / -tilbehør",
+  "parentId": 100214,
+  "hasChildren": true
+}
+{
+  "id": 100717,
+  "name": "Drivstoffpumpe",
+  "parentId": 100251,
+  "hasChildren": false
+}
+{
+  "id": 706438,
+  "name": "Manuell transportpumpe / tilbehør",
+  "parentId": 100251,
+  "hasChildren": false
+}
+{
+  "id": 100719,
+  "name": "Reparasjon",
+  "parentId": 100251,
+  "hasChildren": false
+}
+{
+  "id": 100718,
+  "name": "Tilbehør / enkeltdeler",
+  "parentId": 100251,
+  "hasChildren": false
+}
+{
+  "id": 100258,
+  "name": "Slanger / ledninger",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 706479,
+  "name": "tilsetning",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100267,
+  "name": "Transportenhet komplett",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100270,
+  "name": "Trykkregulator / -bryter",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 103077,
+  "name": "vannsensor",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100252,
+  "name": "Ventiler",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 103148,
+  "name": "Verktøy",
+  "parentId": 100214,
+  "hasChildren": false
+}
+{
+  "id": 100004,
+  "name": "Eksosanlegg",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100195,
+  "name": "Blende",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100314,
+  "name": "Eksospotte",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100046,
+  "name": "Eksospotteanlegg komplett",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 102451,
+  "name": "Eksosspjeld",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 104729,
+  "name": "Ettermonteringssett, motor-lyd-system",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100873,
+  "name": "Euro1-/Euro2-/D3-konvertering",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 706574,
+  "name": "Gnistfanger",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100047,
+  "name": "Katalysator",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100872,
+  "name": "Lader",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100048,
+  "name": "Lambdasonde",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100715,
+  "name": "Manifold",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100222,
+  "name": "Monteringsdeler",
+  "parentId": 100004,
+  "hasChildren": true
+}
+{
+  "id": 100316,
+  "name": "Montasjesett",
+  "parentId": 100222,
+  "hasChildren": false
+}
+{
+  "id": 100317,
+  "name": "Montering enkeltdeler",
+  "parentId": 100222,
+  "hasChildren": true
+}
+{
+  "id": 103111,
+  "name": "avstandshylse",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100333,
+  "name": "Bolt/mutter/ringer",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100331,
+  "name": "Bøyle",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100332,
+  "name": "Fjær",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100330,
+  "name": "Flens",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100325,
+  "name": "Gummibuffer",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100324,
+  "name": "Gummiring",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100326,
+  "name": "Gummistriper",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100327,
+  "name": "Holder",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100329,
+  "name": "Klemstykke",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 706523,
+  "name": "Reduksjonsstykke",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 102875,
+  "name": "Rør",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100323,
+  "name": "Rørklammer",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 706766,
+  "name": "Sikringsclip",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100716,
+  "name": "Sveisehylse",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 706788,
+  "name": "svingningsdemper",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 100321,
+  "name": "Tetning",
+  "parentId": 100317,
+  "hasChildren": false
+}
+{
+  "id": 104273,
+  "name": "Regenerasjon sot-/partikkelfilter",
+  "parentId": 100004,
+  "hasChildren": true
+}
+{
+  "id": 706492,
+  "name": "Additivpumpe",
+  "parentId": 104273,
+  "hasChildren": false
+}
+{
+  "id": 104274,
+  "name": "Doseringsmodul",
+  "parentId": 104273,
+  "hasChildren": false
+}
+{
+  "id": 104275,
+  "name": "Innsprøytningsapparat",
+  "parentId": 104273,
+  "hasChildren": false
+}
+{
+  "id": 104364,
+  "name": "Slanger / ledninger",
+  "parentId": 104273,
+  "hasChildren": false
+}
+{
+  "id": 706718,
+  "name": "tankenhet",
+  "parentId": 104273,
+  "hasChildren": false
+}
+{
+  "id": 706707,
+  "name": "tilsetning",
+  "parentId": 104273,
+  "hasChildren": false
+}
+{
+  "id": 100319,
+  "name": "Resonator",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100315,
+  "name": "Rør",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 103414,
+  "name": "Sensor / sonde",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100318,
+  "name": "Sot-/Partikkelfilter",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100196,
+  "name": "Sports eksospotte",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 103019,
+  "name": "Ureainnsprøytning",
+  "parentId": 100004,
+  "hasChildren": true
+}
+{
+  "id": 103020,
+  "name": "Doseringsmodul",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 103021,
+  "name": "Innsprøytningsdyse",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 103062,
+  "name": "Sensor",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 103401,
+  "name": "Slanger / ledninger",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 103091,
+  "name": "Styreapparat",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 103089,
+  "name": "tankenhet",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 103022,
+  "name": "Transportmodul",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 706472,
+  "name": "Urea",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 103023,
+  "name": "ureafilter",
+  "parentId": 103019,
+  "hasChildren": false
+}
+{
+  "id": 100714,
+  "name": "Varmeskjold",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 104269,
+  "name": "Verktøy",
+  "parentId": 100004,
+  "hasChildren": false
+}
+{
+  "id": 100010,
+  "name": "Elektrisitet",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100042,
+  "name": "Batteri",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100307,
+  "name": "Belysnings-bryter / -relè / styreapparater",
+  "parentId": 100010,
+  "hasChildren": true
+}
+{
+  "id": 100509,
+  "name": "Bryter / regulator",
+  "parentId": 100307,
+  "hasChildren": false
+}
+{
+  "id": 100510,
+  "name": "Relé",
+  "parentId": 100307,
+  "hasChildren": false
+}
+{
+  "id": 100724,
+  "name": "Styreapparater",
+  "parentId": 100307,
+  "hasChildren": false
+}
+{
+  "id": 100511,
+  "name": "Blinklys / -relè",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 102661,
+  "name": "CAN bus",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100041,
+  "name": "Generator / -enkeltdeler",
+  "parentId": 100010,
+  "hasChildren": true
+}
+{
+  "id": 100350,
+  "name": "Generator",
+  "parentId": 100041,
+  "hasChildren": false
+}
+{
+  "id": 100352,
+  "name": "Komponenter",
+  "parentId": 100041,
+  "hasChildren": false
+}
+{
+  "id": 100351,
+  "name": "Regulator",
+  "parentId": 100041,
+  "hasChildren": false
+}
+{
+  "id": 100787,
+  "name": "Hjelpelyskaster / -enkeltdeler",
+  "parentId": 100010,
+  "hasChildren": true
+}
+{
+  "id": 100280,
+  "name": "Arbeidslyskaster / -enkeltdeler",
+  "parentId": 100787,
+  "hasChildren": true
+}
+{
+  "id": 100426,
+  "name": "Arbeidslyskaster / -innsetting",
+  "parentId": 100280,
+  "hasChildren": false
+}
+{
+  "id": 100445,
+  "name": "Arbeidslyskaster enkeltdeler",
+  "parentId": 100280,
+  "hasChildren": false
+}
+{
+  "id": 100448,
+  "name": "Arbeidslyskaster pære",
+  "parentId": 100280,
+  "hasChildren": false
+}
+{
+  "id": 100276,
+  "name": "Fjernlys / -enkeltdeler",
+  "parentId": 100787,
+  "hasChildren": true
+}
+{
+  "id": 100439,
+  "name": "Fjernlys / -innsetting",
+  "parentId": 100276,
+  "hasChildren": false
+}
+{
+  "id": 100443,
+  "name": "Fjernlys enkeltdeler",
+  "parentId": 100276,
+  "hasChildren": false
+}
+{
+  "id": 100442,
+  "name": "Fjernlyspære",
+  "parentId": 100276,
+  "hasChildren": false
+}
+{
+  "id": 102671,
+  "name": "svingelykt/-enkeltdeler",
+  "parentId": 100787,
+  "hasChildren": false
+}
+{
+  "id": 100869,
+  "name": "svingsidelys/-enkeltdeler",
+  "parentId": 100787,
+  "hasChildren": false
+}
+{
+  "id": 100281,
+  "name": "Søkelyskaster / -enkeltdeler",
+  "parentId": 100787,
+  "hasChildren": true
+}
+{
+  "id": 100437,
+  "name": "Søkelyskaster / -innsetting",
+  "parentId": 100281,
+  "hasChildren": false
+}
+{
+  "id": 100446,
+  "name": "Søkelyskaster enkeltdeler",
+  "parentId": 100281,
+  "hasChildren": false
+}
+{
+  "id": 100449,
+  "name": "Søkelyskaster pære",
+  "parentId": 100281,
+  "hasChildren": false
+}
+{
+  "id": 100277,
+  "name": "Tåkelyskaster / -enkeltdeler",
+  "parentId": 100787,
+  "hasChildren": true
+}
+{
+  "id": 100440,
+  "name": "Tåkelyskaster / -innsetting",
+  "parentId": 100277,
+  "hasChildren": false
+}
+{
+  "id": 100444,
+  "name": "Tåkelyskaster enkeltdeler",
+  "parentId": 100277,
+  "hasChildren": false
+}
+{
+  "id": 100447,
+  "name": "Tåkelyskaster pære",
+  "parentId": 100277,
+  "hasChildren": false
+}
+{
+  "id": 100320,
+  "name": "Horn",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100143,
+  "name": "Hovedlyskaster / -enkeltdeler",
+  "parentId": 100010,
+  "hasChildren": true
+}
+{
+  "id": 706742,
+  "name": "Fjernlyspære",
+  "parentId": 100143,
+  "hasChildren": false
+}
+{
+  "id": 706161,
+  "name": "Hovedfrontlyktenhet/-enkeltdeler",
+  "parentId": 100143,
+  "hasChildren": false
+}
+{
+  "id": 100433,
+  "name": "Hovedlyskaster / -innsetting",
+  "parentId": 100143,
+  "hasChildren": false
+}
+{
+  "id": 100430,
+  "name": "Hovedlyskaster enkeltdeler",
+  "parentId": 100143,
+  "hasChildren": false
+}
+{
+  "id": 100427,
+  "name": "Hovedlyskaster pære",
+  "parentId": 100143,
+  "hasChildren": false
+}
+{
+  "id": 100516,
+  "name": "Klafflyskaster",
+  "parentId": 100143,
+  "hasChildren": false
+}
+{
+  "id": 100279,
+  "name": "Lyshøyderegulering",
+  "parentId": 100143,
+  "hasChildren": false
+}
+{
+  "id": 100723,
+  "name": "Xenonlys",
+  "parentId": 100143,
+  "hasChildren": false
+}
+{
+  "id": 100322,
+  "name": "Instrumenter",
+  "parentId": 100010,
+  "hasChildren": true
+}
+{
+  "id": 100555,
+  "name": "Indikatorinstrumenter",
+  "parentId": 100322,
+  "hasChildren": false
+}
+{
+  "id": 100553,
+  "name": "Sensorer / bryter (giver)",
+  "parentId": 100322,
+  "hasChildren": false
+}
+{
+  "id": 100561,
+  "name": "Speedometer aksel",
+  "parentId": 100322,
+  "hasChildren": false
+}
+{
+  "id": 103066,
+  "name": "Kabelsett/-enkeltkomponenter",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100043,
+  "name": "Lys",
+  "parentId": 100010,
+  "hasChildren": true
+}
+{
+  "id": 100275,
+  "name": "Baklys / -enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100454,
+  "name": "Baklys",
+  "parentId": 100275,
+  "hasChildren": false
+}
+{
+  "id": 100456,
+  "name": "Baklys enkeltdeler",
+  "parentId": 100275,
+  "hasChildren": false
+}
+{
+  "id": 101495,
+  "name": "Lyspære baklys",
+  "parentId": 100275,
+  "hasChildren": false
+}
+{
+  "id": 100145,
+  "name": "Blinklys / -enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100463,
+  "name": "Blinklys",
+  "parentId": 100145,
+  "hasChildren": false
+}
+{
+  "id": 100480,
+  "name": "Blinklys enkeltdeler",
+  "parentId": 100145,
+  "hasChildren": false
+}
+{
+  "id": 100498,
+  "name": "Blinklys pære",
+  "parentId": 100145,
+  "hasChildren": false
+}
+{
+  "id": 100284,
+  "name": "Bremselys / -enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100460,
+  "name": "Bremselys",
+  "parentId": 100284,
+  "hasChildren": false
+}
+{
+  "id": 100471,
+  "name": "Bremselys enkeltdeler",
+  "parentId": 100284,
+  "hasChildren": false
+}
+{
+  "id": 100496,
+  "name": "Bremselys pære",
+  "parentId": 100284,
+  "hasChildren": false
+}
+{
+  "id": 100867,
+  "name": "Ekstra bremselys",
+  "parentId": 100284,
+  "hasChildren": false
+}
+{
+  "id": 101966,
+  "name": "drosjelys",
+  "parentId": 100043,
+  "hasChildren": false
+}
+{
+  "id": 100291,
+  "name": "Dørlys",
+  "parentId": 100043,
+  "hasChildren": false
+}
+{
+  "id": 100292,
+  "name": "Innendørs belysning",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100507,
+  "name": "Bagasje- / lasterom belysning",
+  "parentId": 100292,
+  "hasChildren": false
+}
+{
+  "id": 100508,
+  "name": "Belysning intrument/betjening",
+  "parentId": 100292,
+  "hasChildren": false
+}
+{
+  "id": 706495,
+  "name": "Fotbrønnbelysning",
+  "parentId": 100292,
+  "hasChildren": false
+}
+{
+  "id": 101794,
+  "name": "Hanskerombelysning",
+  "parentId": 100292,
+  "hasChildren": false
+}
+{
+  "id": 100505,
+  "name": "Innendørs belysning",
+  "parentId": 100292,
+  "hasChildren": false
+}
+{
+  "id": 101803,
+  "name": "Leselys",
+  "parentId": 100292,
+  "hasChildren": false
+}
+{
+  "id": 100506,
+  "name": "Motorrom belysning",
+  "parentId": 100292,
+  "hasChildren": false
+}
+{
+  "id": 100870,
+  "name": "Kjørelys",
+  "parentId": 100043,
+  "hasChildren": false
+}
+{
+  "id": 100147,
+  "name": "Nummerskiltlys / -enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100464,
+  "name": "Nummerskiltlys",
+  "parentId": 100147,
+  "hasChildren": false
+}
+{
+  "id": 100482,
+  "name": "Nummerskiltlys enkeltdeler",
+  "parentId": 100147,
+  "hasChildren": false
+}
+{
+  "id": 100499,
+  "name": "Nummerskiltlys pære",
+  "parentId": 100147,
+  "hasChildren": false
+}
+{
+  "id": 100289,
+  "name": "Roterende lys / -enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100540,
+  "name": "Motor, roterende lys",
+  "parentId": 100289,
+  "hasChildren": false
+}
+{
+  "id": 100467,
+  "name": "Roterende lys",
+  "parentId": 100289,
+  "hasChildren": false
+}
+{
+  "id": 100487,
+  "name": "Roterende lys enkeltdeler",
+  "parentId": 100289,
+  "hasChildren": false
+}
+{
+  "id": 100502,
+  "name": "Roterende lys pære",
+  "parentId": 100289,
+  "hasChildren": false
+}
+{
+  "id": 100287,
+  "name": "Ryggelys / -enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100466,
+  "name": "Ryggelys",
+  "parentId": 100287,
+  "hasChildren": false
+}
+{
+  "id": 100486,
+  "name": "Ryggelys enkeltdeler",
+  "parentId": 100287,
+  "hasChildren": false
+}
+{
+  "id": 100501,
+  "name": "Ryggelys pære",
+  "parentId": 100287,
+  "hasChildren": false
+}
+{
+  "id": 100290,
+  "name": "Side- / sidemarkeringslys / -enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100495,
+  "name": "Enkeltdeler",
+  "parentId": 100290,
+  "hasChildren": false
+}
+{
+  "id": 100468,
+  "name": "Parkerings- / posisjonslys",
+  "parentId": 100290,
+  "hasChildren": false
+}
+{
+  "id": 100503,
+  "name": "Pære",
+  "parentId": 100290,
+  "hasChildren": false
+}
+{
+  "id": 100753,
+  "name": "Sidelys",
+  "parentId": 100290,
+  "hasChildren": false
+}
+{
+  "id": 100469,
+  "name": "Sidemarkeringslys",
+  "parentId": 100290,
+  "hasChildren": false
+}
+{
+  "id": 100285,
+  "name": "Tåkebaklys/-enkeltdeler",
+  "parentId": 100043,
+  "hasChildren": true
+}
+{
+  "id": 100465,
+  "name": "Tåkebaklys",
+  "parentId": 100285,
+  "hasChildren": false
+}
+{
+  "id": 100484,
+  "name": "Tåkebaklys enkeltdeler",
+  "parentId": 100285,
+  "hasChildren": false
+}
+{
+  "id": 100500,
+  "name": "Tåkebaklys lyspære",
+  "parentId": 100285,
+  "hasChildren": false
+}
+{
+  "id": 105798,
+  "name": "Lyspæresortiment",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 104741,
+  "name": "Multifunksjonsbryter /betjeningsenhet",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 103428,
+  "name": "multifunksjonsrelé",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100295,
+  "name": "Reflektor / sidereflektor",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100785,
+  "name": "Relé",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 102747,
+  "name": "Sensorer",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100708,
+  "name": "Sentral el-modul",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100884,
+  "name": "Signalgiver",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 706659,
+  "name": "Sikringer",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 102336,
+  "name": "sikringsboks/-holder",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100353,
+  "name": "Startanlegg",
+  "parentId": 100010,
+  "hasChildren": true
+}
+{
+  "id": 100040,
+  "name": "Enkeltdeler",
+  "parentId": 100353,
+  "hasChildren": false
+}
+{
+  "id": 100362,
+  "name": "Magnetbryter",
+  "parentId": 100353,
+  "hasChildren": false
+}
+{
+  "id": 100359,
+  "name": "Starter",
+  "parentId": 100353,
+  "hasChildren": false
+}
+{
+  "id": 101826,
+  "name": "Startergenerator",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100727,
+  "name": "Styreapparater",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 103136,
+  "name": "Verktøy",
+  "parentId": 100010,
+  "hasChildren": false
+}
+{
+  "id": 100005,
+  "name": "Filter",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100261,
+  "name": "Drivstoffilter",
+  "parentId": 100005,
+  "hasChildren": false
+}
+{
+  "id": 102901,
+  "name": "filtersett",
+  "parentId": 100005,
+  "hasChildren": false
+}
+{
+  "id": 706725,
+  "name": "Hydraulikkfilter",
+  "parentId": 100005,
+  "hasChildren": false
+}
+{
+  "id": 100263,
+  "name": "Innendørs luftfilter",
+  "parentId": 100005,
+  "hasChildren": false
+}
+{
+  "id": 100713,
+  "name": "Kjølevæskefilter",
+  "parentId": 100005,
+  "hasChildren": false
+}
+{
+  "id": 100260,
+  "name": "Luftfilter",
+  "parentId": 100005,
+  "hasChildren": false
+}
+{
+  "id": 100259,
+  "name": "Oljefilter",
+  "parentId": 100005,
+  "hasChildren": false
+}
+{
+  "id": 100011,
+  "name": "Fjæring / demping",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 706755,
+  "name": "Aksellastvisning",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 100810,
+  "name": "Bladfjæring",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 100371,
+  "name": "Fjærbein-/støtdemperlagring",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 100381,
+  "name": "Fjærbein-/støtdemper tilleggsdeler",
+  "parentId": 100011,
+  "hasChildren": true
+}
+{
+  "id": 100129,
+  "name": "Fjærbein",
+  "parentId": 100381,
+  "hasChildren": false
+}
+{
+  "id": 100372,
+  "name": "Tilleggsdeler",
+  "parentId": 100381,
+  "hasChildren": false
+}
+{
+  "id": 100113,
+  "name": "Fjæring",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 101884,
+  "name": "Gassfjæring",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 100340,
+  "name": "Nivåregulering /opphengs-hydraulikk",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 102201,
+  "name": "Oljer",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 100370,
+  "name": "Opphengssett komplett",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 101830,
+  "name": "skrue chassis sett",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 100121,
+  "name": "Støtdemper",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 104406,
+  "name": "Verktøy",
+  "parentId": 100011,
+  "hasChildren": false
+}
+{
+  "id": 100238,
+  "name": "Gir",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100240,
+  "name": "Automatikk gir",
+  "parentId": 100238,
+  "hasChildren": true
+}
+{
+  "id": 102215,
+  "name": "bremsebånd",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 101853,
+  "name": "Bunnpanne / -tilleggsdeler",
+  "parentId": 100240,
+  "hasChildren": true
+}
+{
+  "id": 101854,
+  "name": "Bunnpanne",
+  "parentId": 101853,
+  "hasChildren": false
+}
+{
+  "id": 101855,
+  "name": "Tetning",
+  "parentId": 101853,
+  "hasChildren": false
+}
+{
+  "id": 103475,
+  "name": "Delesett oljeskift",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 101814,
+  "name": "Dreiemomentomformer",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 706483,
+  "name": "Drivkjede",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 101812,
+  "name": "Gir",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 102783,
+  "name": "Holder",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 100775,
+  "name": "Hus / enkeltdeler",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 706088,
+  "name": "Kjededrev",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 103109,
+  "name": "Kjøler",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 100773,
+  "name": "Lagring",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 706687,
+  "name": "Lamellkopling",
+  "parentId": 100240,
+  "hasChildren": true
+}
+{
+  "id": 706688,
+  "name": "Koblingstempel",
+  "parentId": 706687,
+  "hasChildren": false
+}
+{
+  "id": 101817,
+  "name": "Lameller/-Sett",
+  "parentId": 706687,
+  "hasChildren": false
+}
+{
+  "id": 706726,
+  "name": "Oljefilter",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 105997,
+  "name": "Oljepeilepinne",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 105494,
+  "name": "Oljepumpe",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 101810,
+  "name": "Reparasjon/vedlikehold",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 102931,
+  "name": "Sensor",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 103436,
+  "name": "Spenning",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 100776,
+  "name": "Styring / hydraulikk",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 100770,
+  "name": "Tetninger / pakninger",
+  "parentId": 100240,
+  "hasChildren": false
+}
+{
+  "id": 706584,
+  "name": "Automatisert girkasse (ASG)",
+  "parentId": 100238,
+  "hasChildren": true
+}
+{
+  "id": 706654,
+  "name": "Bryter",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706624,
+  "name": "Bunnpanne / -tilleggsdeler",
+  "parentId": 706584,
+  "hasChildren": true
+}
+{
+  "id": 706625,
+  "name": "Bunnpanne",
+  "parentId": 706624,
+  "hasChildren": false
+}
+{
+  "id": 706642,
+  "name": "Tetning",
+  "parentId": 706624,
+  "hasChildren": false
+}
+{
+  "id": 706597,
+  "name": "Gir",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706615,
+  "name": "Giraksler/komponenter",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706600,
+  "name": "Holder",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706586,
+  "name": "Hus / enkeltdeler",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706618,
+  "name": "Kjøler",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706612,
+  "name": "Koblingssylinder",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706606,
+  "name": "Lager",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706609,
+  "name": "Lagring",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706587,
+  "name": "Oljefilter",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706630,
+  "name": "Oljepeilepinne",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706633,
+  "name": "Oljepumpe",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706603,
+  "name": "Reparasjon/vedlikehold",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706636,
+  "name": "Sensorer / bryter (giver)",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706639,
+  "name": "Sperresylinder",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706621,
+  "name": "Styring / hydraulikk",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706585,
+  "name": "Tetninger/tetningsringer",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706652,
+  "name": "Ventiler",
+  "parentId": 706584,
+  "hasChildren": false
+}
+{
+  "id": 706835,
+  "name": "Dobbelclutch girkasse",
+  "parentId": 100238,
+  "hasChildren": true
+}
+{
+  "id": 706850,
+  "name": "Giraksler/komponenter",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 706846,
+  "name": "Hus / enkeltdeler",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 706848,
+  "name": "Lager",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 706847,
+  "name": "Oljefilter",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 706849,
+  "name": "Parkeringssperre",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 706851,
+  "name": "Sensorer",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 706852,
+  "name": "Styring / hydraulikk",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 706844,
+  "name": "Tetninger/tetningsringer",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 706845,
+  "name": "Ventiler",
+  "parentId": 706835,
+  "hasChildren": false
+}
+{
+  "id": 100239,
+  "name": "Girmekanisme",
+  "parentId": 100238,
+  "hasChildren": true
+}
+{
+  "id": 103065,
+  "name": "Gir",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 101808,
+  "name": "Girbetjening",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 102781,
+  "name": "Holder",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 100774,
+  "name": "Hus / enkeltdeler",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 103110,
+  "name": "Kjøler",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 706086,
+  "name": "Lager",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 100772,
+  "name": "Lagring",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 706727,
+  "name": "Oljefilter",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 105998,
+  "name": "Oljepeilepinne",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 101809,
+  "name": "Reparasjon/vedlikehold",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 102930,
+  "name": "Sensor",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 103103,
+  "name": "Styring / hydraulikk",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 706805,
+  "name": "svingningsdemper",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 102685,
+  "name": "synkronringer",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 100769,
+  "name": "Tetninger / pakninger",
+  "parentId": 100239,
+  "hasChildren": false
+}
+{
+  "id": 706233,
+  "name": "Oljer",
+  "parentId": 100238,
+  "hasChildren": false
+}
+{
+  "id": 102773,
+  "name": "Varesøk via grafikk",
+  "parentId": 100238,
+  "hasChildren": false
+}
+{
+  "id": 103157,
+  "name": "Verktøy",
+  "parentId": 100238,
+  "hasChildren": false
+}
+{
+  "id": 103202,
+  "name": "Hjelpedrift",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 103204,
+  "name": "Bryter",
+  "parentId": 103202,
+  "hasChildren": false
+}
+{
+  "id": 706164,
+  "name": "Hjelpedrift",
+  "parentId": 103202,
+  "hasChildren": false
+}
+{
+  "id": 706165,
+  "name": "Hydraulikkpumpe",
+  "parentId": 103202,
+  "hasChildren": false
+}
+{
+  "id": 103352,
+  "name": "Olje",
+  "parentId": 103202,
+  "hasChildren": false
+}
+{
+  "id": 706530,
+  "name": "Remdrift",
+  "parentId": 103202,
+  "hasChildren": false
+}
+{
+  "id": 706798,
+  "name": "Spenning",
+  "parentId": 103202,
+  "hasChildren": false
+}
+{
+  "id": 103203,
+  "name": "Tetninger",
+  "parentId": 103202,
+  "hasChildren": false
+}
+{
+  "id": 103099,
+  "name": "hjul/dekk",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 103100,
+  "name": "Dekk",
+  "parentId": 103099,
+  "hasChildren": false
+}
+{
+  "id": 103479,
+  "name": "Dekktrykk - kontrollsystem",
+  "parentId": 103099,
+  "hasChildren": false
+}
+{
+  "id": 706809,
+  "name": "Dekktrykkreguleringsanlegg",
+  "parentId": 103099,
+  "hasChildren": false
+}
+{
+  "id": 103101,
+  "name": "felg",
+  "parentId": 103099,
+  "hasChildren": false
+}
+{
+  "id": 104295,
+  "name": "Komplette hjul",
+  "parentId": 103099,
+  "hasChildren": false
+}
+{
+  "id": 103102,
+  "name": "Tilbehør",
+  "parentId": 103099,
+  "hasChildren": false
+}
+{
+  "id": 105409,
+  "name": "Verktøy",
+  "parentId": 103099,
+  "hasChildren": false
+}
+{
+  "id": 100014,
+  "name": "Hjuldrift",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100074,
+  "name": "Belg",
+  "parentId": 100014,
+  "hasChildren": false
+}
+{
+  "id": 100062,
+  "name": "Drivaksel",
+  "parentId": 100014,
+  "hasChildren": false
+}
+{
+  "id": 100066,
+  "name": "Feste- / tilleggsdeler",
+  "parentId": 100014,
+  "hasChildren": false
+}
+{
+  "id": 100071,
+  "name": "Ledd /-sett",
+  "parentId": 100014,
+  "hasChildren": false
+}
+{
+  "id": 103398,
+  "name": "Planetgir",
+  "parentId": 100014,
+  "hasChildren": false
+}
+{
+  "id": 100070,
+  "name": "Tripodsammenføyning",
+  "parentId": 100014,
+  "hasChildren": false
+}
+{
+  "id": 103161,
+  "name": "Verktøy",
+  "parentId": 100014,
+  "hasChildren": false
+}
+{
+  "id": 706209,
+  "name": "hybrid-/elektrisk drift",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 706732,
+  "name": "Batterimodul",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706219,
+  "name": "Drivbatteri",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706777,
+  "name": "Elektrisk kobling",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706682,
+  "name": "Elektromotor",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706569,
+  "name": "Gir",
+  "parentId": 706209,
+  "hasChildren": true
+}
+{
+  "id": 706570,
+  "name": "Filter",
+  "parentId": 706569,
+  "hasChildren": false
+}
+{
+  "id": 706762,
+  "name": "Reparasjon/vedlikehold",
+  "parentId": 706569,
+  "hasChildren": false
+}
+{
+  "id": 706764,
+  "name": "Tetninger",
+  "parentId": 706569,
+  "hasChildren": false
+}
+{
+  "id": 706566,
+  "name": "inverter",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706210,
+  "name": "Kjøling",
+  "parentId": 706209,
+  "hasChildren": true
+}
+{
+  "id": 706695,
+  "name": "Filter for for for drivbatteri",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706832,
+  "name": "Kjølemiddel",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706212,
+  "name": "kjøler for drivbatteri",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706215,
+  "name": "kjøler for elektromotor",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706220,
+  "name": "radiator for hydrogen",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706816,
+  "name": "Sensorer",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706747,
+  "name": "Slanger / ledninger / flenser",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706713,
+  "name": "Termostat for elektrisk drift",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706744,
+  "name": "Utjevningsbeholder",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706706,
+  "name": "Vannpumpe for elektrisk drift",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706557,
+  "name": "Vannpumpe for for drivbatteri",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706213,
+  "name": "Vifte for driftsbatteriet",
+  "parentId": 706210,
+  "hasChildren": false
+}
+{
+  "id": 706567,
+  "name": "Lader",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706551,
+  "name": "Lader",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706211,
+  "name": "Ladetilkobling",
+  "parentId": 706209,
+  "hasChildren": true
+}
+{
+  "id": 706214,
+  "name": "Ladekabel",
+  "parentId": 706211,
+  "hasChildren": false
+}
+{
+  "id": 706421,
+  "name": "Ladestikkontakt",
+  "parentId": 706211,
+  "hasChildren": false
+}
+{
+  "id": 706731,
+  "name": "Sikringsboks",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706759,
+  "name": "Smøring",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706565,
+  "name": "Styreapparat",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706715,
+  "name": "Tørker",
+  "parentId": 706209,
+  "hasChildren": false
+}
+{
+  "id": 706216,
+  "name": "varmegenerator",
+  "parentId": 706209,
+  "hasChildren": true
+}
+{
+  "id": 706217,
+  "name": "varmegenerator for drivbatteri",
+  "parentId": 706216,
+  "hasChildren": false
+}
+{
+  "id": 706218,
+  "name": "varmegenerator for kupeoppvarming",
+  "parentId": 706216,
+  "hasChildren": false
+}
+{
+  "id": 100339,
+  "name": "Informasjons- / kommunikasjonssystem",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100695,
+  "name": "Antenne",
+  "parentId": 100339,
+  "hasChildren": false
+}
+{
+  "id": 100694,
+  "name": "Audiosystem",
+  "parentId": 100339,
+  "hasChildren": false
+}
+{
+  "id": 100693,
+  "name": "Instrumenter",
+  "parentId": 100339,
+  "hasChildren": false
+}
+{
+  "id": 100696,
+  "name": "Kommunikasjon",
+  "parentId": 100339,
+  "hasChildren": false
+}
+{
+  "id": 100697,
+  "name": "Navigasjon",
+  "parentId": 100339,
+  "hasChildren": false
+}
+{
+  "id": 100764,
+  "name": "Ulykkesminne",
+  "parentId": 100339,
+  "hasChildren": false
+}
+{
+  "id": 105407,
+  "name": "Verktøy",
+  "parentId": 100339,
+  "hasChildren": false
+}
+{
+  "id": 100341,
+  "name": "Interiør",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 102689,
+  "name": "Armlene",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102690,
+  "name": "Askebeger",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102697,
+  "name": "Bagasje- / lasterom",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 103399,
+  "name": "drikkeholder",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 104958,
+  "name": "Festeklips",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102706,
+  "name": "Forkledning",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 103400,
+  "name": "gulvkar",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102692,
+  "name": "Gulvmatte",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102696,
+  "name": "Hanskerom",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102695,
+  "name": "Hånd / fot løfteverk",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102694,
+  "name": "Håndtak",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102998,
+  "name": "instrumentbord",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 103004,
+  "name": "Midtkonsoll",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102693,
+  "name": "Pneumatiske fjær",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 706578,
+  "name": "Safe",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 100673,
+  "name": "Seter",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102698,
+  "name": "solskjerm",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 706773,
+  "name": "Stikkontakt",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 706489,
+  "name": "Taksameter/speiltaksameter/tilbehør",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 100730,
+  "name": "Tilbehør",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 105405,
+  "name": "Verktøy",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 706581,
+  "name": "Verktøykasse",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 706471,
+  "name": "Vinddeflektor",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 102691,
+  "name": "Vindusheis",
+  "parentId": 100341,
+  "hasChildren": false
+}
+{
+  "id": 100001,
+  "name": "Karosseri",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 101705,
+  "name": "Bilens bakdel",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 101782,
+  "name": "Bagasje-/lasteromsluke og bagasje/lasteromslokk",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101781,
+  "name": "Bakluke/-enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101715,
+  "name": "Baklys / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101716,
+  "name": "Baklys",
+  "parentId": 101715,
+  "hasChildren": false
+}
+{
+  "id": 101717,
+  "name": "Baklys enkeltdeler",
+  "parentId": 101715,
+  "hasChildren": false
+}
+{
+  "id": 101718,
+  "name": "Baklys/-enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101719,
+  "name": "Baklykt",
+  "parentId": 101718,
+  "hasChildren": false
+}
+{
+  "id": 101721,
+  "name": "Baklys, lyspære",
+  "parentId": 101718,
+  "hasChildren": false
+}
+{
+  "id": 101720,
+  "name": "Baklys enkeltdeler",
+  "parentId": 101718,
+  "hasChildren": false
+}
+{
+  "id": 101784,
+  "name": "Bakrute",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101727,
+  "name": "Blinklys / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101728,
+  "name": "Blinklys",
+  "parentId": 101727,
+  "hasChildren": false
+}
+{
+  "id": 101729,
+  "name": "Blinklys enkeltdeler",
+  "parentId": 101727,
+  "hasChildren": false
+}
+{
+  "id": 101730,
+  "name": "Blinklys pære",
+  "parentId": 101727,
+  "hasChildren": false
+}
+{
+  "id": 101722,
+  "name": "Bremselys / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101724,
+  "name": "Bremselys",
+  "parentId": 101722,
+  "hasChildren": false
+}
+{
+  "id": 101725,
+  "name": "Bremselys enkeltdeler",
+  "parentId": 101722,
+  "hasChildren": false
+}
+{
+  "id": 101726,
+  "name": "Bremselys pære",
+  "parentId": 101722,
+  "hasChildren": false
+}
+{
+  "id": 101723,
+  "name": "Ekstra bremselys",
+  "parentId": 101722,
+  "hasChildren": false
+}
+{
+  "id": 101763,
+  "name": "Drivstofftank / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101745,
+  "name": "Enkeltdeler/tilleggsdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101748,
+  "name": "Batteriholder",
+  "parentId": 101745,
+  "hasChildren": false
+}
+{
+  "id": 101751,
+  "name": "Lysopptak",
+  "parentId": 101745,
+  "hasChildren": false
+}
+{
+  "id": 101749,
+  "name": "Nummerskiltplate / -holder",
+  "parentId": 101745,
+  "hasChildren": false
+}
+{
+  "id": 101752,
+  "name": "Pneumatiske fjær",
+  "parentId": 101745,
+  "hasChildren": false
+}
+{
+  "id": 101750,
+  "name": "Pynte- / beskyttelseslister",
+  "parentId": 101745,
+  "hasChildren": false
+}
+{
+  "id": 101747,
+  "name": "Spoiler",
+  "parentId": 101745,
+  "hasChildren": false
+}
+{
+  "id": 101746,
+  "name": "Tildekninger / hetter",
+  "parentId": 101745,
+  "hasChildren": false
+}
+{
+  "id": 101708,
+  "name": "Forkledning",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101707,
+  "name": "Karosseribunn",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 103036,
+  "name": "motorotildekning",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101783,
+  "name": "Motorpanser / -enkeltdeler / -demping",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101731,
+  "name": "Nummerskiltlys / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101732,
+  "name": "Nummerskiltlys",
+  "parentId": 101731,
+  "hasChildren": false
+}
+{
+  "id": 101733,
+  "name": "Nummerskiltlys enkeltdeler",
+  "parentId": 101731,
+  "hasChildren": false
+}
+{
+  "id": 101734,
+  "name": "Nummerskiltlys pære",
+  "parentId": 101731,
+  "hasChildren": false
+}
+{
+  "id": 101711,
+  "name": "Reservehjulpanne",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101739,
+  "name": "Ryggelys / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101740,
+  "name": "Ryggelys",
+  "parentId": 101739,
+  "hasChildren": false
+}
+{
+  "id": 101741,
+  "name": "Ryggelys enkeltdeler",
+  "parentId": 101739,
+  "hasChildren": false
+}
+{
+  "id": 101742,
+  "name": "Ryggelys pære",
+  "parentId": 101739,
+  "hasChildren": false
+}
+{
+  "id": 101785,
+  "name": "Side- / sidemarkeringslys / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101790,
+  "name": "Enkeltdeler",
+  "parentId": 101785,
+  "hasChildren": false
+}
+{
+  "id": 101786,
+  "name": "Parkerings- / posisjonslys",
+  "parentId": 101785,
+  "hasChildren": false
+}
+{
+  "id": 101789,
+  "name": "Pære",
+  "parentId": 101785,
+  "hasChildren": false
+}
+{
+  "id": 101788,
+  "name": "Sidelys",
+  "parentId": 101785,
+  "hasChildren": false
+}
+{
+  "id": 101787,
+  "name": "Sidemarkeringslys",
+  "parentId": 101785,
+  "hasChildren": false
+}
+{
+  "id": 101780,
+  "name": "Sidepanel",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101710,
+  "name": "Skjerm",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101779,
+  "name": "Skvettskjerm / tilleggsdeler",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101706,
+  "name": "Støtfanger / -enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": false
+}
+{
+  "id": 101735,
+  "name": "Tåkebaklys/-enkeltdeler",
+  "parentId": 101705,
+  "hasChildren": true
+}
+{
+  "id": 101736,
+  "name": "Tåkebaklys",
+  "parentId": 101735,
+  "hasChildren": false
+}
+{
+  "id": 101737,
+  "name": "Tåkebaklys enkeltdeler",
+  "parentId": 101735,
+  "hasChildren": false
+}
+{
+  "id": 101738,
+  "name": "Tåkebaklys lyspære",
+  "parentId": 101735,
+  "hasChildren": false
+}
+{
+  "id": 101648,
+  "name": "Bilfront",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 104724,
+  "name": "Beskyttelsesbøyle foran",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101669,
+  "name": "Blinklys / -enkeltdeler",
+  "parentId": 101648,
+  "hasChildren": true
+}
+{
+  "id": 101670,
+  "name": "Blinklys",
+  "parentId": 101669,
+  "hasChildren": false
+}
+{
+  "id": 101671,
+  "name": "Blinklys enkeltdeler",
+  "parentId": 101669,
+  "hasChildren": false
+}
+{
+  "id": 101672,
+  "name": "Blinklys pære",
+  "parentId": 101669,
+  "hasChildren": false
+}
+{
+  "id": 101651,
+  "name": "Drivstofftank / -enkeltdeler",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101673,
+  "name": "Enkeltdeler/tilleggsdeler",
+  "parentId": 101648,
+  "hasChildren": true
+}
+{
+  "id": 101772,
+  "name": "Batteriholder",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101774,
+  "name": "Emblemer",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101675,
+  "name": "Forkledning/grill",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 103064,
+  "name": "Montasjesett",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101776,
+  "name": "Nummerskiltplate / -holder",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101773,
+  "name": "Opphengning / drager / bærer / rammer",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101777,
+  "name": "Pneumatiske fjær",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101679,
+  "name": "Pynte- / beskyttelseslister",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101775,
+  "name": "Radiator fastgjøring",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101778,
+  "name": "Spoiler",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101674,
+  "name": "Tildekninger / hetter",
+  "parentId": 101673,
+  "hasChildren": false
+}
+{
+  "id": 101665,
+  "name": "Fjernlys / -enkeltdeler",
+  "parentId": 101648,
+  "hasChildren": true
+}
+{
+  "id": 101666,
+  "name": "Fjernlys / -innsetting",
+  "parentId": 101665,
+  "hasChildren": false
+}
+{
+  "id": 101668,
+  "name": "Fjernlys enkeltdeler",
+  "parentId": 101665,
+  "hasChildren": false
+}
+{
+  "id": 101667,
+  "name": "Fjernlyspære",
+  "parentId": 101665,
+  "hasChildren": false
+}
+{
+  "id": 101655,
+  "name": "Frotnrute",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101656,
+  "name": "Hovedlyskaster / -enkeltdeler",
+  "parentId": 101648,
+  "hasChildren": true
+}
+{
+  "id": 101657,
+  "name": "Hovedlyskaster / -innsetting",
+  "parentId": 101656,
+  "hasChildren": false
+}
+{
+  "id": 101659,
+  "name": "Hovedlyskaster enkeltdeler",
+  "parentId": 101656,
+  "hasChildren": false
+}
+{
+  "id": 101658,
+  "name": "Hovedlyskaster pære",
+  "parentId": 101656,
+  "hasChildren": false
+}
+{
+  "id": 101660,
+  "name": "Klafflyskaster",
+  "parentId": 101656,
+  "hasChildren": false
+}
+{
+  "id": 103035,
+  "name": "motorotildekning",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101654,
+  "name": "Motorpanser / -enkeltdeler / -demping",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101653,
+  "name": "Reservehjulpanne",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101766,
+  "name": "Side- / sidemarkeringslys / -enkeltdeler",
+  "parentId": 101648,
+  "hasChildren": true
+}
+{
+  "id": 101771,
+  "name": "Enkeltdeler",
+  "parentId": 101766,
+  "hasChildren": false
+}
+{
+  "id": 101767,
+  "name": "Parkerings- / posisjonslys",
+  "parentId": 101766,
+  "hasChildren": false
+}
+{
+  "id": 101770,
+  "name": "Pære",
+  "parentId": 101766,
+  "hasChildren": false
+}
+{
+  "id": 101769,
+  "name": "Sidelys",
+  "parentId": 101766,
+  "hasChildren": false
+}
+{
+  "id": 101768,
+  "name": "Sidemarkeringslys",
+  "parentId": 101766,
+  "hasChildren": false
+}
+{
+  "id": 101652,
+  "name": "Skjerm",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101650,
+  "name": "Skvettskjerm / tilleggsdeler",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101649,
+  "name": "Støtfanger / -enkeltdeler",
+  "parentId": 101648,
+  "hasChildren": false
+}
+{
+  "id": 101661,
+  "name": "Tåkelyskaster / -enkeltdeler",
+  "parentId": 101648,
+  "hasChildren": true
+}
+{
+  "id": 101662,
+  "name": "Tåkelyskaster / -innsetting",
+  "parentId": 101661,
+  "hasChildren": false
+}
+{
+  "id": 101664,
+  "name": "Tåkelyskaster enkeltdeler",
+  "parentId": 101661,
+  "hasChildren": false
+}
+{
+  "id": 101663,
+  "name": "Tåkelyskaster pære",
+  "parentId": 101661,
+  "hasChildren": false
+}
+{
+  "id": 100216,
+  "name": "Drivstofftank / -enkeltdeler",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 105577,
+  "name": "Elektromotor",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 103213,
+  "name": "Førerhus",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 103215,
+  "name": "Førerhusfjæring / -demping",
+  "parentId": 103213,
+  "hasChildren": false
+}
+{
+  "id": 103214,
+  "name": "Førerhuslagring",
+  "parentId": 103213,
+  "hasChildren": false
+}
+{
+  "id": 103469,
+  "name": "Tak- / dørstolpe / -rammer",
+  "parentId": 103213,
+  "hasChildren": false
+}
+{
+  "id": 100744,
+  "name": "Glassruter/speil",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 100745,
+  "name": "Glassruter",
+  "parentId": 100744,
+  "hasChildren": true
+}
+{
+  "id": 102346,
+  "name": "Inklebte ruter",
+  "parentId": 100745,
+  "hasChildren": false
+}
+{
+  "id": 100568,
+  "name": "Pakninger",
+  "parentId": 100745,
+  "hasChildren": false
+}
+{
+  "id": 100567,
+  "name": "Ruter",
+  "parentId": 100745,
+  "hasChildren": false
+}
+{
+  "id": 100569,
+  "name": "Tilleggsdeler",
+  "parentId": 100745,
+  "hasChildren": false
+}
+{
+  "id": 100566,
+  "name": "Speil",
+  "parentId": 100744,
+  "hasChildren": false
+}
+{
+  "id": 101340,
+  "name": "Hjelpelyskaster / -enkeltdeler",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 101349,
+  "name": "Arbeidslyskaster / -enkeltdeler",
+  "parentId": 101340,
+  "hasChildren": true
+}
+{
+  "id": 101350,
+  "name": "Arbeidslyskaster / -innsetting",
+  "parentId": 101349,
+  "hasChildren": false
+}
+{
+  "id": 101352,
+  "name": "Arbeidslyskaster enkeltdeler",
+  "parentId": 101349,
+  "hasChildren": false
+}
+{
+  "id": 101351,
+  "name": "Arbeidslyskaster pære",
+  "parentId": 101349,
+  "hasChildren": false
+}
+{
+  "id": 101345,
+  "name": "Fjernlys / -enkeltdeler",
+  "parentId": 101340,
+  "hasChildren": true
+}
+{
+  "id": 101346,
+  "name": "Fjernlys / -innsetting",
+  "parentId": 101345,
+  "hasChildren": false
+}
+{
+  "id": 101348,
+  "name": "Fjernlys enkeltdeler",
+  "parentId": 101345,
+  "hasChildren": false
+}
+{
+  "id": 101347,
+  "name": "Fjernlyspære",
+  "parentId": 101345,
+  "hasChildren": false
+}
+{
+  "id": 101353,
+  "name": "Søkelyskaster / -enkeltdeler",
+  "parentId": 101340,
+  "hasChildren": true
+}
+{
+  "id": 101354,
+  "name": "Søkelyskaster / -innsetting",
+  "parentId": 101353,
+  "hasChildren": false
+}
+{
+  "id": 101356,
+  "name": "Søkelyskaster enkeltdeler",
+  "parentId": 101353,
+  "hasChildren": false
+}
+{
+  "id": 101355,
+  "name": "Søkelyskaster pære",
+  "parentId": 101353,
+  "hasChildren": false
+}
+{
+  "id": 101341,
+  "name": "Tåkelyskaster / -enkeltdeler",
+  "parentId": 101340,
+  "hasChildren": true
+}
+{
+  "id": 101342,
+  "name": "Tåkelyskaster / -innsetting",
+  "parentId": 101341,
+  "hasChildren": false
+}
+{
+  "id": 101344,
+  "name": "Tåkelyskaster enkeltdeler",
+  "parentId": 101341,
+  "hasChildren": false
+}
+{
+  "id": 101343,
+  "name": "Tåkelyskaster pære",
+  "parentId": 101341,
+  "hasChildren": false
+}
+{
+  "id": 101465,
+  "name": "Hovedlyskaster / -enkeltdeler",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 101466,
+  "name": "Hovedlyskaster / -innsetting",
+  "parentId": 101465,
+  "hasChildren": false
+}
+{
+  "id": 101468,
+  "name": "Hovedlyskaster enkeltdeler",
+  "parentId": 101465,
+  "hasChildren": false
+}
+{
+  "id": 101467,
+  "name": "Hovedlyskaster pære",
+  "parentId": 101465,
+  "hasChildren": false
+}
+{
+  "id": 101469,
+  "name": "Klafflyskaster",
+  "parentId": 101465,
+  "hasChildren": false
+}
+{
+  "id": 100743,
+  "name": "Karosserideler / skvettskjerm / støtfanger",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 100166,
+  "name": "Batteriholder",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100169,
+  "name": "Dørlist",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 104959,
+  "name": "Festeklips",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100191,
+  "name": "Frontkledning / frontgrill",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100739,
+  "name": "Hekkledning",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 101504,
+  "name": "Hjelperamme/aggregatfeste",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100168,
+  "name": "Karosseribunn",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 104812,
+  "name": "Kjøretøyramme/-enkeltdeler",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100155,
+  "name": "Lengde- / tverrdrager",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100606,
+  "name": "Nummerskiltplate / -holder",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 104382,
+  "name": "Rammehode",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100164,
+  "name": "Reservehjulpanne",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100181,
+  "name": "Sidepanel",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100165,
+  "name": "Skjerm",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100185,
+  "name": "Skvettskjerm / tilleggsdeler",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100537,
+  "name": "Spoiler",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100187,
+  "name": "Støtfanger / -enkeltdeler",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100737,
+  "name": "Tak- / dørstolpe / -rammer",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100699,
+  "name": "Tildekninger / hetter",
+  "parentId": 100743,
+  "hasChildren": false
+}
+{
+  "id": 100746,
+  "name": "klaffer/hetter/dører/soltak/foldetak",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 100192,
+  "name": "Bagasje-/lasteromsluke og bagasje/lasteromslokk",
+  "parentId": 100746,
+  "hasChildren": false
+}
+{
+  "id": 102414,
+  "name": "deksel/-enkeltdeler",
+  "parentId": 100746,
+  "hasChildren": false
+}
+{
+  "id": 100189,
+  "name": "Dører / -enkeltdeler",
+  "parentId": 100746,
+  "hasChildren": false
+}
+{
+  "id": 102760,
+  "name": "foldetak",
+  "parentId": 100746,
+  "hasChildren": false
+}
+{
+  "id": 100184,
+  "name": "Motorpanser / -enkeltdeler / -demping",
+  "parentId": 100746,
+  "hasChildren": false
+}
+{
+  "id": 100778,
+  "name": "Soltak / -enkeltdeler",
+  "parentId": 100746,
+  "hasChildren": false
+}
+{
+  "id": 102731,
+  "name": "tankdeksel/-enkeltdeler",
+  "parentId": 100746,
+  "hasChildren": false
+}
+{
+  "id": 101407,
+  "name": "Lys",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 101408,
+  "name": "Baklys / -enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101409,
+  "name": "Baklys",
+  "parentId": 101408,
+  "hasChildren": false
+}
+{
+  "id": 101410,
+  "name": "Baklys enkeltdeler",
+  "parentId": 101408,
+  "hasChildren": false
+}
+{
+  "id": 101411,
+  "name": "Baklys/-enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101412,
+  "name": "Baklykt",
+  "parentId": 101411,
+  "hasChildren": false
+}
+{
+  "id": 101414,
+  "name": "Baklys, lyspære",
+  "parentId": 101411,
+  "hasChildren": false
+}
+{
+  "id": 101413,
+  "name": "Baklys enkeltdeler",
+  "parentId": 101411,
+  "hasChildren": false
+}
+{
+  "id": 101420,
+  "name": "Blinklys / -enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101421,
+  "name": "Blinklys",
+  "parentId": 101420,
+  "hasChildren": false
+}
+{
+  "id": 101422,
+  "name": "Blinklys enkeltdeler",
+  "parentId": 101420,
+  "hasChildren": false
+}
+{
+  "id": 101423,
+  "name": "Blinklys pære",
+  "parentId": 101420,
+  "hasChildren": false
+}
+{
+  "id": 102406,
+  "name": "sideblinklys",
+  "parentId": 101420,
+  "hasChildren": false
+}
+{
+  "id": 101415,
+  "name": "Bremselys / -enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101417,
+  "name": "Bremselys",
+  "parentId": 101415,
+  "hasChildren": false
+}
+{
+  "id": 101418,
+  "name": "Bremselys enkeltdeler",
+  "parentId": 101415,
+  "hasChildren": false
+}
+{
+  "id": 101419,
+  "name": "Bremselys pære",
+  "parentId": 101415,
+  "hasChildren": false
+}
+{
+  "id": 101416,
+  "name": "Ekstra bremselys",
+  "parentId": 101415,
+  "hasChildren": false
+}
+{
+  "id": 101452,
+  "name": "Dørlys",
+  "parentId": 101407,
+  "hasChildren": false
+}
+{
+  "id": 101424,
+  "name": "Nummerskiltlys / -enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101425,
+  "name": "Nummerskiltlys",
+  "parentId": 101424,
+  "hasChildren": false
+}
+{
+  "id": 101426,
+  "name": "Nummerskiltlys enkeltdeler",
+  "parentId": 101424,
+  "hasChildren": false
+}
+{
+  "id": 101427,
+  "name": "Nummerskiltlys pære",
+  "parentId": 101424,
+  "hasChildren": false
+}
+{
+  "id": 101432,
+  "name": "Ryggelys / -enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101433,
+  "name": "Ryggelys",
+  "parentId": 101432,
+  "hasChildren": false
+}
+{
+  "id": 101434,
+  "name": "Ryggelys enkeltdeler",
+  "parentId": 101432,
+  "hasChildren": false
+}
+{
+  "id": 101435,
+  "name": "Ryggelys pære",
+  "parentId": 101432,
+  "hasChildren": false
+}
+{
+  "id": 101441,
+  "name": "Side- / sidemarkeringslys / -enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101446,
+  "name": "Enkeltdeler",
+  "parentId": 101441,
+  "hasChildren": false
+}
+{
+  "id": 101442,
+  "name": "Parkerings- / posisjonslys",
+  "parentId": 101441,
+  "hasChildren": false
+}
+{
+  "id": 101445,
+  "name": "Pære",
+  "parentId": 101441,
+  "hasChildren": false
+}
+{
+  "id": 101444,
+  "name": "Sidelys",
+  "parentId": 101441,
+  "hasChildren": false
+}
+{
+  "id": 101443,
+  "name": "Sidemarkeringslys",
+  "parentId": 101441,
+  "hasChildren": false
+}
+{
+  "id": 101428,
+  "name": "Tåkebaklys/-enkeltdeler",
+  "parentId": 101407,
+  "hasChildren": true
+}
+{
+  "id": 101429,
+  "name": "Tåkebaklys",
+  "parentId": 101428,
+  "hasChildren": false
+}
+{
+  "id": 101430,
+  "name": "Tåkebaklys enkeltdeler",
+  "parentId": 101428,
+  "hasChildren": false
+}
+{
+  "id": 101431,
+  "name": "Tåkebaklys lyspære",
+  "parentId": 101428,
+  "hasChildren": false
+}
+{
+  "id": 103118,
+  "name": "varsellys/-reservedeler",
+  "parentId": 101407,
+  "hasChildren": false
+}
+{
+  "id": 101454,
+  "name": "Opphengning / drager / bærer / rammer",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 101690,
+  "name": "Passasjerhus",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 101760,
+  "name": "Drivstofftank / -enkeltdeler",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101694,
+  "name": "Dører / -enkeltdeler",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101692,
+  "name": "Dørlist",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101697,
+  "name": "Dørvindu/sidevindu",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101699,
+  "name": "Ekstra bremselys",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101700,
+  "name": "Enkeltdeler/tilleggsdeler",
+  "parentId": 101690,
+  "hasChildren": true
+}
+{
+  "id": 101703,
+  "name": "Pneumatiske fjær",
+  "parentId": 101700,
+  "hasChildren": false
+}
+{
+  "id": 101702,
+  "name": "Pynte- / beskyttelseslister",
+  "parentId": 101700,
+  "hasChildren": false
+}
+{
+  "id": 101701,
+  "name": "Spoiler",
+  "parentId": 101700,
+  "hasChildren": false
+}
+{
+  "id": 102758,
+  "name": "foldetak",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101693,
+  "name": "Karosseribunn",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101696,
+  "name": "Sidepanel",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101695,
+  "name": "Soltak / -enkeltdeler",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101698,
+  "name": "Speil",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 101691,
+  "name": "Tak- / dørstolpe / -rammer",
+  "parentId": 101690,
+  "hasChildren": false
+}
+{
+  "id": 100826,
+  "name": "Pneumatiske fjær",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 100219,
+  "name": "Pynt / beskyttelse / deko. lister / emblemer / sprøytevern",
+  "parentId": 100001,
+  "hasChildren": true
+}
+{
+  "id": 100741,
+  "name": "Emblemer",
+  "parentId": 100219,
+  "hasChildren": false
+}
+{
+  "id": 100740,
+  "name": "Pynte- / beskyttelseslister",
+  "parentId": 100219,
+  "hasChildren": false
+}
+{
+  "id": 100742,
+  "name": "Sprøytevern",
+  "parentId": 100219,
+  "hasChildren": false
+}
+{
+  "id": 100217,
+  "name": "Radiator fastgjøring",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 706870,
+  "name": "Reservehjulfeste",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 104728,
+  "name": "Rullbøyle",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 101765,
+  "name": "totalgrafikk karosserideler",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 103132,
+  "name": "Verktøy",
+  "parentId": 100001,
+  "hasChildren": false
+}
+{
+  "id": 100007,
+  "name": "Kjøling",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100334,
+  "name": "Bryter / sensor",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 102205,
+  "name": "Frostvæske",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 100874,
+  "name": "Kjølevifte, radiator",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 100338,
+  "name": "Luftkjøling",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 100344,
+  "name": "Relé",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 100099,
+  "name": "Slanger / ledninger / flenser",
+  "parentId": 100007,
+  "hasChildren": true
+}
+{
+  "id": 100840,
+  "name": "Flenser",
+  "parentId": 100099,
+  "hasChildren": false
+}
+{
+  "id": 100100,
+  "name": "Kjølevannslager / -ledninger",
+  "parentId": 100099,
+  "hasChildren": false
+}
+{
+  "id": 706709,
+  "name": "Koblingsstykke",
+  "parentId": 100099,
+  "hasChildren": false
+}
+{
+  "id": 100215,
+  "name": "Oljeslanger / -ledninger",
+  "parentId": 100099,
+  "hasChildren": false
+}
+{
+  "id": 706823,
+  "name": "Sortimenter",
+  "parentId": 100099,
+  "hasChildren": false
+}
+{
+  "id": 102447,
+  "name": "Styreapparat",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 100094,
+  "name": "Termostat / -tetning",
+  "parentId": 100007,
+  "hasChildren": true
+}
+{
+  "id": 100095,
+  "name": "Termostat",
+  "parentId": 100094,
+  "hasChildren": false
+}
+{
+  "id": 100096,
+  "name": "Tetning",
+  "parentId": 100094,
+  "hasChildren": false
+}
+{
+  "id": 100102,
+  "name": "Vann- / oljekjøler",
+  "parentId": 100007,
+  "hasChildren": true
+}
+{
+  "id": 100105,
+  "name": "Festedeler radiator",
+  "parentId": 100102,
+  "hasChildren": false
+}
+{
+  "id": 100104,
+  "name": "Kupé-varmeveksler",
+  "parentId": 100102,
+  "hasChildren": false
+}
+{
+  "id": 100108,
+  "name": "Oljekjøler",
+  "parentId": 100102,
+  "hasChildren": false
+}
+{
+  "id": 100112,
+  "name": "Utjevningsbeholder",
+  "parentId": 100102,
+  "hasChildren": false
+}
+{
+  "id": 100103,
+  "name": "Vannkjøler",
+  "parentId": 100102,
+  "hasChildren": false
+}
+{
+  "id": 100088,
+  "name": "Vannpumpe / -tetning",
+  "parentId": 100007,
+  "hasChildren": true
+}
+{
+  "id": 706034,
+  "name": "Friksjonshjul",
+  "parentId": 100088,
+  "hasChildren": false
+}
+{
+  "id": 102984,
+  "name": "Nav",
+  "parentId": 100088,
+  "hasChildren": false
+}
+{
+  "id": 102211,
+  "name": "Remskive",
+  "parentId": 100088,
+  "hasChildren": false
+}
+{
+  "id": 104956,
+  "name": "Termostyringsmodul",
+  "parentId": 100088,
+  "hasChildren": false
+}
+{
+  "id": 100089,
+  "name": "Tetning",
+  "parentId": 100088,
+  "hasChildren": false
+}
+{
+  "id": 100091,
+  "name": "Vannpumpe",
+  "parentId": 100088,
+  "hasChildren": false
+}
+{
+  "id": 103509,
+  "name": "Varesøk via grafikk",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 100337,
+  "name": "Ventilator",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 103131,
+  "name": "Verktøy",
+  "parentId": 100007,
+  "hasChildren": false
+}
+{
+  "id": 100243,
+  "name": "Klimaanlegg",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100779,
+  "name": "Betjening / regulering",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100366,
+  "name": "Bryter",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100356,
+  "name": "fordamper",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100865,
+  "name": "Formotstand",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100732,
+  "name": "Kjølemiddel / filter",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100354,
+  "name": "kompressor/Enkeltdeler",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100355,
+  "name": "Kondensator",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100809,
+  "name": "Montering",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100364,
+  "name": "Omstillingssett",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100365,
+  "name": "Opprustningssett",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100363,
+  "name": "Relé",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 102922,
+  "name": "reparasjonssett",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100794,
+  "name": "Sensorer",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100360,
+  "name": "Slanger / ledninger",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 706826,
+  "name": "Sortimenter",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100728,
+  "name": "Styreapparater",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100357,
+  "name": "Tørker",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100756,
+  "name": "Vakuumsystem / -pumpe",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100358,
+  "name": "Ventiler",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 706416,
+  "name": "Verktøy",
+  "parentId": 100243,
+  "hasChildren": false
+}
+{
+  "id": 100335,
+  "name": "Komfortsystem",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100619,
+  "name": "Alarmanlegg",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 104155,
+  "name": "Baklukebetjening",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 105580,
+  "name": "Betjening av motorpanser",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 105578,
+  "name": "Coming-home funksjon",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100615,
+  "name": "Cruise control",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100616,
+  "name": "Hastighets alarmanlegg",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 706838,
+  "name": "Kamera",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 706510,
+  "name": "Keyless-system",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 104156,
+  "name": "Motor / relè",
+  "parentId": 100335,
+  "hasChildren": true
+}
+{
+  "id": 104166,
+  "name": "Alarmanlegg",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 105582,
+  "name": "Bakluke",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104160,
+  "name": "Bakrute",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104163,
+  "name": "Cruise control",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 105588,
+  "name": "Dør",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104167,
+  "name": "Frotnrute",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104165,
+  "name": "Lukkehjelp",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 105584,
+  "name": "Motorpanser",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104162,
+  "name": "Motorvarmer",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104161,
+  "name": "Parkeringshjelp/Reversvarsel",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 105586,
+  "name": "Rattstammejustering",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104164,
+  "name": "Sentrallås",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104158,
+  "name": "Soltak",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104159,
+  "name": "Speil",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 105585,
+  "name": "Utstillingsvindu",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104157,
+  "name": "Vindusheis",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 104169,
+  "name": "Åpning tankspjeld",
+  "parentId": 104156,
+  "hasChildren": false
+}
+{
+  "id": 102736,
+  "name": "motorvarmersystem (elektrisk)",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100618,
+  "name": "Parkeringshjelp / ryggealarm",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100614,
+  "name": "Parkeringsvarmer",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100625,
+  "name": "pumper",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100850,
+  "name": "Sensorer",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100617,
+  "name": "Sentrallås",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100863,
+  "name": "Setevarme",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100734,
+  "name": "Soltak",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 706789,
+  "name": "Styreapparat",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100836,
+  "name": "Tiltrekkingshjelp/dørbetjening",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 706318,
+  "name": "Verktøy",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100751,
+  "name": "Vindusheis",
+  "parentId": 100335,
+  "hasChildren": false
+}
+{
+  "id": 100342,
+  "name": "Lyskastervasking",
+  "parentId": null,
+  "hasChildren": false
+}
+{
+  "id": 100685,
+  "name": "Låsesystem",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100766,
+  "name": "Enkeltdeler",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 100819,
+  "name": "Fjernbetjening, sentrallås",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 100691,
+  "name": "Håndtak",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 100690,
+  "name": "Lukkesylinder / -sett",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 100688,
+  "name": "Låser innvendig",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 100687,
+  "name": "Låser utvendig",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 100689,
+  "name": "Låsesett",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 706506,
+  "name": "Nøkkel",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 100686,
+  "name": "Sentrallås",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 103234,
+  "name": "Verktøy",
+  "parentId": 100685,
+  "hasChildren": false
+}
+{
+  "id": 103671,
+  "name": "MC",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 706538,
+  "name": "Akseldrift",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 706539,
+  "name": "Oljer",
+  "parentId": 706538,
+  "hasChildren": false
+}
+{
+  "id": 103672,
+  "name": "Bremseanlegg",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103673,
+  "name": "antiknirkefolie",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104083,
+  "name": "Bremsebelegg / -sko",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104084,
+  "name": "Bremsecaliper/tilbehør",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104082,
+  "name": "Bremseskive/Tilbehør",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104085,
+  "name": "Bremsespak/-trekk",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 706537,
+  "name": "Bremsevæske",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104088,
+  "name": "Bremsevæske / -tank",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104086,
+  "name": "Hånd-/fotbremsesylinder",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104087,
+  "name": "Håndbrekk kabler/-slanger/tilbehør",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 104281,
+  "name": "Kjøredynamikk regulering",
+  "parentId": 103672,
+  "hasChildren": false
+}
+{
+  "id": 103712,
+  "name": "Clutch / -deler",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103713,
+  "name": "Belegglameller",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 103715,
+  "name": "Clutchbetjening",
+  "parentId": 103712,
+  "hasChildren": true
+}
+{
+  "id": 103980,
+  "name": "Clutch hydraulikk",
+  "parentId": 103715,
+  "hasChildren": false
+}
+{
+  "id": 103754,
+  "name": "Koblingsspak/-trekk",
+  "parentId": 103715,
+  "hasChildren": false
+}
+{
+  "id": 103716,
+  "name": "Slanger / ledninger",
+  "parentId": 103715,
+  "hasChildren": false
+}
+{
+  "id": 104250,
+  "name": "Clutchhus/svingskive",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 104245,
+  "name": "Clutchsett",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 104247,
+  "name": "Clutchskive",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 104246,
+  "name": "Clutch trykkplate",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 103718,
+  "name": "Koblingsfjær",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 104280,
+  "name": "Pressplate",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 706650,
+  "name": "Sentrifugalkraftkobling",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 103714,
+  "name": "Stållameller (stålmellomskiver)",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 104248,
+  "name": "Utløserlager",
+  "parentId": 103712,
+  "hasChildren": false
+}
+{
+  "id": 103842,
+  "name": "Drivstoffberedning",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103843,
+  "name": "Drivstoffberedning",
+  "parentId": 103842,
+  "hasChildren": true
+}
+{
+  "id": 103858,
+  "name": "Bryter / relè",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103854,
+  "name": "Drivstoffledning/-fordeling/-tildeling",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103846,
+  "name": "Drosselklaff / -stuss / vakuumledning",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103852,
+  "name": "Gasswire",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103848,
+  "name": "Innsprøytningsapparat",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103849,
+  "name": "Innsprøytningsdyse",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103853,
+  "name": "Innsprøytningspumpe",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103856,
+  "name": "luftmengdemålere",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103857,
+  "name": "Reperasjon- / komplettsett",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103859,
+  "name": "Sensor / sonde",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103860,
+  "name": "Styreapparat",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103845,
+  "name": "Tetning",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103855,
+  "name": "Tomgang- / varmløpsregulering",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 104706,
+  "name": "Trykkomformer",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103861,
+  "name": "Ventiler/Ventilenhet",
+  "parentId": 103843,
+  "hasChildren": false
+}
+{
+  "id": 103864,
+  "name": "Forgasseranlegg",
+  "parentId": 103842,
+  "hasChildren": true
+}
+{
+  "id": 103871,
+  "name": "Betjening / demper / bokser",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103872,
+  "name": "Bryter / relè",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103869,
+  "name": "Flens",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103867,
+  "name": "Forgasser - enkeltdeler",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103865,
+  "name": "Forgasser komplett",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103873,
+  "name": "Kabeltre",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103875,
+  "name": "konverteringssett",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103866,
+  "name": "Reparasjonssett",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103874,
+  "name": "Styreapparat",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103868,
+  "name": "Tetning",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103870,
+  "name": "Ventiler",
+  "parentId": 103864,
+  "hasChildren": false
+}
+{
+  "id": 103879,
+  "name": "Eksosanlegg",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103985,
+  "name": "Eksospotte",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 103984,
+  "name": "Eksospotteanlegg komplett",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 104015,
+  "name": "Eksospotteinnsats (dB-Eater)",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 103986,
+  "name": "Katalysator",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 103988,
+  "name": "Lambdasonde",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 103987,
+  "name": "Manifold",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 104007,
+  "name": "Montasjesett",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 103991,
+  "name": "Montering enkeltdeler",
+  "parentId": 103879,
+  "hasChildren": true
+}
+{
+  "id": 104003,
+  "name": "Bolt/mutter",
+  "parentId": 103991,
+  "hasChildren": false
+}
+{
+  "id": 104000,
+  "name": "Flens",
+  "parentId": 103991,
+  "hasChildren": false
+}
+{
+  "id": 103998,
+  "name": "Holder",
+  "parentId": 103991,
+  "hasChildren": false
+}
+{
+  "id": 103999,
+  "name": "Klemstykke",
+  "parentId": 103991,
+  "hasChildren": false
+}
+{
+  "id": 103994,
+  "name": "Rørklammer",
+  "parentId": 103991,
+  "hasChildren": false
+}
+{
+  "id": 103993,
+  "name": "Tetning",
+  "parentId": 103991,
+  "hasChildren": false
+}
+{
+  "id": 103989,
+  "name": "Rør",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 104009,
+  "name": "Samler",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 103990,
+  "name": "Varmeskjold",
+  "parentId": 103879,
+  "hasChildren": false
+}
+{
+  "id": 103952,
+  "name": "Elektrisitet",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 104021,
+  "name": "Baklys",
+  "parentId": 103952,
+  "hasChildren": false
+}
+{
+  "id": 104026,
+  "name": "Baklys / -enkeltdeler",
+  "parentId": 103952,
+  "hasChildren": true
+}
+{
+  "id": 104027,
+  "name": "Baklys",
+  "parentId": 104026,
+  "hasChildren": false
+}
+{
+  "id": 104028,
+  "name": "Baklys enkeltdeler",
+  "parentId": 104026,
+  "hasChildren": false
+}
+{
+  "id": 104029,
+  "name": "Lyspære baklys",
+  "parentId": 104026,
+  "hasChildren": false
+}
+{
+  "id": 103966,
+  "name": "Batteri",
+  "parentId": 103952,
+  "hasChildren": false
+}
+{
+  "id": 104034,
+  "name": "Blinklys / -enkeltdeler",
+  "parentId": 103952,
+  "hasChildren": true
+}
+{
+  "id": 104035,
+  "name": "Blinklys",
+  "parentId": 104034,
+  "hasChildren": false
+}
+{
+  "id": 104036,
+  "name": "Blinklys enkeltdeler",
+  "parentId": 104034,
+  "hasChildren": false
+}
+{
+  "id": 104037,
+  "name": "Blinklys pære",
+  "parentId": 104034,
+  "hasChildren": false
+}
+{
+  "id": 103962,
+  "name": "Generator / -enkeltdeler",
+  "parentId": 103952,
+  "hasChildren": true
+}
+{
+  "id": 103963,
+  "name": "Generator",
+  "parentId": 103962,
+  "hasChildren": false
+}
+{
+  "id": 103965,
+  "name": "Komponenter",
+  "parentId": 103962,
+  "hasChildren": false
+}
+{
+  "id": 103964,
+  "name": "Regulator",
+  "parentId": 103962,
+  "hasChildren": false
+}
+{
+  "id": 104019,
+  "name": "Horn/fanfare",
+  "parentId": 103952,
+  "hasChildren": false
+}
+{
+  "id": 706802,
+  "name": "Instrumenter",
+  "parentId": 103952,
+  "hasChildren": true
+}
+{
+  "id": 706803,
+  "name": "Indikatorinstrumenter",
+  "parentId": 706802,
+  "hasChildren": false
+}
+{
+  "id": 103957,
+  "name": "Lyskastere/-enkeltdeler",
+  "parentId": 103952,
+  "hasChildren": true
+}
+{
+  "id": 104022,
+  "name": "Hovedlyskaster / -innsetting",
+  "parentId": 103957,
+  "hasChildren": false
+}
+{
+  "id": 104025,
+  "name": "Hovedlyskaster enkeltdeler",
+  "parentId": 103957,
+  "hasChildren": false
+}
+{
+  "id": 104024,
+  "name": "Hovedlyskaster pære",
+  "parentId": 103957,
+  "hasChildren": false
+}
+{
+  "id": 104282,
+  "name": "Tåkelyskaster pære",
+  "parentId": 103957,
+  "hasChildren": false
+}
+{
+  "id": 104264,
+  "name": "Sensorer",
+  "parentId": 103952,
+  "hasChildren": false
+}
+{
+  "id": 103953,
+  "name": "Startanlegg",
+  "parentId": 103952,
+  "hasChildren": true
+}
+{
+  "id": 103954,
+  "name": "Enkeltdeler",
+  "parentId": 103953,
+  "hasChildren": false
+}
+{
+  "id": 103956,
+  "name": "Magnetbryter",
+  "parentId": 103953,
+  "hasChildren": false
+}
+{
+  "id": 103955,
+  "name": "Starter",
+  "parentId": 103953,
+  "hasChildren": false
+}
+{
+  "id": 103777,
+  "name": "Filter",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103781,
+  "name": "Drivstoffilter",
+  "parentId": 103777,
+  "hasChildren": false
+}
+{
+  "id": 103780,
+  "name": "Luftfilter",
+  "parentId": 103777,
+  "hasChildren": false
+}
+{
+  "id": 103779,
+  "name": "Oljefilter",
+  "parentId": 103777,
+  "hasChildren": false
+}
+{
+  "id": 103895,
+  "name": "Fjæring / demping",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103982,
+  "name": "Fjærbein",
+  "parentId": 103895,
+  "hasChildren": false
+}
+{
+  "id": 103983,
+  "name": "Gaffel/-enkeltdeler",
+  "parentId": 103895,
+  "hasChildren": true
+}
+{
+  "id": 104089,
+  "name": "Akselmontasje (gaffelneve/-fot)",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 706730,
+  "name": "Cartridge",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 104038,
+  "name": "Fast rør",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 706716,
+  "name": "Gaffel",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 104049,
+  "name": "Gaffelbro",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 104051,
+  "name": "Gaffelfjær",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 104410,
+  "name": "Gaffelolje",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 104039,
+  "name": "Rør, bevegelig",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 104381,
+  "name": "Tetningsring/støvhette",
+  "parentId": 103983,
+  "hasChildren": false
+}
+{
+  "id": 706529,
+  "name": "Gassfjæring",
+  "parentId": 103895,
+  "hasChildren": false
+}
+{
+  "id": 103897,
+  "name": "Støtdemper",
+  "parentId": 103895,
+  "hasChildren": false
+}
+{
+  "id": 104052,
+  "name": "Støtdemperfjær",
+  "parentId": 103895,
+  "hasChildren": false
+}
+{
+  "id": 103691,
+  "name": "Fothvileanlegg",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 105942,
+  "name": "Bremsespak",
+  "parentId": 103691,
+  "hasChildren": false
+}
+{
+  "id": 103693,
+  "name": "Fothvileanlegg",
+  "parentId": 103691,
+  "hasChildren": false
+}
+{
+  "id": 103692,
+  "name": "Fothviler",
+  "parentId": 103691,
+  "hasChildren": false
+}
+{
+  "id": 105943,
+  "name": "Girspak",
+  "parentId": 103691,
+  "hasChildren": false
+}
+{
+  "id": 706033,
+  "name": "Girstang/girstangforlengelse",
+  "parentId": 103691,
+  "hasChildren": false
+}
+{
+  "id": 103979,
+  "name": "Stigbrett",
+  "parentId": 103691,
+  "hasChildren": false
+}
+{
+  "id": 706535,
+  "name": "Gir",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 706589,
+  "name": "Automatisert girkasse (ASG)",
+  "parentId": 706535,
+  "hasChildren": true
+}
+{
+  "id": 706626,
+  "name": "Bunnpanne / -tilleggsdeler",
+  "parentId": 706589,
+  "hasChildren": true
+}
+{
+  "id": 706627,
+  "name": "Bunnpanne",
+  "parentId": 706626,
+  "hasChildren": false
+}
+{
+  "id": 706643,
+  "name": "Tetning",
+  "parentId": 706626,
+  "hasChildren": false
+}
+{
+  "id": 706598,
+  "name": "Gir",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706616,
+  "name": "Giraksler/komponenter",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706601,
+  "name": "Holder",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706591,
+  "name": "Hus / enkeltdeler",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706619,
+  "name": "Kjøler",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706613,
+  "name": "Koblingssylinder",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706607,
+  "name": "Lager",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706610,
+  "name": "Lagring",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706592,
+  "name": "Oljefilter",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706631,
+  "name": "Oljepeilepinne",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706634,
+  "name": "Oljepumpe",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706604,
+  "name": "Reparasjon/vedlikehold",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706637,
+  "name": "Sensorer / bryter (giver)",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706640,
+  "name": "Sperresylinder",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706622,
+  "name": "Styring / hydraulikk",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706590,
+  "name": "Tetninger/tetningsringer",
+  "parentId": 706589,
+  "hasChildren": false
+}
+{
+  "id": 706536,
+  "name": "Oljer",
+  "parentId": 706535,
+  "hasChildren": false
+}
+{
+  "id": 103969,
+  "name": "hjul/dekk",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103970,
+  "name": "Dekk",
+  "parentId": 103969,
+  "hasChildren": false
+}
+{
+  "id": 103973,
+  "name": "Dekktrykk - kontrollsystem",
+  "parentId": 103969,
+  "hasChildren": false
+}
+{
+  "id": 103971,
+  "name": "felg",
+  "parentId": 103969,
+  "hasChildren": false
+}
+{
+  "id": 103972,
+  "name": "Tilbehør",
+  "parentId": 103969,
+  "hasChildren": false
+}
+{
+  "id": 103747,
+  "name": "Hjuldrift",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 104081,
+  "name": "Drivrem",
+  "parentId": 103747,
+  "hasChildren": false
+}
+{
+  "id": 103748,
+  "name": "Kjeder, kjedehjul/-drev osv.",
+  "parentId": 103747,
+  "hasChildren": true
+}
+{
+  "id": 103749,
+  "name": "Kjede/-sett",
+  "parentId": 103748,
+  "hasChildren": false
+}
+{
+  "id": 103752,
+  "name": "Kjedebeskyttelse",
+  "parentId": 103748,
+  "hasChildren": false
+}
+{
+  "id": 103751,
+  "name": "Kjededrev",
+  "parentId": 103748,
+  "hasChildren": false
+}
+{
+  "id": 103750,
+  "name": "Kjedehjul",
+  "parentId": 103748,
+  "hasChildren": false
+}
+{
+  "id": 104054,
+  "name": "Kjedelås",
+  "parentId": 103748,
+  "hasChildren": false
+}
+{
+  "id": 103881,
+  "name": "Kjøling",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 104075,
+  "name": "Bryter / sensor",
+  "parentId": 103881,
+  "hasChildren": false
+}
+{
+  "id": 104080,
+  "name": "Frostvæske",
+  "parentId": 103881,
+  "hasChildren": false
+}
+{
+  "id": 104079,
+  "name": "Luftkjøling",
+  "parentId": 103881,
+  "hasChildren": false
+}
+{
+  "id": 104076,
+  "name": "Relé",
+  "parentId": 103881,
+  "hasChildren": false
+}
+{
+  "id": 104071,
+  "name": "Slanger / ledninger / flenser",
+  "parentId": 103881,
+  "hasChildren": true
+}
+{
+  "id": 104074,
+  "name": "Flenser",
+  "parentId": 104071,
+  "hasChildren": false
+}
+{
+  "id": 104072,
+  "name": "Kjølevannslager / -ledninger",
+  "parentId": 104071,
+  "hasChildren": false
+}
+{
+  "id": 104073,
+  "name": "Oljeslanger / -ledninger",
+  "parentId": 104071,
+  "hasChildren": false
+}
+{
+  "id": 104077,
+  "name": "Styreapparat",
+  "parentId": 103881,
+  "hasChildren": false
+}
+{
+  "id": 104062,
+  "name": "Termostat / -tetning",
+  "parentId": 103881,
+  "hasChildren": true
+}
+{
+  "id": 104063,
+  "name": "Termostat",
+  "parentId": 104062,
+  "hasChildren": false
+}
+{
+  "id": 104064,
+  "name": "Tetning",
+  "parentId": 104062,
+  "hasChildren": false
+}
+{
+  "id": 104065,
+  "name": "Vann- / oljekjøler",
+  "parentId": 103881,
+  "hasChildren": true
+}
+{
+  "id": 104068,
+  "name": "Festedeler radiator",
+  "parentId": 104065,
+  "hasChildren": false
+}
+{
+  "id": 104069,
+  "name": "Oljekjøler",
+  "parentId": 104065,
+  "hasChildren": false
+}
+{
+  "id": 104070,
+  "name": "Utjevningsbeholder",
+  "parentId": 104065,
+  "hasChildren": false
+}
+{
+  "id": 104066,
+  "name": "Vannkjøler",
+  "parentId": 104065,
+  "hasChildren": false
+}
+{
+  "id": 104057,
+  "name": "Vannpumpe / -tetning",
+  "parentId": 103881,
+  "hasChildren": true
+}
+{
+  "id": 104058,
+  "name": "Tetning",
+  "parentId": 104057,
+  "hasChildren": false
+}
+{
+  "id": 104059,
+  "name": "Vannpumpe",
+  "parentId": 104057,
+  "hasChildren": false
+}
+{
+  "id": 104078,
+  "name": "Ventilator",
+  "parentId": 103881,
+  "hasChildren": false
+}
+{
+  "id": 103814,
+  "name": "Motor",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 706800,
+  "name": "Luftforsyning",
+  "parentId": 103814,
+  "hasChildren": false
+}
+{
+  "id": 104263,
+  "name": "Motor elektrikk",
+  "parentId": 103814,
+  "hasChildren": false
+}
+{
+  "id": 103815,
+  "name": "Pakninger / tetninger",
+  "parentId": 103814,
+  "hasChildren": true
+}
+{
+  "id": 103829,
+  "name": "akseltetningsring/-sett",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103824,
+  "name": "Avgassbendtetning/-tetningsring",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103826,
+  "name": "Bunnpannetetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103816,
+  "name": "Drivstofftetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103823,
+  "name": "Innsugningsmanifold tetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103817,
+  "name": "Kjølevannstetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103818,
+  "name": "Oljekretsløp tetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103827,
+  "name": "Snekkehustetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103819,
+  "name": "Tetningssett komplett",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103820,
+  "name": "Toppakning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103828,
+  "name": "Turboladertetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103825,
+  "name": "Veivhustetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103821,
+  "name": "Ventildekseltetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 103822,
+  "name": "Ventilstammetetning",
+  "parentId": 103815,
+  "hasChildren": false
+}
+{
+  "id": 706693,
+  "name": "Remdrift",
+  "parentId": 103814,
+  "hasChildren": true
+}
+{
+  "id": 706694,
+  "name": "CVT-drivrem",
+  "parentId": 706693,
+  "hasChildren": false
+}
+{
+  "id": 706533,
+  "name": "Smøring",
+  "parentId": 103814,
+  "hasChildren": true
+}
+{
+  "id": 706534,
+  "name": "Oljer",
+  "parentId": 706533,
+  "hasChildren": false
+}
+{
+  "id": 104379,
+  "name": "Sylindere / stempler",
+  "parentId": 103814,
+  "hasChildren": false
+}
+{
+  "id": 103830,
+  "name": "Sylindertopp / -tilleggsdeler",
+  "parentId": 103814,
+  "hasChildren": true
+}
+{
+  "id": 103840,
+  "name": "Aksel tetningsring",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103833,
+  "name": "Innsugs-/Avgassbendtetning/-tetningsring",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103838,
+  "name": "Kjølevæskestuss / -tetning",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103836,
+  "name": "Oljepåfyllingslokk / -tetning",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103837,
+  "name": "Sylindertopp",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103835,
+  "name": "Sylindertoppskrue",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103831,
+  "name": "Toppakning",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103839,
+  "name": "Vakuumpumpe",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103832,
+  "name": "Ventildeksel/ pakning",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 103834,
+  "name": "Ventilføring / -tetning / -innstilling",
+  "parentId": 103830,
+  "hasChildren": false
+}
+{
+  "id": 104283,
+  "name": "Veivdrift",
+  "parentId": 103814,
+  "hasChildren": true
+}
+{
+  "id": 104288,
+  "name": "Mellomaksel / utjevningsaksel",
+  "parentId": 104283,
+  "hasChildren": false
+}
+{
+  "id": 104287,
+  "name": "Radial akseltetningsring/-sett",
+  "parentId": 104283,
+  "hasChildren": false
+}
+{
+  "id": 104285,
+  "name": "Råde",
+  "parentId": 104283,
+  "hasChildren": false
+}
+{
+  "id": 104286,
+  "name": "Stempel",
+  "parentId": 104283,
+  "hasChildren": false
+}
+{
+  "id": 104289,
+  "name": "Svingskive",
+  "parentId": 104283,
+  "hasChildren": false
+}
+{
+  "id": 104284,
+  "name": "Veivaksel",
+  "parentId": 104283,
+  "hasChildren": false
+}
+{
+  "id": 104290,
+  "name": "Veivhus",
+  "parentId": 103814,
+  "hasChildren": true
+}
+{
+  "id": 104294,
+  "name": "Lufting",
+  "parentId": 104290,
+  "hasChildren": false
+}
+{
+  "id": 104293,
+  "name": "Mellomaksel / utjevningsaksel",
+  "parentId": 104290,
+  "hasChildren": false
+}
+{
+  "id": 104369,
+  "name": "Sylinder",
+  "parentId": 104290,
+  "hasChildren": false
+}
+{
+  "id": 104292,
+  "name": "sylinderløpbøssing/-sett",
+  "parentId": 104290,
+  "hasChildren": false
+}
+{
+  "id": 104291,
+  "name": "Veivhus",
+  "parentId": 104290,
+  "hasChildren": false
+}
+{
+  "id": 706794,
+  "name": "Motorstyring",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 706795,
+  "name": "Kamaksel/enkeltdeler",
+  "parentId": 706794,
+  "hasChildren": false
+}
+{
+  "id": 103736,
+  "name": "Rammer",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 104011,
+  "name": "Drivstofftank / -tilbehør",
+  "parentId": 103736,
+  "hasChildren": false
+}
+{
+  "id": 103737,
+  "name": "Heving/senking av hekk",
+  "parentId": 103736,
+  "hasChildren": false
+}
+{
+  "id": 103738,
+  "name": "Kjedebeskyttelse",
+  "parentId": 103736,
+  "hasChildren": false
+}
+{
+  "id": 103746,
+  "name": "Nummerskilt holder",
+  "parentId": 103736,
+  "hasChildren": false
+}
+{
+  "id": 104013,
+  "name": "Side-/hovedstativ",
+  "parentId": 103736,
+  "hasChildren": false
+}
+{
+  "id": 104045,
+  "name": "Styrehodelager",
+  "parentId": 103736,
+  "hasChildren": false
+}
+{
+  "id": 706811,
+  "name": "Svingarm aksel",
+  "parentId": 103736,
+  "hasChildren": false
+}
+{
+  "id": 706792,
+  "name": "Veltebøyle",
+  "parentId": 103736,
+  "hasChildren": false
+}
+{
+  "id": 706791,
+  "name": "Sete/-tilbehør",
+  "parentId": 103671,
+  "hasChildren": false
+}
+{
+  "id": 103719,
+  "name": "Styre (MC)",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 706801,
+  "name": "Gasshåndtak/-tilbehør",
+  "parentId": 103719,
+  "hasChildren": false
+}
+{
+  "id": 103730,
+  "name": "Rattholdere/avtandsstykker",
+  "parentId": 103719,
+  "hasChildren": false
+}
+{
+  "id": 103735,
+  "name": "Rattrørholder",
+  "parentId": 103719,
+  "hasChildren": false
+}
+{
+  "id": 103974,
+  "name": "Spak/trekk",
+  "parentId": 103719,
+  "hasChildren": true
+}
+{
+  "id": 104016,
+  "name": "Spake",
+  "parentId": 103974,
+  "hasChildren": false
+}
+{
+  "id": 104017,
+  "name": "Trekk",
+  "parentId": 103974,
+  "hasChildren": false
+}
+{
+  "id": 103981,
+  "name": "Speil",
+  "parentId": 103719,
+  "hasChildren": false
+}
+{
+  "id": 103720,
+  "name": "Styre (MC)",
+  "parentId": 103719,
+  "hasChildren": false
+}
+{
+  "id": 103728,
+  "name": "Styrerør",
+  "parentId": 103719,
+  "hasChildren": false
+}
+{
+  "id": 103721,
+  "name": "Styrestagender",
+  "parentId": 103719,
+  "hasChildren": false
+}
+{
+  "id": 103757,
+  "name": "Tautrekk og speedometerkabel",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103760,
+  "name": "Bremsetrekk",
+  "parentId": 103757,
+  "hasChildren": false
+}
+{
+  "id": 103761,
+  "name": "Clutchkabel",
+  "parentId": 103757,
+  "hasChildren": false
+}
+{
+  "id": 103762,
+  "name": "Gasswire",
+  "parentId": 103757,
+  "hasChildren": false
+}
+{
+  "id": 103763,
+  "name": "Speedometer aksel",
+  "parentId": 103757,
+  "hasChildren": false
+}
+{
+  "id": 103931,
+  "name": "Tenningssystem",
+  "parentId": 103671,
+  "hasChildren": true
+}
+{
+  "id": 103934,
+  "name": "Coil/coilenhet",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103933,
+  "name": "Fordeler/enkeltdeler",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103940,
+  "name": "Impulsgiver",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103945,
+  "name": "Indikatorskala (tenningsinnstilling)",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103939,
+  "name": "Styreapparat / relè",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103937,
+  "name": "Tenningskabel/-koplingspunkt",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103938,
+  "name": "Tenningsmodul / koplingsapparat",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103935,
+  "name": "Tennplugg",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103942,
+  "name": "Vakuumsystem",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 103932,
+  "name": "Vernemotstand",
+  "parentId": 103931,
+  "hasChildren": false
+}
+{
+  "id": 100002,
+  "name": "Motor",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100700,
+  "name": "Komplett- / delmotor",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 100702,
+  "name": "Delmotor",
+  "parentId": 100700,
+  "hasChildren": false
+}
+{
+  "id": 100701,
+  "name": "Komplettmotor",
+  "parentId": 100700,
+  "hasChildren": false
+}
+{
+  "id": 100383,
+  "name": "Luftforsyning",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 100704,
+  "name": "Drosselventil / -sensor",
+  "parentId": 100383,
+  "hasChildren": true
+}
+{
+  "id": 100705,
+  "name": "Drosselventil",
+  "parentId": 100704,
+  "hasChildren": false
+}
+{
+  "id": 100706,
+  "name": "Drosselventil sensor",
+  "parentId": 100704,
+  "hasChildren": false
+}
+{
+  "id": 102339,
+  "name": "Drosselventil stuss",
+  "parentId": 100704,
+  "hasChildren": false
+}
+{
+  "id": 100385,
+  "name": "Gasswire / -stangsystem",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 102872,
+  "name": "Innsugningsluft forvarming",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 100386,
+  "name": "Innsugningsmanifold/innsugningsrør",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 706397,
+  "name": "innsugningssnorkel",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 100384,
+  "name": "Luftfilter / luftfilterkasse",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 100390,
+  "name": "Opplading",
+  "parentId": 100383,
+  "hasChildren": true
+}
+{
+  "id": 706817,
+  "name": "Bypasspjeld",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 100393,
+  "name": "Intercooler",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 706552,
+  "name": "Kompressor",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 100394,
+  "name": "Ladeluftregulering",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 706689,
+  "name": "Ladeluftrør",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 102076,
+  "name": "ladeluftslange",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 100391,
+  "name": "lader/ -enkeltdeler",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 100392,
+  "name": "Ladertetning",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 103421,
+  "name": "lavtemperaturkjøler",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 103543,
+  "name": "Oljefilter",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 706645,
+  "name": "Resonator",
+  "parentId": 100390,
+  "hasChildren": false
+}
+{
+  "id": 100818,
+  "name": "Regulering / styring",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 102235,
+  "name": "Slanger / ledninger",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 100387,
+  "name": "Styreklaff",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 100388,
+  "name": "Tilleggs luftspjeld",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 100389,
+  "name": "Varmeskjold",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 706541,
+  "name": "Verktøy",
+  "parentId": 100383,
+  "hasChildren": false
+}
+{
+  "id": 103397,
+  "name": "Motor-/ understellbeskyttelse",
+  "parentId": 100002,
+  "hasChildren": false
+}
+{
+  "id": 100754,
+  "name": "Motor elektrikk",
+  "parentId": 100002,
+  "hasChildren": false
+}
+{
+  "id": 100535,
+  "name": "Motoropphengning",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 100698,
+  "name": "Festedeler",
+  "parentId": 100535,
+  "hasChildren": false
+}
+{
+  "id": 100539,
+  "name": "Motordemper",
+  "parentId": 100535,
+  "hasChildren": false
+}
+{
+  "id": 100538,
+  "name": "Motorlagring",
+  "parentId": 100535,
+  "hasChildren": false
+}
+{
+  "id": 100536,
+  "name": "Motorstand",
+  "parentId": 100535,
+  "hasChildren": false
+}
+{
+  "id": 103037,
+  "name": "motorotildekning",
+  "parentId": 100002,
+  "hasChildren": false
+}
+{
+  "id": 100003,
+  "name": "Motorstyring",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 100397,
+  "name": "Kamaksel",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 101833,
+  "name": "Kjededrev",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 100852,
+  "name": "Mellomaksel",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 706314,
+  "name": "Nav",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 100403,
+  "name": "Registerkjede / -spenning / -føring",
+  "parentId": 100003,
+  "hasChildren": true
+}
+{
+  "id": 100413,
+  "name": "Glideskinne",
+  "parentId": 100403,
+  "hasChildren": false
+}
+{
+  "id": 100414,
+  "name": "Kjedestrammer",
+  "parentId": 100403,
+  "hasChildren": false
+}
+{
+  "id": 100411,
+  "name": "Registerkjede",
+  "parentId": 100403,
+  "hasChildren": false
+}
+{
+  "id": 103278,
+  "name": "Registerkjedesett",
+  "parentId": 100403,
+  "hasChildren": false
+}
+{
+  "id": 101485,
+  "name": "Spennskinne",
+  "parentId": 100403,
+  "hasChildren": false
+}
+{
+  "id": 104695,
+  "name": "Remskive",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 100401,
+  "name": "Snekkehus / -tetning",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 100425,
+  "name": "Tanndrev",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 100396,
+  "name": "Tannrem / -spenning / -føring",
+  "parentId": 100003,
+  "hasChildren": true
+}
+{
+  "id": 100404,
+  "name": "Registerreim",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 102015,
+  "name": "Registerreimtildekning",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 100410,
+  "name": "Remstrammer",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 102027,
+  "name": "rullsett",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 100409,
+  "name": "Spennarm",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 100406,
+  "name": "Strammerull",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 100407,
+  "name": "styre-/lederulle",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 100405,
+  "name": "Tannrem sett",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 100875,
+  "name": "Vibrasjonsdemper",
+  "parentId": 100396,
+  "hasChildren": false
+}
+{
+  "id": 100422,
+  "name": "Ventil / -innstilling",
+  "parentId": 100003,
+  "hasChildren": true
+}
+{
+  "id": 100424,
+  "name": "Ventilbetjening",
+  "parentId": 100422,
+  "hasChildren": false
+}
+{
+  "id": 100423,
+  "name": "Ventiler / tilbehør",
+  "parentId": 100422,
+  "hasChildren": false
+}
+{
+  "id": 100399,
+  "name": "Ventilstøt / -stang / vernerør",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 706307,
+  "name": "Verktøy",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 100398,
+  "name": "Vippe- / slepearm",
+  "parentId": 100003,
+  "hasChildren": false
+}
+{
+  "id": 100223,
+  "name": "Pakninger / tetninger",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 100789,
+  "name": "akseltetningsring/-sett",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100231,
+  "name": "Avgassbendtetning/-tetningsring",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100234,
+  "name": "Bunnpannetetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100682,
+  "name": "Drivstofftetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100229,
+  "name": "Innsugningsmanifold tetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100683,
+  "name": "Kjølevannstetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100684,
+  "name": "Oljekretsløp tetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100235,
+  "name": "Snekkehustetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100224,
+  "name": "Tetningssett komplett",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100225,
+  "name": "Toppakning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100244,
+  "name": "Turboladertetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100233,
+  "name": "Veivhustetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100227,
+  "name": "Ventildekseltetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 100228,
+  "name": "Ventilstammetetning",
+  "parentId": 100223,
+  "hasChildren": false
+}
+{
+  "id": 104302,
+  "name": "Remdrift",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 104331,
+  "name": "fleksibel koplingsmuffe",
+  "parentId": 104302,
+  "hasChildren": false
+}
+{
+  "id": 104330,
+  "name": "Generatorfriløp",
+  "parentId": 104302,
+  "hasChildren": false
+}
+{
+  "id": 104303,
+  "name": "Kilerem / -sett",
+  "parentId": 104302,
+  "hasChildren": true
+}
+{
+  "id": 104304,
+  "name": "Kilerem",
+  "parentId": 104303,
+  "hasChildren": false
+}
+{
+  "id": 104305,
+  "name": "Kileremsett",
+  "parentId": 104303,
+  "hasChildren": false
+}
+{
+  "id": 104307,
+  "name": "Spennarm",
+  "parentId": 104303,
+  "hasChildren": false
+}
+{
+  "id": 104306,
+  "name": "Styrerull",
+  "parentId": 104303,
+  "hasChildren": false
+}
+{
+  "id": 104308,
+  "name": "Kilerem med ribber / -sett",
+  "parentId": 104302,
+  "hasChildren": true
+}
+{
+  "id": 104309,
+  "name": "Kilerem med ribber",
+  "parentId": 104308,
+  "hasChildren": false
+}
+{
+  "id": 104310,
+  "name": "Kilerem med ribber",
+  "parentId": 104308,
+  "hasChildren": false
+}
+{
+  "id": 104314,
+  "name": "Remstrammer (spennenhet)",
+  "parentId": 104308,
+  "hasChildren": false
+}
+{
+  "id": 104316,
+  "name": "rullsett",
+  "parentId": 104308,
+  "hasChildren": false
+}
+{
+  "id": 104313,
+  "name": "Spennarm",
+  "parentId": 104308,
+  "hasChildren": false
+}
+{
+  "id": 104311,
+  "name": "Strammerull",
+  "parentId": 104308,
+  "hasChildren": false
+}
+{
+  "id": 104312,
+  "name": "styre-/lederulle",
+  "parentId": 104308,
+  "hasChildren": false
+}
+{
+  "id": 104315,
+  "name": "Vibrasjonsdemper",
+  "parentId": 104308,
+  "hasChildren": false
+}
+{
+  "id": 104317,
+  "name": "Registerreim / -sett",
+  "parentId": 104302,
+  "hasChildren": true
+}
+{
+  "id": 104318,
+  "name": "Registerreim",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104319,
+  "name": "Registerreimsett",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104325,
+  "name": "Registerreimtildekning",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104323,
+  "name": "Remstrammer",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104326,
+  "name": "rullsett",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104322,
+  "name": "Spennarm",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104320,
+  "name": "Strammerull",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104321,
+  "name": "styre-/lederulle",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104324,
+  "name": "Vibrasjonsdemper",
+  "parentId": 104317,
+  "hasChildren": false
+}
+{
+  "id": 104329,
+  "name": "Remskive",
+  "parentId": 104302,
+  "hasChildren": false
+}
+{
+  "id": 104328,
+  "name": "Tilbehør/Smådeler",
+  "parentId": 104302,
+  "hasChildren": false
+}
+{
+  "id": 104327,
+  "name": "Varesøk via grafikk",
+  "parentId": 104302,
+  "hasChildren": false
+}
+{
+  "id": 104332,
+  "name": "Verktøy",
+  "parentId": 104302,
+  "hasChildren": false
+}
+{
+  "id": 100541,
+  "name": "Røkgassrensing",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 100542,
+  "name": "Avgassresirkulering",
+  "parentId": 100541,
+  "hasChildren": true
+}
+{
+  "id": 100545,
+  "name": "EGR-eksosstyring",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 100546,
+  "name": "EGR-luftstyring",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 102993,
+  "name": "EGR-modul",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 100551,
+  "name": "EGR-ventil/innsugningsrør",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 103237,
+  "name": "Kjøler",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 706496,
+  "name": "Reparasjonssett",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 706702,
+  "name": "Sensorer",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 103238,
+  "name": "Temperaturbryter",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 103235,
+  "name": "Tetninger",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 100543,
+  "name": "Trykkomformer",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 103236,
+  "name": "Undertrykk styreventil",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 100549,
+  "name": "Ventiler, avgassresirkulering",
+  "parentId": 100542,
+  "hasChildren": false
+}
+{
+  "id": 100866,
+  "name": "Euro1-/Euro2-/D3-konvertering",
+  "parentId": 100541,
+  "hasChildren": false
+}
+{
+  "id": 100729,
+  "name": "Lambdaregulering",
+  "parentId": 100541,
+  "hasChildren": false
+}
+{
+  "id": 100552,
+  "name": "Sekundærluftinnførsel",
+  "parentId": 100541,
+  "hasChildren": true
+}
+{
+  "id": 706502,
+  "name": "Kabelreparasjonssett",
+  "parentId": 100552,
+  "hasChildren": false
+}
+{
+  "id": 100560,
+  "name": "Sekundærluftpumpe",
+  "parentId": 100552,
+  "hasChildren": false
+}
+{
+  "id": 100558,
+  "name": "Sekundærluft - pumpesystem",
+  "parentId": 100552,
+  "hasChildren": false
+}
+{
+  "id": 100557,
+  "name": "Sekundærluft - sugesystem",
+  "parentId": 100552,
+  "hasChildren": false
+}
+{
+  "id": 100556,
+  "name": "Sekundærluftventil",
+  "parentId": 100552,
+  "hasChildren": false
+}
+{
+  "id": 100564,
+  "name": "SLS-anlegg",
+  "parentId": 100552,
+  "hasChildren": false
+}
+{
+  "id": 100559,
+  "name": "SLS-ventil",
+  "parentId": 100552,
+  "hasChildren": false
+}
+{
+  "id": 103444,
+  "name": "Tetninger",
+  "parentId": 100552,
+  "hasChildren": false
+}
+{
+  "id": 103254,
+  "name": "Varesøk via grafikk",
+  "parentId": 100541,
+  "hasChildren": false
+}
+{
+  "id": 100245,
+  "name": "Smøring",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 100475,
+  "name": "Bunnpanne / -tilleggsdeler",
+  "parentId": 100245,
+  "hasChildren": true
+}
+{
+  "id": 100489,
+  "name": "Bunnpanne",
+  "parentId": 100475,
+  "hasChildren": false
+}
+{
+  "id": 100491,
+  "name": "Tappeskrue",
+  "parentId": 100475,
+  "hasChildren": false
+}
+{
+  "id": 100490,
+  "name": "tetning",
+  "parentId": 100475,
+  "hasChildren": false
+}
+{
+  "id": 100838,
+  "name": "Kamakselsmøring",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 103072,
+  "name": "oljedyse",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100470,
+  "name": "Oljefilter",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100472,
+  "name": "Oljefilterhus / -tetning",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100474,
+  "name": "Oljekjøler / -tillrggsdeler",
+  "parentId": 100245,
+  "hasChildren": true
+}
+{
+  "id": 100485,
+  "name": "Holdeinnretning",
+  "parentId": 100474,
+  "hasChildren": false
+}
+{
+  "id": 100483,
+  "name": "oljekjøler",
+  "parentId": 100474,
+  "hasChildren": false
+}
+{
+  "id": 100488,
+  "name": "Tetning",
+  "parentId": 100474,
+  "hasChildren": false
+}
+{
+  "id": 100479,
+  "name": "Oljepeilepinne",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100476,
+  "name": "Oljepumpe / -tilleggsdeler",
+  "parentId": 100245,
+  "hasChildren": true
+}
+{
+  "id": 100885,
+  "name": "Drivkjede",
+  "parentId": 100476,
+  "hasChildren": false
+}
+{
+  "id": 100492,
+  "name": "Oljepumpe",
+  "parentId": 100476,
+  "hasChildren": false
+}
+{
+  "id": 100494,
+  "name": "Sugerør",
+  "parentId": 100476,
+  "hasChildren": false
+}
+{
+  "id": 100493,
+  "name": "Tetning",
+  "parentId": 100476,
+  "hasChildren": false
+}
+{
+  "id": 706087,
+  "name": "Tilleggsdeler",
+  "parentId": 100476,
+  "hasChildren": false
+}
+{
+  "id": 101994,
+  "name": "Oljer",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100477,
+  "name": "Oljesil / -tetning",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100481,
+  "name": "Oljeslanger / -ledninger",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100512,
+  "name": "Oljesump",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100513,
+  "name": "Oljetermostat",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 100478,
+  "name": "Oljetrykkbryter / -sensor / -ventil",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 706449,
+  "name": "Verktøy",
+  "parentId": 100245,
+  "hasChildren": false
+}
+{
+  "id": 104377,
+  "name": "Sylindere / stempler",
+  "parentId": 100002,
+  "hasChildren": false
+}
+{
+  "id": 100373,
+  "name": "Sylindertopp / -tilleggsdeler",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 102778,
+  "name": "Aksel tetningsring",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 100376,
+  "name": "Innsugs-/Avgassbendtetning/-tetningsring",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 100788,
+  "name": "Kjølevæskestuss / -tetning",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 100379,
+  "name": "Oljepåfyllingslokk / -tetning",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 100380,
+  "name": "Sylindertopp",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 100378,
+  "name": "Sylindertoppskrue",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 100374,
+  "name": "Toppakning",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 102450,
+  "name": "Vakuumpumpe",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 100375,
+  "name": "Ventildeksel/ pakning",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 100377,
+  "name": "Ventilføring / -tetning / -innstilling",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 706350,
+  "name": "Verktøy",
+  "parentId": 100373,
+  "hasChildren": false
+}
+{
+  "id": 706796,
+  "name": "Tilbehør",
+  "parentId": 100002,
+  "hasChildren": false
+}
+{
+  "id": 103437,
+  "name": "tuning",
+  "parentId": 100002,
+  "hasChildren": false
+}
+{
+  "id": 102771,
+  "name": "Varesøk via grafikk",
+  "parentId": 100002,
+  "hasChildren": false
+}
+{
+  "id": 100515,
+  "name": "Veivdrift",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 103120,
+  "name": "Mellomaksel / utjevningsaksel",
+  "parentId": 100515,
+  "hasChildren": false
+}
+{
+  "id": 100521,
+  "name": "Radial akseltetningsring/-sett",
+  "parentId": 100515,
+  "hasChildren": false
+}
+{
+  "id": 100519,
+  "name": "Råde",
+  "parentId": 100515,
+  "hasChildren": true
+}
+{
+  "id": 100524,
+  "name": "Råde",
+  "parentId": 100519,
+  "hasChildren": false
+}
+{
+  "id": 100527,
+  "name": "Rådeboks",
+  "parentId": 100519,
+  "hasChildren": false
+}
+{
+  "id": 100525,
+  "name": "Rådelager",
+  "parentId": 100519,
+  "hasChildren": false
+}
+{
+  "id": 100528,
+  "name": "Rådeskrue / -mutter",
+  "parentId": 100519,
+  "hasChildren": false
+}
+{
+  "id": 100526,
+  "name": "Stempelstanglagerdeksel",
+  "parentId": 100519,
+  "hasChildren": false
+}
+{
+  "id": 100520,
+  "name": "Stempel",
+  "parentId": 100515,
+  "hasChildren": true
+}
+{
+  "id": 103270,
+  "name": "Reparasjonssett",
+  "parentId": 100520,
+  "hasChildren": false
+}
+{
+  "id": 100529,
+  "name": "Stempel",
+  "parentId": 100520,
+  "hasChildren": false
+}
+{
+  "id": 100530,
+  "name": "Stempel komplett",
+  "parentId": 100520,
+  "hasChildren": false
+}
+{
+  "id": 100532,
+  "name": "Stempelpinne / -bolt",
+  "parentId": 100520,
+  "hasChildren": false
+}
+{
+  "id": 100531,
+  "name": "Stempelring sett",
+  "parentId": 100520,
+  "hasChildren": false
+}
+{
+  "id": 100518,
+  "name": "Svingskive",
+  "parentId": 100515,
+  "hasChildren": false
+}
+{
+  "id": 100517,
+  "name": "Veivaksel",
+  "parentId": 100515,
+  "hasChildren": true
+}
+{
+  "id": 100786,
+  "name": "Nav",
+  "parentId": 100517,
+  "hasChildren": false
+}
+{
+  "id": 100886,
+  "name": "Oljeskvettbord",
+  "parentId": 100517,
+  "hasChildren": false
+}
+{
+  "id": 706454,
+  "name": "Tetninger",
+  "parentId": 100517,
+  "hasChildren": false
+}
+{
+  "id": 102683,
+  "name": "Veivaksel",
+  "parentId": 100517,
+  "hasChildren": false
+}
+{
+  "id": 100522,
+  "name": "veivaksellager",
+  "parentId": 100517,
+  "hasChildren": false
+}
+{
+  "id": 100759,
+  "name": "Veivakselskiver",
+  "parentId": 100517,
+  "hasChildren": false
+}
+{
+  "id": 100523,
+  "name": "Veivhuslagerdeksel",
+  "parentId": 100517,
+  "hasChildren": false
+}
+{
+  "id": 706358,
+  "name": "Verktøy",
+  "parentId": 100515,
+  "hasChildren": false
+}
+{
+  "id": 100514,
+  "name": "Veivhus",
+  "parentId": 100002,
+  "hasChildren": true
+}
+{
+  "id": 105862,
+  "name": "Lufting",
+  "parentId": 100514,
+  "hasChildren": false
+}
+{
+  "id": 105860,
+  "name": "Mellomaksel / utjevningsaksel",
+  "parentId": 100514,
+  "hasChildren": false
+}
+{
+  "id": 105864,
+  "name": "Oljefordeler",
+  "parentId": 100514,
+  "hasChildren": false
+}
+{
+  "id": 105861,
+  "name": "Sylinder",
+  "parentId": 100514,
+  "hasChildren": false
+}
+{
+  "id": 100534,
+  "name": "sylinderløpbøssing/-sett",
+  "parentId": 100514,
+  "hasChildren": false
+}
+{
+  "id": 100533,
+  "name": "Veivhus",
+  "parentId": 100514,
+  "hasChildren": false
+}
+{
+  "id": 706423,
+  "name": "Verktøy",
+  "parentId": 100514,
+  "hasChildren": false
+}
+{
+  "id": 103129,
+  "name": "Verktøy",
+  "parentId": 100002,
+  "hasChildren": false
+}
+{
+  "id": 100016,
+  "name": "Remdrift",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 102898,
+  "name": "fleksibel koplingsmuffe",
+  "parentId": 100016,
+  "hasChildren": false
+}
+{
+  "id": 102239,
+  "name": "Generatorfriløp",
+  "parentId": 100016,
+  "hasChildren": false
+}
+{
+  "id": 100080,
+  "name": "Kilerem / -sett",
+  "parentId": 100016,
+  "hasChildren": true
+}
+{
+  "id": 100450,
+  "name": "Kilerem",
+  "parentId": 100080,
+  "hasChildren": false
+}
+{
+  "id": 100451,
+  "name": "Kileremsett",
+  "parentId": 100080,
+  "hasChildren": false
+}
+{
+  "id": 100887,
+  "name": "Spennarm",
+  "parentId": 100080,
+  "hasChildren": false
+}
+{
+  "id": 100765,
+  "name": "Styrerull",
+  "parentId": 100080,
+  "hasChildren": false
+}
+{
+  "id": 100082,
+  "name": "Kilerem med ribber / -sett",
+  "parentId": 100016,
+  "hasChildren": true
+}
+{
+  "id": 100431,
+  "name": "Kilerem med ribber",
+  "parentId": 100082,
+  "hasChildren": false
+}
+{
+  "id": 100432,
+  "name": "Kilerem med ribber",
+  "parentId": 100082,
+  "hasChildren": false
+}
+{
+  "id": 100441,
+  "name": "Remstrammer (spennenhet)",
+  "parentId": 100082,
+  "hasChildren": false
+}
+{
+  "id": 102037,
+  "name": "rullsett",
+  "parentId": 100082,
+  "hasChildren": false
+}
+{
+  "id": 100438,
+  "name": "Spennarm",
+  "parentId": 100082,
+  "hasChildren": false
+}
+{
+  "id": 100434,
+  "name": "Strammerull",
+  "parentId": 100082,
+  "hasChildren": false
+}
+{
+  "id": 100435,
+  "name": "styre-/lederulle",
+  "parentId": 100082,
+  "hasChildren": false
+}
+{
+  "id": 100876,
+  "name": "Vibrasjonsdemper",
+  "parentId": 100082,
+  "hasChildren": false
+}
+{
+  "id": 100085,
+  "name": "Registerreim / -sett",
+  "parentId": 100016,
+  "hasChildren": true
+}
+{
+  "id": 100452,
+  "name": "Registerreim",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 100453,
+  "name": "Registerreimsett",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 102016,
+  "name": "Registerreimtildekning",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 100461,
+  "name": "Remstrammer",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 102029,
+  "name": "rullsett",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 100459,
+  "name": "Spennarm",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 100455,
+  "name": "Strammerull",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 100457,
+  "name": "styre-/lederulle",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 100877,
+  "name": "Vibrasjonsdemper",
+  "parentId": 100085,
+  "hasChildren": false
+}
+{
+  "id": 101971,
+  "name": "Remskive",
+  "parentId": 100016,
+  "hasChildren": false
+}
+{
+  "id": 101482,
+  "name": "Tilbehør/Smådeler",
+  "parentId": 100016,
+  "hasChildren": false
+}
+{
+  "id": 102438,
+  "name": "Varesøk via grafikk",
+  "parentId": 100016,
+  "hasChildren": false
+}
+{
+  "id": 103130,
+  "name": "Verktøy",
+  "parentId": 100016,
+  "hasChildren": false
+}
+{
+  "id": 100019,
+  "name": "Sevice- / inspeksjons- / vedlikeholdsdeler",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100597,
+  "name": "Service intervall",
+  "parentId": 100019,
+  "hasChildren": false
+}
+{
+  "id": 100598,
+  "name": "Tilleggsarbeid",
+  "parentId": 100019,
+  "hasChildren": false
+}
+{
+  "id": 100417,
+  "name": "Sikkerhetssystem",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100762,
+  "name": "Airbagsystem",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 100419,
+  "name": "Alarmanlegg",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 100420,
+  "name": "Alarmutrustning",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 100421,
+  "name": "Beltesystem",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 706448,
+  "name": "Enkeltdeler",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 706455,
+  "name": "Kjøreassistansesystem",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 100418,
+  "name": "Posisjonsgjenkjenningssystem",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 104739,
+  "name": "sporvekselassistent",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 100680,
+  "name": "Startsperre",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 103141,
+  "name": "Verktøy",
+  "parentId": 100417,
+  "hasChildren": false
+}
+{
+  "id": 706365,
+  "name": "Spesialverktøy",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 706390,
+  "name": "Inn-/utpressingsverktøy/tilbehør",
+  "parentId": 706365,
+  "hasChildren": true
+}
+{
+  "id": 706391,
+  "name": "Inn-/utpressingsverktøy",
+  "parentId": 706390,
+  "hasChildren": false
+}
+{
+  "id": 706392,
+  "name": "Spindler",
+  "parentId": 706390,
+  "hasChildren": false
+}
+{
+  "id": 706376,
+  "name": "Spesialverktøy akseldrev",
+  "parentId": 706365,
+  "hasChildren": true
+}
+{
+  "id": 706377,
+  "name": "akselmutter",
+  "parentId": 706376,
+  "hasChildren": false
+}
+{
+  "id": 706379,
+  "name": "Drivaksel",
+  "parentId": 706376,
+  "hasChildren": false
+}
+{
+  "id": 706378,
+  "name": "kilemutter",
+  "parentId": 706376,
+  "hasChildren": false
+}
+{
+  "id": 706380,
+  "name": "Spesialverktøy akselopphengning / hjulføring / hjul",
+  "parentId": 706365,
+  "hasChildren": true
+}
+{
+  "id": 706384,
+  "name": "Casterstag",
+  "parentId": 706380,
+  "hasChildren": false
+}
+{
+  "id": 706385,
+  "name": "følgearm",
+  "parentId": 706380,
+  "hasChildren": false
+}
+{
+  "id": 706381,
+  "name": "Hjulnav / lagring",
+  "parentId": 706380,
+  "hasChildren": false
+}
+{
+  "id": 706388,
+  "name": "justering av camber/spissing",
+  "parentId": 706380,
+  "hasChildren": false
+}
+{
+  "id": 706383,
+  "name": "Ledd",
+  "parentId": 706380,
+  "hasChildren": false
+}
+{
+  "id": 706382,
+  "name": "silentlager",
+  "parentId": 706380,
+  "hasChildren": false
+}
+{
+  "id": 706389,
+  "name": "Styrespindel",
+  "parentId": 706380,
+  "hasChildren": false
+}
+{
+  "id": 706372,
+  "name": "Spesialverktøy eksosanlegg",
+  "parentId": 706365,
+  "hasChildren": true
+}
+{
+  "id": 706374,
+  "name": "Avgasstemperatursensor",
+  "parentId": 706372,
+  "hasChildren": false
+}
+{
+  "id": 706375,
+  "name": "Feste",
+  "parentId": 706372,
+  "hasChildren": false
+}
+{
+  "id": 706373,
+  "name": "turbolader",
+  "parentId": 706372,
+  "hasChildren": false
+}
+{
+  "id": 706386,
+  "name": "Spesialverktøy fjæring / demping",
+  "parentId": 706365,
+  "hasChildren": true
+}
+{
+  "id": 706394,
+  "name": "Fjærbein",
+  "parentId": 706386,
+  "hasChildren": false
+}
+{
+  "id": 706387,
+  "name": "fjærspenner",
+  "parentId": 706386,
+  "hasChildren": false
+}
+{
+  "id": 706395,
+  "name": "Støtdemper",
+  "parentId": 706386,
+  "hasChildren": false
+}
+{
+  "id": 706393,
+  "name": "Torsjonsstav",
+  "parentId": 706386,
+  "hasChildren": false
+}
+{
+  "id": 706366,
+  "name": "spesialverktøy karosseri",
+  "parentId": 706365,
+  "hasChildren": true
+}
+{
+  "id": 706369,
+  "name": "Dører / vinduer",
+  "parentId": 706366,
+  "hasChildren": false
+}
+{
+  "id": 706368,
+  "name": "Forkledning",
+  "parentId": 706366,
+  "hasChildren": false
+}
+{
+  "id": 706370,
+  "name": "Generelle monteringsverktøy",
+  "parentId": 706366,
+  "hasChildren": false
+}
+{
+  "id": 706367,
+  "name": "Låsesystem",
+  "parentId": 706366,
+  "hasChildren": false
+}
+{
+  "id": 706371,
+  "name": "Skjerm/speil",
+  "parentId": 706366,
+  "hasChildren": false
+}
+{
+  "id": 100012,
+  "name": "Styring",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100201,
+  "name": "Belg / tetning",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100198,
+  "name": "Ledd",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100204,
+  "name": "Mellomlager",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 706083,
+  "name": "Oljekjøler",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 102928,
+  "name": "Oljepeilepinne",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 102203,
+  "name": "Oljer",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 102766,
+  "name": "Oljetrykkbryter",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100594,
+  "name": "Overføringsdeler styring",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100601,
+  "name": "Parallellstag / -enkeltdeler",
+  "parentId": 100012,
+  "hasChildren": true
+}
+{
+  "id": 100197,
+  "name": "Parallellstag",
+  "parentId": 100601,
+  "hasChildren": false
+}
+{
+  "id": 100603,
+  "name": "Parallellstag enkeltdeler",
+  "parentId": 100601,
+  "hasChildren": false
+}
+{
+  "id": 100602,
+  "name": "Reparasjonssett",
+  "parentId": 100601,
+  "hasChildren": false
+}
+{
+  "id": 100203,
+  "name": "Pitmanarm",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 104391,
+  "name": "Ratt/-komponenter",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100202,
+  "name": "Rattstamme / -aksel",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100591,
+  "name": "Styrefilter",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100592,
+  "name": "Styreslange / -ledning",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100199,
+  "name": "Styresnekke / -pumpe",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 103133,
+  "name": "styresnekkehus",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 102073,
+  "name": "styrevinkelsensor",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100565,
+  "name": "Styring / regulering",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100200,
+  "name": "Styringsdemper",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100593,
+  "name": "Styringsopphengning",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 101857,
+  "name": "utligningsbeholder hydraulikk olje",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 101835,
+  "name": "Varesøk via grafikk",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 103158,
+  "name": "Verktøy",
+  "parentId": 100012,
+  "hasChildren": false
+}
+{
+  "id": 100008,
+  "name": "Tenning-/glødeanlegg",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100848,
+  "name": "Bryter",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100150,
+  "name": "Coil/coilenhet",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100830,
+  "name": "Flamme startanlegg",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100148,
+  "name": "Fordeler/enkeltdeler",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100328,
+  "name": "Glødeovervåker",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100152,
+  "name": "Glødeplugg",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100249,
+  "name": "Impulsgiver",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 103016,
+  "name": "Indikatorskala (tenningsinnstilling)",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 706084,
+  "name": "Ombyggingssett elektronisk tenning",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100247,
+  "name": "Styreapparat / relè",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100153,
+  "name": "Tenningskabel/-koplingspunkt",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100246,
+  "name": "Tenningsmodul / koplingsapparat",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100151,
+  "name": "Tennplugg",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100827,
+  "name": "Vakuumsystem",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 103139,
+  "name": "Verktøy",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100757,
+  "name": "Vernemotstand",
+  "parentId": 100008,
+  "hasChildren": false
+}
+{
+  "id": 100733,
+  "name": "Tilbehør",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 706519,
+  "name": "Annet",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 100860,
+  "name": "Armlene",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 100862,
+  "name": "Bagasjerom/lasterom/lasteplan",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 104736,
+  "name": "beskyttelse mot mår",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 104629,
+  "name": "Bilpressening",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 104730,
+  "name": "Ettermonteringssett, motor-lyd-system",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 103396,
+  "name": "gulvkar",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 100857,
+  "name": "Gulvmatter",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 706526,
+  "name": "Hygiene-beskyttelsesfolie",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 706769,
+  "name": "Jekk",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 706770,
+  "name": "Komfort",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 706576,
+  "name": "Oppbevaringsrom/-boks",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 104631,
+  "name": "Pedalbelegg sett",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 100861,
+  "name": "Pneumatiske fjær",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 706579,
+  "name": "Safe",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 100854,
+  "name": "Sigretttenner",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 706700,
+  "name": "Smussfanger",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 103485,
+  "name": "snøkjettinger",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 100858,
+  "name": "Varseltrekant",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 103443,
+  "name": "vindskjerm",
+  "parentId": 100733,
+  "hasChildren": false
+}
+{
+  "id": 100015,
+  "name": "Tilhengerfeste / -tilleggsdeler",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100608,
+  "name": "Elektrodeler",
+  "parentId": 100015,
+  "hasChildren": false
+}
+{
+  "id": 100609,
+  "name": "Enkelt- / tilleggsdeler",
+  "parentId": 100015,
+  "hasChildren": false
+}
+{
+  "id": 100752,
+  "name": "Montasjesett",
+  "parentId": 100015,
+  "hasChildren": false
+}
+{
+  "id": 105956,
+  "name": "Styreapparat",
+  "parentId": 100015,
+  "hasChildren": false
+}
+{
+  "id": 100607,
+  "name": "Tilhengerfeste",
+  "parentId": 100015,
+  "hasChildren": false
+}
+{
+  "id": 100343,
+  "name": "Transportutstyr",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100368,
+  "name": "Bakstativ",
+  "parentId": 100343,
+  "hasChildren": false
+}
+{
+  "id": 100369,
+  "name": "Festedeler bærersystem",
+  "parentId": 100343,
+  "hasChildren": false
+}
+{
+  "id": 103009,
+  "name": "Hengerfesteholder",
+  "parentId": 100343,
+  "hasChildren": false
+}
+{
+  "id": 103423,
+  "name": "innvendig holder",
+  "parentId": 100343,
+  "hasChildren": false
+}
+{
+  "id": 100367,
+  "name": "Takgrind",
+  "parentId": 100343,
+  "hasChildren": false
+}
+{
+  "id": 103168,
+  "name": "Trykkluftanlegg",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 103193,
+  "name": "Bremse- / arbeidssylinder",
+  "parentId": 103168,
+  "hasChildren": true
+}
+{
+  "id": 103194,
+  "name": "Arbeidssylinder",
+  "parentId": 103193,
+  "hasChildren": false
+}
+{
+  "id": 103195,
+  "name": "Membran bremsesylinder",
+  "parentId": 103193,
+  "hasChildren": false
+}
+{
+  "id": 706494,
+  "name": "Bryter",
+  "parentId": 103168,
+  "hasChildren": false
+}
+{
+  "id": 103196,
+  "name": "Koplingshode",
+  "parentId": 103168,
+  "hasChildren": false
+}
+{
+  "id": 103197,
+  "name": "Ledninger / forbinder",
+  "parentId": 103168,
+  "hasChildren": false
+}
+{
+  "id": 103207,
+  "name": "Lufttank / tilbehør",
+  "parentId": 103168,
+  "hasChildren": true
+}
+{
+  "id": 103208,
+  "name": "Tømmeventil",
+  "parentId": 103207,
+  "hasChildren": false
+}
+{
+  "id": 103171,
+  "name": "Lufttørker / -pumpe",
+  "parentId": 103168,
+  "hasChildren": false
+}
+{
+  "id": 103183,
+  "name": "Lyddemper (trykkluftanlegg)",
+  "parentId": 103168,
+  "hasChildren": false
+}
+{
+  "id": 103192,
+  "name": "Retningsventil",
+  "parentId": 103168,
+  "hasChildren": false
+}
+{
+  "id": 706481,
+  "name": "Sensor",
+  "parentId": 103168,
+  "hasChildren": false
+}
+{
+  "id": 103181,
+  "name": "testtilkobling",
+  "parentId": 103168,
+  "hasChildren": false
+}
+{
+  "id": 103169,
+  "name": "Trykkregulator / tilbehør",
+  "parentId": 103168,
+  "hasChildren": true
+}
+{
+  "id": 103170,
+  "name": "Trykkregulator",
+  "parentId": 103169,
+  "hasChildren": false
+}
+{
+  "id": 103198,
+  "name": "Ventiler / trykkluftanlegg",
+  "parentId": 103168,
+  "hasChildren": true
+}
+{
+  "id": 103200,
+  "name": "Andre ventiler",
+  "parentId": 103198,
+  "hasChildren": false
+}
+{
+  "id": 103199,
+  "name": "Flerkretsverneventil",
+  "parentId": 103198,
+  "hasChildren": false
+}
+{
+  "id": 103201,
+  "name": "Styreventil, tilhenger",
+  "parentId": 103198,
+  "hasChildren": false
+}
+{
+  "id": 100241,
+  "name": "Varmeelement/ventilasjon",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100726,
+  "name": "Betjeningselementer",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 706407,
+  "name": "Ekstra vannpumpe",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 100346,
+  "name": "Innendørs filter",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 101470,
+  "name": "Kjølevannforvarmer",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 100347,
+  "name": "Kupé-varmeveksler",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 100777,
+  "name": "slanger/rør",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 100725,
+  "name": "Styreapparater",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 100348,
+  "name": "Varmeklaffboks",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 100349,
+  "name": "Ventilasjonsmotor",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 102219,
+  "name": "Ventiler / regulering",
+  "parentId": 100241,
+  "hasChildren": false
+}
+{
+  "id": 100018,
+  "name": "Vindusspyler",
+  "parentId": null,
+  "hasChildren": true
+}
+{
+  "id": 100613,
+  "name": "Bryter / relè",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 100611,
+  "name": "Vaskevannsdyse",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 100135,
+  "name": "Vaskevannspumpe",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 100610,
+  "name": "Vaskevannstank / ledning",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 103410,
+  "name": "Verktøy",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 100612,
+  "name": "Vindusvask anlegg",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 100134,
+  "name": "Vindusviskermotor",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 100137,
+  "name": "Vindusvisker overføring / drift",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 100136,
+  "name": "Viskearm / -lagring",
+  "parentId": 100018,
+  "hasChildren": false
+}
+{
+  "id": 100133,
+  "name": "Viskerblad / -gummi",
+  "parentId": 100018,
+  "hasChildren": false
+}
