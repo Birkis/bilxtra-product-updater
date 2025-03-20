@@ -16,15 +16,6 @@ interface ProductVariant {
     totalStock: number;
 }
 
-interface ProductInfo {
-    description: {
-        body: {
-            plainText: string;
-        };
-    };
-}
-
-
 interface SearchResponse {
     browse: {
         generiskProdukt: {
@@ -79,10 +70,8 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
                         term: $search_term
                         options: {
                             fuzzy: {
-
                                 fuzziness: DOUBLE,
                                 maxExpensions: 50
-
                             }
                         }
                         sorting: {
@@ -139,13 +128,16 @@ async function fetchAllResults(searchTerm: string): Promise<ProcessedResult[]> {
             const priceExVat = hit.defaultVariant?.defaultPrice || 0;
             const priceWithVat = Number((priceExVat * 1.25).toFixed(2));
 
+            // Calculate a combined score that includes a bonus for having topics
+            const baseScore = hit.score || 0;
+            const topicsBonus = Object.keys(hit.topics || {}).length > 0 ? 0.5 : 0;
+            const finalScore = baseScore + topicsBonus;
+
             return {
                 name: hit.name,
                 itemId: hit.itemId,
                 url: `https://bilxtra.no${cleanPath}`,
-                score: calculateScore(hit, searchTerm),
-                shortcuts: hit.shortcuts || [],
-                topics: hit.topics || {},
+                score: finalScore,
                 variant: {
                     sku: hit.defaultVariant?.sku || '',
                     name: hit.defaultVariant?.name || '',
